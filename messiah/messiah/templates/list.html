@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}List!{% endblock %}
+
+{% block content %}
+<ul style="list-style-type:none">
+{% for post in posts %}
+<li style="padding-left:10px;{% if forloop.counter0|divisibleby:"4" %}background-color:#E1F3C9{% endif %}">
+    <a href="/post/{{ post.id }}/">{{ post.title }}</a>
+    <p>{{ post.text }}</p>
+</li>
+{% endfor %}
+</ul>
+</div>
+{% endblock %}
