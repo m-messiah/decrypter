@@ -1,0 +1,9 @@
+<uwsgi>
+    <socket>127.0.0.1:1234</socket>
+    <chdir>/var/www/django/messiah/messiah</chdir>
+    <pythonpath>/var/www/django/messiah</pythonpath>
+    <module>wsgi</module>
+    <uid>www-data</uid> <!-- Use appropriate user credentials for running uwsgi -->
+    <gid>www-data</gid>
+    <touch-reload>/var/www/django/messiah/reload</touch-reload>
+</uwsgi>
