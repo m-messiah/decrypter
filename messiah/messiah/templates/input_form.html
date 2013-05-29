@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Введите неизвестное{% endblock %}
+{% block title %}Decrypter{% endblock %}
 
 {% block content %}
-<form action="/generate/" method="post">
+<h2>Enter your strange text to the field below and I will try to decrypt it.</h2>
+<form action="/decrypter/gen/" method="post">
     {% csrf_token %}
-    <input type="text" name="encrypted">
+    <textarea cols=40 rows=5 name="encrypted"></textarea>
     <input type="submit" value="Analyze!">
 </form>
 {% endblock %}

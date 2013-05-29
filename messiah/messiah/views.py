@@ -1,7 +1,7 @@
 # ~*~ coding: utf-8 ~*~
 
 # функция генерирующая 404 страницу
-from django.http import Http404
+from django.http import Http404, HttpResponse
 
 # функция отрисовки страницы, принимающая путь до шаблона
 # и данные помещенные в шаблон
@@ -14,6 +14,10 @@ import cryptoanalyzis
 
 
 def main_page(request):
+    return HttpResponse("Nothing interesting here")
+
+
+def decrypter(request):
     return render(request, 'input_form.html')
 
 
@@ -22,7 +26,10 @@ def generate(request):
         encrypted = request.POST['encrypted']
         decrypted = []
         for func in cryptoanalyzis.functions:
-            decrypted.append(func(encrypted))
+            try:
+                decrypted.append(func(encrypted))
+            except:
+                continue
     else:
         decrypted = {"Bad request": 'You submitted an empty form.'}
 
