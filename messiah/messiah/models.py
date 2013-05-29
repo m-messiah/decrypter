@@ -8,6 +8,8 @@ from django.contrib import admin
 '''
 Blog posts
 '''
+
+
 class Post(models.Model):
     # название поста
     title = models.CharField(max_length=100)
@@ -17,13 +19,17 @@ class Post(models.Model):
     # функция необходима для того, чтобы при выводе объекта Post
     # как строки выводился вместо этого его title
     def __unicode__(self):
-        return self.title;
+        return self.title
+
 
 '''
 Класс для админки, тут будут дополнительные атрибуты необходимые для админки
 '''
+
+
 class PostAdmin(admin.ModelAdmin):
-    # в таблице списка постов выводить только колонку title, если вы добавите еще одно имя поля, то и оно выведется
+    # в таблице списка постов выводить только колонку title,
+    # если вы добавите еще одно имя поля, то и оно выведется
     list_display = ('title',)
 
 # связываем эту модель с моделью PostAdmin
