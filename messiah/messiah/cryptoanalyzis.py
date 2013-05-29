@@ -32,6 +32,17 @@ def reverse_subst(encrypted):
     return (u"Substitution A=Z B=Y ...",
             u"<table>{}</table>".format(encrypted.translate(trans)))
 
+def keymap(encrypted):
+    encrypted = u"{}".format(encrypted)
+    key = (u"qwertyuiop[]asdfghjkl;'\<zxcvbnm,./`1234567890-="
+           u"~!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKL:\"|>ZXCVBNM<>?")
+    abc = (u"йцукенгшщзхъфывапролджэ\/ячсмитьбю.ё1234567890-="
+           u"Ё!\"№;%:?*()_+ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ/|ЯЧСМИТЬБЮ,")
+    if search(r"[a-z]", encrypted):
+        abc, key = key, abc
+    trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
+    return "Wrong Keymap", u"{}".format(encrypted.translate(trans))
+
 
 def morse(encrypted):
     signs = {u'.....': u'5', u'-.--.-': u'(', u'..--..': u'?', u'.----': u'1',
@@ -116,6 +127,7 @@ functions = [
     from_ascii,
     from_binary,
     bacon,
+    keymap,
 ]
 
 
