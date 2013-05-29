@@ -123,7 +123,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    #'admintools_bootstrap',
+    'admintools_bootstrap',
     'admin_tools',
     'admin_tools.theming',
     'admin_tools.menu',
