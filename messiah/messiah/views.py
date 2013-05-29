@@ -6,23 +6,36 @@ from django.http import Http404
 # функция отрисовки страницы, принимающая путь до шаблона
 # и данные помещенные в шаблон
 from django.shortcuts import render_to_response
+from django.shortcuts import render
 
 # наша модель
-from models import Post
+from models import Crypto
+import cryptoanalyzis
 
 
 def main_page(request):
-    # Получаем список постов
-    posts = Post.objects.all()
-    # отрисовываем
-    return render_to_response('list.html', {"posts": posts})
+    return render(request, 'input_form.html')
+
+
+def generate(request):
+    if 'encrypted' in request.POST:
+        encrypted = request.POST['encrypted']
+        decrypted = []
+        for func in cryptoanalyzis.functions:
+            decrypted.append(func(encrypted))
+    else:
+        decrypted = {"Bad request": 'You submitted an empty form.'}
+    return render_to_response('answer.html',
+                              {"encrypted": request.POST['encrypted'],
+                               "decrypted": dict(decrypted),
+                               })
 
 
 def get_post(request, post_id):
     try:
         # выбираем конкретный пост, pk - primary key
-        post = Post.objects.get(pk=post_id)
-    except Post.DoesNotExist:
+        post = Crypto.objects.get(pk=post_id)
+    except Crypto.DoesNotExist:
         # если такого поста нет, то генерируем 404
         raise Http404
 

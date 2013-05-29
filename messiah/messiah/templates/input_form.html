@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Введите неизвестное{% endblock %}
+
+{% block content %}
+<form action="/generate/" method="post">
+    <input type="text" name="encrypted">
+    <input type="submit" value="Analyze!">
+</form>
+{% endblock %}

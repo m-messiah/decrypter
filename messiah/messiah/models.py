@@ -10,13 +10,13 @@ Blog posts
 '''
 
 
-class Post(models.Model):
+class Crypto(models.Model):
     # название поста
     title = models.CharField(max_length=100)
     # содержимое поста
     text = models.TextField()
 
-    # функция необходима для того, чтобы при выводе объекта Post
+    # функция необходима для того, чтобы при выводе объекта Crypto
     # как строки выводился вместо этого его title
     def __unicode__(self):
         return self.title
@@ -33,4 +33,4 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('title',)
 
 # связываем эту модель с моделью PostAdmin
-admin.site.register(Post, PostAdmin)
+admin.site.register(Crypto, PostAdmin)

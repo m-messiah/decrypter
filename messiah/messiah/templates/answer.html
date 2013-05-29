@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Результаты{% endblock %}
+
+{% block content %}
+<div><span>Encrypted text: {{ encrypted }}</span></div>
+<table>
+    {% for result in decrypted.keys() %}
+    <tr>
+        <th>{{ result }}</th><td>{{ decrypted[result] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
