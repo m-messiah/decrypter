@@ -25,6 +25,7 @@ def generate(request):
             decrypted.append(func(encrypted))
     else:
         decrypted = {"Bad request": 'You submitted an empty form.'}
+
     return render_to_response('answer.html',
                               {"encrypted": request.POST['encrypted'],
                                "decrypted": dict(decrypted),

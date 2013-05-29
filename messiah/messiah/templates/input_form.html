@@ -4,6 +4,7 @@
 
 {% block content %}
 <form action="/generate/" method="post">
+    {% csrf_token %}
     <input type="text" name="encrypted">
     <input type="submit" value="Analyze!">
 </form>

@@ -3,11 +3,12 @@
 {% block title %}Результаты{% endblock %}
 
 {% block content %}
-<div><span>Encrypted text: {{ encrypted }}</span></div>
+<table><tr><th>Encrypted text</th><td>{{ encrypted }}</td></tr></table>
+</br>
 <table>
-    {% for result in decrypted.keys() %}
+    {% for typeCrypto,result in decrypted.items %}
     <tr>
-        <th>{{ result }}</th><td>{{ decrypted[result] }}</td>
+        <th>{{ typeCrypto }}</th><td>{{ result | safe }}</td>
     </tr>
     {% endfor %}
 </table>

@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Messiah'
-RUS = u"абвгдежзиклмнопрстуфхцчшщъыьэюя"
+RUS = u"абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 ENG = "abcdefghijklmnopqrstuvwxyz"
-
+from re import search
 
 def caesar(encrypted):
-    try:
-        encrypted = u"{}".format(encrypted).lower()
+    encrypted = u"{}".format(encrypted).lower()
+    if search(r"[a-z]", encrypted):
         abc = ENG
-    except UnicodeDecodeError:
-        encrypted = u"{}".format(encrypted
-                                 .decode("string_escape")
-                                 .decode("utf-8")).lower()
+    else:
         abc = RUS
         
     decrypted = []
@@ -20,8 +17,7 @@ def caesar(encrypted):
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
         decrypted.append(u"<tr><th>ROT{}</th><td>{}</td></tr>"
                          .format(rot, encrypted.translate(trans)))
-
-    return "Caesar", u"<table>{}<table>".format("".join(decrypted))
+    return "Caesar", u"<table>{}</table>".format("".join(decrypted))
 
 
 functions = [
