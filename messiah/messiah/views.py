@@ -14,7 +14,11 @@ import cryptoanalyzis
 
 
 def main_page(request):
-    return HttpResponse("Nothing interesting here")
+    return HttpResponse('''<!DOCTYPE html>
+        <html>
+            <head><title>Messiah's home</title></head>
+            <body><h1>Nothing interesting here</h1></body>
+        </html>''')
 
 
 def decrypter(request):

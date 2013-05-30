@@ -13,7 +13,7 @@ def caesar(encrypted):
         abc = RUS
 
     decrypted = []
-    for rot in range(len(abc)):
+    for rot in range(1, len(abc)):
         key = abc[rot:] + abc[:rot]
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
         decrypted.append(u"<tr><th>ROT{}</th><td>{}</td></tr>"
@@ -31,6 +31,7 @@ def reverse_subst(encrypted):
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
     return (u"Substitution A=Z B=Y ...",
             u"<table>{}</table>".format(encrypted.translate(trans)))
+
 
 def keymap(encrypted):
     encrypted = u"{}".format(encrypted)
