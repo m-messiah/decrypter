@@ -1,6 +1,6 @@
 # Django settings for messiah project.
 import os
-
+from secret import SECRET_KEY
 
 def rel(*x):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), *x)
@@ -29,7 +29,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["messiah.dlinkddns.com", "messiah-netbook", "localhost"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -89,7 +89,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '38ra2tgejxgg93k#kv(2f7m&6ojz7u#20q#as3-$j=b$4%b@^f'
+#SECRET_KEY = '38ra2tgejxgg93k#kv(2f7m&6ojz7u#20q#as3-$j=b$4%b@^f'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -98,18 +98,37 @@ TEMPLATE_LOADERS = (
     #     'django.template.loaders.eggs.Loader',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.request',
+    "django.contrib.auth.context_processors.auth",
+    "django.contrib.messages.context_processors.messages",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.static",
+    "django.core.context_processors.media",
+    "django.core.context_processors.request",
+    "django.core.context_processors.tz",
+    "mezzanine.conf.context_processors.settings",
 )
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "mezzanine.core.middleware.UpdateCacheMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "mezzanine.core.request.CurrentRequestMiddleware",
+    "mezzanine.core.middleware.RedirectFallbackMiddleware",
+    "mezzanine.core.middleware.TemplateForDeviceMiddleware",
+    "mezzanine.core.middleware.TemplateForHostMiddleware",
+    "mezzanine.core.middleware.AdminLoginInterfaceSelectorMiddleware",
+    "mezzanine.core.middleware.SitePermissionMiddleware",
+    # Uncomment the following if using any of the SSL settings:
+    # "mezzanine.core.middleware.SSLRedirectMiddleware",
+    "mezzanine.pages.middleware.PageMiddleware",
+    "mezzanine.core.middleware.FetchFromCacheMiddleware",
 )
+
+PACKAGE_NAME_FILEBROWSER = "filebrowser_safe"
+PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 
 ROOT_URLCONF = 'messiah.urls'
 
@@ -124,21 +143,34 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'admintools_bootstrap',
-    'admin_tools',
-    'admin_tools.theming',
-    'admin_tools.menu',
-    'admin_tools.dashboard',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.admin',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.redirects",
+    "django.contrib.sessions",
+    "django.contrib.sites",
+    "django.contrib.sitemaps",
+    "django.contrib.staticfiles",
+    "mezzanine.boot",
+    "mezzanine.conf",
+    "mezzanine.core",
+    "mezzanine.generic",
+    "mezzanine.blog",
+    "mezzanine.forms",
+    "mezzanine.pages",
+    "mezzanine.galleries",
+    "mezzanine.twitter",
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'messiah',
+)
+
+OPTIONAL_APPS = (
+    "debug_toolbar",
+    "django_extensions",
+    "compressor",
+    PACKAGE_NAME_FILEBROWSER,
+    PACKAGE_NAME_GRAPPELLI,
 )
 
 # A sample logging configuration. The only tangible logging
@@ -169,3 +201,15 @@ LOGGING = {
         },
     }
 }
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
+try:
+    from mezzanine.utils.conf import set_dynamic_settings
+except ImportError:
+    pass
+else:
+    set_dynamic_settings(globals())
