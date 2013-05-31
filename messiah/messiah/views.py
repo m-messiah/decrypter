@@ -9,7 +9,6 @@ from django.shortcuts import render_to_response
 from django.shortcuts import render
 
 # наша модель
-from models import Crypto
 import cryptoanalyzis
 
 
@@ -21,8 +20,8 @@ def main_page(request):
         </html>''')
 
 
-def decrypter(request):
-    return render(request, 'input_form.html')
+#def decrypter(request):
+#    return render(request, 'input_form.html')
 
 
 def generate(request):
@@ -35,22 +34,9 @@ def generate(request):
             except:
                 continue
     else:
-        decrypted = {"Bad request": 'You submitted an empty form.'}
+        return render(request, "input_form.html")
 
     return render_to_response('answer.html',
                               {"encrypted": request.POST['encrypted'],
                                "decrypted": dict(decrypted),
                                })
-
-
-def get_post(request, post_id):
-    try:
-        # выбираем конкретный пост, pk - primary key
-        post = Crypto.objects.get(pk=post_id)
-    except Crypto.DoesNotExist:
-        # если такого поста нет, то генерируем 404
-        raise Http404
-
-    # отрисовываем
-    return render_to_response('single.html',
-                              {"title": post.title, "text": post.text})

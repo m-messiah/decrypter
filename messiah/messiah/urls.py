@@ -13,11 +13,8 @@ urlpatterns = patterns(
         {'document_root': settings.STATIC_ROOT}),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^admin_tools/', include('admin_tools.urls')),
-    url("^$", direct_to_template, {"template": "index.html"}, name="home"),
-    url("^", include("mezzanine.urls")),
-    url(r'^post/([0-9]{1,5})', views.get_post),
-    url(r'^decrypter/$', views.decrypter),
-    url(r'^decrypter/gen/$', views.generate),
+    url(r"^$", direct_to_template, {"template": "index.html"}, name="home"),
+    ('^', include("mezzanine.urls")),
 )
 
 handler404 = "mezzanine.core.views.page_not_found"
