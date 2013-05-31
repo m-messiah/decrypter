@@ -13,12 +13,7 @@ import cryptoanalyzis
 
 
 def main_page(request):
-    return HttpResponse('''<!DOCTYPE html>
-        <html>
-            <head><title>Messiah's home</title></head>
-            <body><h1>Nothing interesting here</h1></body>
-        </html>''')
-
+    return render(request, 'index.html')
 
 #def decrypter(request):
 #    return render(request, 'input_form.html')
@@ -28,7 +23,7 @@ def generate(request):
     if 'encrypted' in request.POST:
         encrypted = request.POST['encrypted']
         decrypted = []
-        for func in cryptoanalyzis.functions:
+        for func in sorted(cryptoanalyzis.functions):
             try:
                 decrypted.append(func(encrypted))
             except:

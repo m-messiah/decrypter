@@ -1,0 +1,1 @@
+SECRET_KEY = "ltc: LUZRF696pWJjEymgXoFznX5QU6cDckXsa6"

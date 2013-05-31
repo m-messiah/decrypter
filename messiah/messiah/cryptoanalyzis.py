@@ -32,6 +32,9 @@ def reverse_subst(encrypted):
     return (u"Substitution A=Z B=Y ...",
             u"<table>{}</table>".format(encrypted.translate(trans)))
 
+def reverse(encrypted):
+    return u"Reversed text", encrypted[::-1]
+
 
 def keymap(encrypted):
     encrypted = u"{}".format(encrypted)
@@ -129,6 +132,7 @@ functions = [
     from_binary,
     bacon,
     keymap,
+    reverse,
 ]
 
 
