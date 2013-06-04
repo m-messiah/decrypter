@@ -1,6 +1,7 @@
 # Django settings for messiah project.
 import os
 
+
 def rel(*x):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), *x)
 

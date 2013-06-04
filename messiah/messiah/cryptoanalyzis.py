@@ -3,6 +3,7 @@ __author__ = 'Messiah'
 RUS = u"абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 ENG = "abcdefghijklmnopqrstuvwxyz"
 from re import search, sub
+from string import maketrans
 
 
 def caesar(encrypted):
@@ -21,7 +22,7 @@ def caesar(encrypted):
     return "Caesar", u"<table>{}</table>".format("".join(decrypted))
 
 
-def reverse_subst(encrypted):
+def atbash(encrypted):
     encrypted = u"{}".format(encrypted).lower()
     if search(r"[a-z]", encrypted):
         abc = ENG
@@ -31,6 +32,7 @@ def reverse_subst(encrypted):
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
     return (u"Substitution A=Z B=Y ...",
             u"<table>{}</table>".format(encrypted.translate(trans)))
+
 
 def reverse(encrypted):
     return u"Reversed text", encrypted[::-1]
@@ -85,12 +87,20 @@ def morse(encrypted):
 
     letters = signs
     letters.update(en)
-    eng = u"<tr><th>ENG</th><td>{}</td></tr>".format(decode(encrypted))
-
+    table = []
+    table.append(u"<tr><th>ENG</th><td>{}</td></tr>".format(
+        decode(encrypted)))
+    table.append(u"<tr><th>ENG rev</th><td>{}</td></tr>".format(
+        decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
+                                              ord(u'-'): ord(u'.')}).split())))
     letters = signs
     letters.update(ru)
-    rus = u"<tr><th>RUS</th><td>{}</td></tr>".format(decode(encrypted))
-    return "Morse", u"<table>{}{}</table>".format(eng, rus)
+    table.append(u"<tr><th>RUS</th><td>{}</td></tr>".format(
+        decode(encrypted)))
+    table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>".format(
+        decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
+                                              ord(u'-'): ord(u'.')}).split())))
+    return "Morse", u"<table>{}</table>".format("".join(table))
 
 
 def from_hex(encrypted):
@@ -117,15 +127,15 @@ def bacon(encrypted):
         tmp = bin(i)[2:].zfill(5)
         tmp = tmp.replace('0', 'a')
         tmp = tmp.replace('1', 'b')
-        bacondict[tmp] = chr(65+i)
+        bacondict[tmp] = chr(65 + i)
 
-    for i in range(len(encrypted)/5):
-        plaintext.append(bacondict.get(encrypted[i*5:i*5+5], '_'))
+    for i in range(len(encrypted) / 5):
+        plaintext.append(bacondict.get(encrypted[i * 5:i * 5 + 5], '_'))
     return "Bacon", u"".join(plaintext)
 
 functions = [
     caesar,
-    reverse_subst,
+    atbash,
     morse,
     from_hex,
     from_ascii,

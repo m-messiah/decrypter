@@ -15,6 +15,7 @@ import cryptoanalyzis
 def main_page(request):
     return render(request, 'index.html')
 
+
 def decrypter(request):
     if 'encrypted' in request.POST:
         encrypted = request.POST['encrypted']
