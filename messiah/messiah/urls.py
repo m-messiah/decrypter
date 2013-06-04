@@ -14,5 +14,4 @@ urlpatterns = patterns(
     url(r'^admin_tools/', include('admin_tools.urls')),
     url(r'^$', views.main_page),
     url(r'^decrypter/$', views.decrypter),
-    url(r'^decrypter/gen/$', views.generate),
 )

@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>Enter your strange text to the field below and I will try to decrypt it.</h2>
-<form action="/decrypter/gen/" method="post">
+<form action="/decrypter/" method="post">
     {% csrf_token %}
     <textarea cols=40 rows=5 name="encrypted"></textarea>
     <input type="submit" value="Analyze!">

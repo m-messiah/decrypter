@@ -10,7 +10,7 @@
 <table>
     {% for typeCrypto,result in decrypted.items %}
     <tr>
-        <th>{{ typeCrypto }}</th><td>{{ result | safe }}</td>
+        <th>{{ typeCrypto }}</th><td>{{ result|safe }}</td>
     </tr>
     {% endfor %}
 </table>
