@@ -11,7 +11,6 @@ urlpatterns = patterns(
         'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^admin_tools/', include('admin_tools.urls')),
-    url(r'^$', views.main_page),
     url(r'^decrypter/$', views.decrypter),
+    url('^', include('django.contrib.flatpages.urls')),
 )
