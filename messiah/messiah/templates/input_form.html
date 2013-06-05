@@ -6,7 +6,7 @@
 <h2>Enter your strange text to the field below and I will try to decrypt it.</h2>
 <form action="/decrypter/" method="post">
     {% csrf_token %}
-    <textarea cols=40 rows=5 name="encrypted"></textarea>
-    <input type="submit" value="Analyze!">
+    &nbsp;&nbsp;<textarea cols=40 rows=5 name="encrypted"></textarea>
+    <button class="btn btn-primary" type="submit">Analyze!</button>
 </form>
 {% endblock %}

@@ -2,3 +2,4 @@
 .idea
 *.db
 messiah/messiah/secret.py
+messiah/static

@@ -19,7 +19,9 @@ def caesar(encrypted):
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
         decrypted.append(u"<tr><th>ROT{}</th><td>{}</td></tr>"
                          .format(rot, encrypted.translate(trans)))
-    return "Caesar", u"<table>{}</table>".format("".join(decrypted))
+    return ("Caesar",
+            u"<table class=\"table-bordered table-stripped\">{}</table>"
+            .format("".join(decrypted)))
 
 
 def atbash(encrypted):
@@ -31,7 +33,8 @@ def atbash(encrypted):
     key = abc[::-1]
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
     return (u"Substitution A=Z B=Y ...",
-            u"<table>{}</table>".format(encrypted.translate(trans)))
+            u"<table class=\"table-bordered table-stripped\">{}</table>"
+            .format(encrypted.translate(trans)))
 
 
 def reverse(encrypted):
@@ -100,7 +103,9 @@ def morse(encrypted):
     table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>".format(
         decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
                                               ord(u'-'): ord(u'.')}).split())))
-    return "Morse", u"<table>{}</table>".format("".join(table))
+    return ("Morse",
+            u"<table class=\"table-bordered table-stripped\">{}</table>"
+            .format("".join(table)))
 
 
 def from_hex(encrypted):

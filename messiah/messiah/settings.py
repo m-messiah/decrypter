@@ -137,6 +137,8 @@ INSTALLED_APPS = (
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "django.contrib.staticfiles",
+    "appconf",
+    #"dashboardmods",
     "compressor",
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',

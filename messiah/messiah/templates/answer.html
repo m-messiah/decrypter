@@ -3,11 +3,11 @@
 {% block title %}Результаты{% endblock %}
 
 {% block content %}
-<input type="button" value="Return to the first page" onclick="location.href='/decrypter/';">
+<button class="btn" type="button" onclick="location.href='/decrypter/';">Return to the input page</button>
 <br><br>
 <table><tr><th>Encrypted text</th><td>{{ encrypted }}</td></tr></table>
 <br>
-<table>
+<table class="table table-bordered table-stripped">
     {% for typeCrypto,result in decrypted.items %}
     <tr>
         <th>{{ typeCrypto }}</th><td>{{ result|safe }}</td>
