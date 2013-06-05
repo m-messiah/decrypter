@@ -19,7 +19,8 @@ def caesar(encrypted):
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
         decrypted.append(u"<tr><th>ROT{}</th><td>{}</td></tr>"
                          .format(rot, encrypted.translate(trans)))
-    return ("Caesar",
+    return ("<abbr title=\"Cyclic shift\"><i class=\"icon-step-forward\"></i>"
+            " Caesar</abbrr>",
             u"<table class=\"table-bordered table-stripped\">{}</table>"
             .format("".join(decrypted)))
 
@@ -32,13 +33,15 @@ def atbash(encrypted):
         abc = RUS
     key = abc[::-1]
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-    return (u"Substitution A=Z B=Y ...",
+    return (u"<abbr title=\"A=Z B=Y ... Y=B,Z=A\"><i class=\"icon-retweet\"></i>"
+            " Atbash</abbr>",
             u"<table class=\"table-bordered table-stripped\">{}</table>"
             .format(encrypted.translate(trans)))
 
 
 def reverse(encrypted):
-    return u"Reversed text", encrypted[::-1]
+    return (u"<i class=\"icon-chevron-left\"></i>"
+            " Reversed text", encrypted[::-1])
 
 
 def keymap(encrypted):
@@ -50,7 +53,8 @@ def keymap(encrypted):
     if search(r"[a-z]", encrypted):
         abc, key = key, abc
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-    return "Wrong Keymap", u"{}".format(encrypted.translate(trans))
+    return ("<i class=\"icon-globe\"></i>"
+            " Wrong Keymap", u"{}".format(encrypted.translate(trans)))
 
 
 def morse(encrypted):
@@ -103,7 +107,7 @@ def morse(encrypted):
     table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>".format(
         decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
                                               ord(u'-'): ord(u'.')}).split())))
-    return ("Morse",
+    return ("<abbr title=\". - dot, - tiret, ' ' - separator\">Morse</abbr>",
             u"<table class=\"table-bordered table-stripped\">{}</table>"
             .format("".join(table)))
 
@@ -136,7 +140,7 @@ def bacon(encrypted):
 
     for i in range(len(encrypted) / 5):
         plaintext.append(bacondict.get(encrypted[i * 5:i * 5 + 5], '_'))
-    return "Bacon", u"".join(plaintext)
+    return "<abbr title=\"AAABBBABAA\">Bacon</abbr>", u"".join(plaintext)
 
 functions = [
     caesar,
