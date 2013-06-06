@@ -31,10 +31,14 @@ def decrypter(request):
                                    })
     elif 'coordinates' in request.POST and request.POST['coordinates']:
         coords = request.POST['coordinates']
-        converted = coordinates.Coordinates(coords)
-        return render_to_response('coords.html',
-                                  {"coords": coords,
-                                   "result": converted.allCoords})
+        try:
+            converted = coordinates.Coordinates(coords)
+        except:
+            pass
+        else:
+            return render_to_response('coords.html',
+                                      {"coords": coords,
+                                       "result":
+                                       sorted(converted.allCoords.items())})
 
     return render(request, "input_form.html")
-

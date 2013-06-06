@@ -32,7 +32,7 @@ def atbash(encrypted):
         abc = RUS
     key = abc[::-1]
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-    return (u"<abbr title=\"A=Z B=Y ... Y=B,Z=A\"><i class=\"icon-retweet\"></i>"
+    return (u"<abbr title=\"A=Z B=Y...Y=B,Z=A\"><i class=\"icon-retweet\"></i>"
             " Atbash</abbr>",
             u"<table class=\"table-bordered table-stripped\">{}</table>"
             .format(encrypted.translate(trans)))

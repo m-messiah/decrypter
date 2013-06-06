@@ -5,10 +5,10 @@
 {% block content %}
 <button class="btn" type="button" onclick="location.href='/decrypter/';">Return to the input page</button>
 <br><br>
-<table><tr><th>Your input</th><td>{{ coords }}</td></tr></table>
+<table><tr><th>Your input</th><td>&nbsp;&nbsp;{{ coords }}</td></tr></table>
 <br>
 <table class="table table-bordered table-stripped">
-    {% for typeCoords,value in result.items %}
+    {% for typeCoords,value in result %}
     <tr>
         <th>{{ typeCoords }}</th><td>{{ value|safe }}</td>
     </tr>

@@ -27,12 +27,12 @@ class Coordinates(object):
         for lat, i in zip(self.coords, range(2)):
             lat = float(lat[0])
             d = int(lat)
-            m = (lat - d) * 60
+            m = abs((lat - d) * 60)
             if i == 0:
                 l = "N" if lat > 0 else "S"
             if i > 0:
                 l = "E" if lat > 0 else "W"
-            result.append("{}°{}\'{}".format(d, m, l))
+            result.append("{}°{}\'{}".format(abs(d), m, l))
         return "{}, {}".format(result[0], result[1])
 
     def degDec2DMS(self):
@@ -40,22 +40,25 @@ class Coordinates(object):
         for lat, i in zip(self.coords, range(2)):
             lat = float(lat[0])
             d = int(lat)
-            ms = (lat - d) * 60
+            ms = abs((lat - d) * 60)
             m = int(ms)
             s = round((ms - m) * 60, 2)
             if i == 0:
                 l = "N" if lat > 0 else "S"
             if i > 0:
                 l = "E" if lat > 0 else "W"
-            result.append("{}°{}\'{}\"{}".format(d, m, s, l))
+            result.append("{}°{}\'{}\"{}".format(abs(d), m, s, l))
         return "{}, {}".format(result[0], result[1])
 
     def minDec2DegDec(self):
         result = []
         for lat in self.coords:
             d, m = map(float, lat)
-            result.append(d + m / 60)
-        return "{}, (-){}".format(result[0], result[1])
+            modul = abs(d) + m / 60
+            if d < 0:
+                modul *= -1
+            result.append(modul)
+        return "{}, {}".format(result[0], result[1])
 
     def minDec2DMS(self):
         result = []
@@ -70,8 +73,11 @@ class Coordinates(object):
         result = []
         for lat in self.coords:
             d, m, s = map(float, lat)
-            result.append(d + (m * 60 + s) / 3600)
-        return "{}, (-){}".format(result[0], result[1])
+            modul = abs(d) + (m * 60 + s) / 3600
+            if d < 0:
+                modul *= -1
+            result.append(modul)
+        return "{}, {}".format(result[0], result[1])
 
     def dMS2MinDec(self):
         result = []
@@ -105,6 +111,13 @@ class Coordinates(object):
             self.allCoords["DMS"] = self.degDec2DMS()
         else:
             self.allCoords["BadInput"] = 0
+        degDec = self.allCoords["DegDec"].split(",")
+        links = []
+        links.append("<a href=\"http://maps.google.com/maps?"
+                     "q=loc:{},{}&z=15\" class='btn'"
+                     "target='_blank'>GoogleMaps</a>"
+                     .format(degDec[0], degDec[1].strip()))
+        self.allCoords["~ Maps"] = " ".join(links)
 
     def __str__(self):
         res = ["------"]
