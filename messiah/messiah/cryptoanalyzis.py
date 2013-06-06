@@ -119,6 +119,25 @@ def from_ascii(encrypted):
     return "From ASCII", u"".join([chr(int(i)) for i in encrypted.split()])
 
 
+def from_position(encrypted):
+    positions = map(int, encrypted.split())
+
+    try:
+        rus = map(lambda i: RUS[i-1], positions)
+    except IndexError:
+        rus = u""
+
+    try:
+        eng = map(lambda i: ENG[i-1], positions)
+    except IndexError:
+        eng = u""
+    table = [u"<table class=\"table table-stripped\">"]
+    table.append(u"<tr><th>RUS</th><td>{}</td></tr>".format("".join(rus)))
+    table.append(u"<tr><th>ENG</th><td>{}</td></tr>".format("".join(eng)))
+    table.append(u"</table>")
+    return u"From position", u"".join(table)
+
+
 def from_binary(encrypted):
     import binascii
     return ("From BIN",
@@ -148,6 +167,7 @@ functions = [
     from_hex,
     from_ascii,
     from_binary,
+    from_position,
     bacon,
     keymap,
     reverse,
