@@ -6,7 +6,7 @@ def rel(*x):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), *x)
 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    "django.contrib.flatpages",
     "django.contrib.redirects",
     "django.contrib.sessions",
     "django.contrib.sites",
