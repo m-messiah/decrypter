@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Decrypted{% endblock %}
+{% block title %}Coordinates{% endblock %}
 
 {% block content %}
 <button class="btn" type="button" onclick="location.href='/decrypter/';">Return to the input page</button>
 <br><br>
-<table><tr><th>Encrypted text</th><td>{{ encrypted }}</td></tr></table>
+<table><tr><th>Your input</th><td>{{ coords }}</td></tr></table>
 <br>
 <table class="table table-bordered table-stripped">
-    {% for typeCrypto,result in decrypted.items %}
+    {% for typeCoords,value in result.items %}
     <tr>
-        <th>{{ typeCrypto }}</th><td>{{ result|safe }}</td>
+        <th>{{ typeCoords }}</th><td>{{ value|safe }}</td>
     </tr>
     {% endfor %}
 </table>

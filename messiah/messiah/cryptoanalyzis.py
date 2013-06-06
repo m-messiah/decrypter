@@ -3,7 +3,6 @@ __author__ = 'Messiah'
 RUS = u"абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 ENG = "abcdefghijklmnopqrstuvwxyz"
 from re import search, sub
-from string import maketrans
 
 
 def caesar(encrypted):

@@ -8,8 +8,8 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response
 from django.shortcuts import render
 
-# наша модель
 import cryptoanalyzis
+import coordinates
 
 
 def main_page(request):
@@ -17,7 +17,7 @@ def main_page(request):
 
 
 def decrypter(request):
-    if 'encrypted' in request.POST:
+    if 'encrypted' in request.POST and request.POST['encrypted']:
         encrypted = request.POST['encrypted']
         decrypted = []
         for func in sorted(cryptoanalyzis.functions):
@@ -25,10 +25,16 @@ def decrypter(request):
                 decrypted.append(func(encrypted))
             except:
                 continue
-    else:
-        return render(request, "input_form.html")
+        return render_to_response('answer.html',
+                                  {"encrypted": request.POST['encrypted'],
+                                   "decrypted": dict(decrypted),
+                                   })
+    elif 'coordinates' in request.POST and request.POST['coordinates']:
+        coords = request.POST['coordinates']
+        converted = coordinates.Coordinates(coords)
+        return render_to_response('coords.html',
+                                  {"coords": coords,
+                                   "result": converted.allCoords})
 
-    return render_to_response('answer.html',
-                              {"encrypted": request.POST['encrypted'],
-                               "decrypted": dict(decrypted),
-                               })
+    return render(request, "input_form.html")
+
