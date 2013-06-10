@@ -1,5 +1,6 @@
 *.py[co]
 .idea
 *.db
+venv
 messiah/messiah/secret.py
 messiah/static
