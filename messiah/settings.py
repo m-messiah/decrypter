@@ -6,7 +6,7 @@ def rel(*x):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), *x)
 
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -89,8 +89,8 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-from secret import SECRET_KEY
-#SECRET_KEY = '38ra2tgejxgg93k#kv(2f7m&6ojz7u#20q#as3-$j=b$4%b@^f'
+#from secret import SECRET_KEY
+SECRET_KEY = '38ra2tgejxgg93k#kv(2f7m&6ojz7u#20q#as3-$j=b$4%b@^f'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
