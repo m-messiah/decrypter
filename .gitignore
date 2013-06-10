@@ -3,4 +3,3 @@
 *.db
 venv
 messiah/messiah/secret.py
-messiah/static
