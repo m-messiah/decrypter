@@ -5,7 +5,7 @@
 {% block content %}
 <div style="margin-left:3%; width: 30%;">
 <h3>Enter your strange text to the field below</h3>
-<form action="/decrypter/" method="post">
+<form action="/" method="post">
     {% csrf_token %}
     <textarea cols=40 rows=5 name="encrypted" placeholder="encrypted"></textarea>
 <h3>or enter coordinates here.</h3>
