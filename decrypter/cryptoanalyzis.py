@@ -2,7 +2,7 @@
 __author__ = 'Messiah'
 RUS = u"абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 ENG = "abcdefghijklmnopqrstuvwxyz"
-from re import search, sub
+from re import search, sub, match
 
 
 def caesar(encrypted):
@@ -94,54 +94,81 @@ def morse(encrypted):
     letters = signs
     letters.update(en)
     table = []
-    table.append(u"<tr><th>ENG</th><td>{}</td></tr>".format(
-        decode(encrypted)))
-    table.append(u"<tr><th>ENG rev</th><td>{}</td></tr>".format(
-        decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
-                                              ord(u'-'): ord(u'.')}).split())))
+    result = decode(encrypted)
+    if not match(r"_*", result):
+        table.append(u"<tr><th>ENG</th><td>{}</td></tr>".format(
+            result))
+    result = decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
+                                                   ord(u'-'): ord(u'.')}
+                                                  ).split())
+    if not match(r"_*", result):
+        table.append(u"<tr><th>ENG rev</th><td>{}</td></tr>".format(
+            result))
     letters = signs
     letters.update(ru)
-    table.append(u"<tr><th>RUS</th><td>{}</td></tr>".format(
-        decode(encrypted)))
-    table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>".format(
-        decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
-                                              ord(u'-'): ord(u'.')}).split())))
-    return ("<abbr title=\". - dot, - tiret, ' ' - separator\">Morse</abbr>",
-            u"<table class=\"table-bordered table-stripped\">{}</table>"
-            .format("".join(table)))
+    result = decode(ecrypted)
+    if not match(r"_*", result):
+        table.append(u"<tr><th>RUS</th><td>{}</td></tr>".format(
+            result))
+    result = decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
+                                                   ord(u'-'): ord(u'.')}
+                                                  ).split())
+    if not match(r"_*", result):
+        table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>".format(
+            result))
+    if table:
+        return ("<abbr>Morse</abbr>",
+                u"<table class=\"table-bordered table-stripped\">{}</table>"
+                .format("".join(table)))
+    else:
+        return "", ""
 
 
 def from_hex(encrypted):
-    return "From HEX", u"".join(encrypted.split()).decode("hex")
+    try:
+        return "From HEX", u"".join(encrypted.split()).decode("hex")
+    except:
+        return "", ""
 
 
 def from_ascii(encrypted):
-    return "From ASCII", u"".join([chr(int(i)) for i in encrypted.split()])
+    try:
+        return "From ASCII", u"".join([chr(int(i)) for i in encrypted.split()])
+    except:
+        return "", ""
 
 
 def from_position(encrypted):
     positions = map(int, encrypted.split())
 
     try:
-        rus = map(lambda i: RUS[i-1], positions)
+        rus = map(lambda i: RUS[(i - 1) % 33], positions)
     except IndexError:
         rus = u""
 
     try:
-        eng = map(lambda i: ENG[i-1], positions)
+        eng = map(lambda i: ENG[(i - 1) % 26], positions)
     except IndexError:
         eng = u""
     table = [u"<table class=\"table table-stripped\">"]
-    table.append(u"<tr><th>RUS</th><td>{}</td></tr>".format("".join(rus)))
-    table.append(u"<tr><th>ENG</th><td>{}</td></tr>".format("".join(eng)))
+    if rus:
+        table.append(u"<tr><th>RUS</th><td>{}</td></tr>".format("".join(rus)))
+    if eng:
+        table.append(u"<tr><th>ENG</th><td>{}</td></tr>".format("".join(eng)))
     table.append(u"</table>")
-    return u"From position", u"".join(table)
+    if len(table) > 2:
+        return u"From position", u"".join(table)
+    else:
+        return "", ""
 
 
 def from_binary(encrypted):
     import binascii
-    return ("From BIN",
-            binascii.unhexlify("%x" % int("0b{}".format(encrypted), 2)))
+    try:
+        return ("From BIN",
+                binascii.unhexlify("%x" % int("0b{}".format(encrypted), 2)))
+    except:
+        return "", ""
 
 
 def bacon(encrypted):
@@ -158,7 +185,11 @@ def bacon(encrypted):
 
     for i in range(len(encrypted) / 5):
         plaintext.append(bacondict.get(encrypted[i * 5:i * 5 + 5], '_'))
-    return "<abbr title=\"AAABBBABAA\">Bacon</abbr>", u"".join(plaintext)
+    plaintext = u"".join(plaintext)
+    if not match(r"_*", plaintext):
+        return "<abbr title=\"AAABBBABAA\">Bacon</abbr>", plaintext
+    else:
+        return "", ""
 
 functions = [
     caesar,
