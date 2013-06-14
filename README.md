@@ -25,3 +25,54 @@ Converting coordinates.
 * Degrees, Minutes
 * Degrees
 
+
+
+RELEASES
+========
+
+v1.0 (RELEASE)
+----
+
+Filtering by bad input:
+    Alphabetic ciphers only for letters.
+    Morse only for dots and tirets.
+    Numbers only for numbers.
+
+
+v0.9
+----
+
+Migrate to single Heroku APP.
+
+v0.8 (Beta release for NZZ)
+----
+
+Coordinate converter.
+
+v0.7
+----
+
+Beautified with TwitterBootstrap.
+
++ Position in alphabet
+
+v0.6
+----
+
++ Morse
++ HEX
++ BIN
++ ASCII
+
+v0.5
+----
+
++ Caesar
++ Atbash
++ Bacon
++ Reverse
+
+v0.1-v0.4
+---------
+
+Django app.
