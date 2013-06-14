@@ -17,13 +17,13 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': rel('master.db'),
-#        # The following settings are not used with sqlite3:
-#        'USER': '',
-#        'PASSWORD': '',
-#        'HOST': '',
-#        'PORT': '',
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': rel('master.db'),
+        # The following settings are not used with sqlite3:
+        #'USER': '',
+        #'PASSWORD': '',
+        #'HOST': '',
+        #'PORT': '',
     }
 }
 

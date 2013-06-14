@@ -37,6 +37,6 @@ def decrypter(request):
             return render_to_response('coords.html',
                                       {"coords": coords,
                                        "result":
-                                       sorted(converted.allCoords.items()))})
+                                       sorted(converted.allCoords.items())})
 
     return render(request, "input_form.html")
