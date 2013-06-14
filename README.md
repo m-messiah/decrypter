@@ -1,12 +1,12 @@
-Messiah's home site
+Decrypter
 ===================
 
-Just some experiments with Django.
+Specialized for Night Game DozoR, but useful for another Quests.
 
-decrypter
----------
 
-*   Analyzing texts, determining language (RU, EN), and decrypting them by:
+Analyzing texts, determining language (RU, EN), and decrypting them by:
+-----------------------------------------------------------------------
+
     1. Caesar cypher (ROT-N)
     2. Atbash cypher (A=Z, B=Y..)
     3. Bacon cypher (AAABABA)
@@ -15,9 +15,12 @@ decrypter
     6. Morse (ru, en, and replacing dots by tirets)
     7. HEX to text
     8. BIN to text
-    9. ASCII codes to text.
+    9. ASCII codes to text
+    10. Position in alphabet
 
-*   Converting coordinates.
+Converting coordinates.
+-----------------------
+
     * Degrees, Minutes, Seconds
     * Degrees, Minutes
     * Degrees
