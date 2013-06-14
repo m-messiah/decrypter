@@ -29,7 +29,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["messiah.dlinkddns.com", "messiah-netbook", "localhost", "decrypter.herokuapp.com"]
+ALLOWED_HOSTS = ["localhost", "decrypter.herokuapp.com", "decrypter.tk"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -131,10 +131,10 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    "django.contrib.admin",
-    "django.contrib.auth",
+    #"django.contrib.admin",
+    #"django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.flatpages",
+    #"django.contrib.flatpages",
     "django.contrib.redirects",
     "django.contrib.sessions",
     "django.contrib.sites",
