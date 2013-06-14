@@ -9,8 +9,10 @@ def caesar(encrypted):
     encrypted = u"{}".format(encrypted).lower()
     if search(r"[a-z]", encrypted):
         abc = ENG
-    else:
+    elif search(ur"[а-яё]", encrypted):
         abc = RUS
+    else:
+        return "", ""
 
     decrypted = []
     for rot in range(1, len(abc)):
@@ -28,8 +30,10 @@ def atbash(encrypted):
     encrypted = u"{}".format(encrypted).lower()
     if search(r"[a-z]", encrypted):
         abc = ENG
-    else:
+    elif search(ur"[а-яё]", encrypted):
         abc = RUS
+    else:
+        return "", ""
     key = abc[::-1]
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
     return (u"<abbr title=\"A=Z B=Y...Y=B,Z=A\"><i class=\"icon-retweet\"></i>"
