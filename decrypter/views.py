@@ -12,10 +12,6 @@ import cryptoanalyzis
 import coordinates
 
 
-def main_page(request):
-    return render(request, 'index.html')
-
-
 def decrypter(request):
     if 'encrypted' in request.POST and request.POST['encrypted']:
         encrypted = request.POST['encrypted']
@@ -39,6 +35,8 @@ def decrypter(request):
             return render_to_response('coords.html',
                                       {"coords": coords,
                                        "result":
-                                       sorted(converted.allCoords.items())})
+                                       sorted(filter(lambda x: x,
+                                                     converted.allCoords
+                                                     .items()))})
 
     return render(request, "input_form.html")
