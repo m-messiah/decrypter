@@ -12,6 +12,10 @@ import cryptoanalyzis
 import coordinates
 
 
+def about(request):
+    return render(request, "about.html")
+
+
 def decrypter(request):
     if 'encrypted' in request.POST and request.POST['encrypted']:
         encrypted = request.POST['encrypted']

@@ -10,6 +10,7 @@ urlpatterns = patterns(
         'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
     url(r'^$', views.decrypter),
+    url(r'^about/$', views.about),
     url(r'^robots\.txt$',
         TemplateView.as_view(template_name='robots.txt',
                              content_type='text/plain')),
