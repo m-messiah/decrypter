@@ -23,7 +23,9 @@ def decrypter(request):
                 continue
         return render_to_response('answer.html',
                                   {"encrypted": request.POST['encrypted'],
-                                   "decrypted": dict(decrypted),
+                                   "decrypted": sorted(filter(lambda x:
+                                                              len(x[0]) > 0,
+                                                              decrypted))
                                    })
     elif 'coordinates' in request.POST and request.POST['coordinates']:
         coords = request.POST['coordinates']
@@ -35,8 +37,6 @@ def decrypter(request):
             return render_to_response('coords.html',
                                       {"coords": coords,
                                        "result":
-                                       sorted(filter(lambda x: x,
-                                                     converted.allCoords
-                                                     .items()))})
+                                       sorted(converted.allCoords.items()))})
 
     return render(request, "input_form.html")

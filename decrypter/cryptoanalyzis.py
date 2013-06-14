@@ -95,28 +95,28 @@ def morse(encrypted):
     letters.update(en)
     table = []
     result = decode(encrypted)
-    if not match(r"_*", result):
+    if not match(ur"^_*$", result):
         table.append(u"<tr><th>ENG</th><td>{}</td></tr>".format(
             result))
     result = decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
                                                    ord(u'-'): ord(u'.')}
                                                   ).split())
-    if not match(r"_*", result):
+    if not match(ur"^_*$", result):
         table.append(u"<tr><th>ENG rev</th><td>{}</td></tr>".format(
             result))
     letters = signs
     letters.update(ru)
-    result = decode(ecrypted)
-    if not match(r"_*", result):
+    result = decode(encrypted)
+    if not match(ur"^_*$", result):
         table.append(u"<tr><th>RUS</th><td>{}</td></tr>".format(
             result))
     result = decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
                                                    ord(u'-'): ord(u'.')}
                                                   ).split())
-    if not match(r"_*", result):
+    if not match(ur"^_*$", result):
         table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>".format(
             result))
-    if table:
+    if len(table) > 0:
         return ("<abbr>Morse</abbr>",
                 u"<table class=\"table-bordered table-stripped\">{}</table>"
                 .format("".join(table)))
@@ -139,7 +139,10 @@ def from_ascii(encrypted):
 
 
 def from_position(encrypted):
-    positions = map(int, encrypted.split())
+    try:
+        positions = map(int, encrypted.split())
+    except ValueError:
+        return "", ""
 
     try:
         rus = map(lambda i: RUS[(i - 1) % 33], positions)
@@ -186,7 +189,7 @@ def bacon(encrypted):
     for i in range(len(encrypted) / 5):
         plaintext.append(bacondict.get(encrypted[i * 5:i * 5 + 5], '_'))
     plaintext = u"".join(plaintext)
-    if not match(r"_*", plaintext):
+    if not match(ur"_*", plaintext):
         return "<abbr title=\"AAABBBABAA\">Bacon</abbr>", plaintext
     else:
         return "", ""
