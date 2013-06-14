@@ -19,6 +19,7 @@ def about(request):
 def decrypter(request):
     if 'encrypted' in request.POST and request.POST['encrypted']:
         encrypted = request.POST['encrypted']
+        print "Encrypted: {}".format(encrypted)
         decrypted = []
         for func in sorted(cryptoanalyzis.functions):
             try:
@@ -33,6 +34,7 @@ def decrypter(request):
                                    })
     elif 'coordinates' in request.POST and request.POST['coordinates']:
         coords = request.POST['coordinates']
+        print "Coordinates: {}".format(coords)
         try:
             converted = coordinates.Coordinates(coords)
         except:
