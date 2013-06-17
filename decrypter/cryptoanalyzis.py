@@ -2,12 +2,14 @@
 __author__ = 'Messiah'
 RUS = u"абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 ENG = "abcdefghijklmnopqrstuvwxyz"
-from re import search, sub, match
+from re import search, sub, match, findall, MULTILINE, DOTALL
+
+import requests
 
 
 def caesar(encrypted):
-    encrypted = u"{}".format(encrypted).lower()
-    if search(r"[a-z]", encrypted):
+    encrypted = unicode(encrypted).lower()
+    if search(ur"[a-z]", encrypted):
         abc = ENG
     elif search(ur"[а-яё]", encrypted):
         abc = RUS
@@ -20,15 +22,15 @@ def caesar(encrypted):
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
         decrypted.append(u"<tr><th>ROT{}</th><td>{}</td></tr>"
                          .format(rot, encrypted.translate(trans)))
-    return ("<abbr title=\"Cyclic shift\"><i class=\"icon-step-forward\"></i>"
-            " Caesar</abbrr>",
+    return (u"<abbr title=\"Cyclic shift\"><i class=\"icon-step-forward\"></i>"
+            u" Caesar</abbr>",
             u"<table class=\"table-bordered table-stripped\">{}</table>"
-            .format("".join(decrypted)))
+            .format(u"".join(decrypted)))
 
 
 def atbash(encrypted):
-    encrypted = u"{}".format(encrypted).lower()
-    if search(r"[a-z]", encrypted):
+    encrypted = unicode(encrypted).lower()
+    if search(ur"[a-z]", encrypted):
         abc = ENG
     elif search(ur"[а-яё]", encrypted):
         abc = RUS
@@ -37,27 +39,27 @@ def atbash(encrypted):
     key = abc[::-1]
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
     return (u"<abbr title=\"A=Z B=Y...Y=B,Z=A\"><i class=\"icon-retweet\"></i>"
-            " Atbash</abbr>",
+            u" Atbash</abbr>",
             u"<table class=\"table-bordered table-stripped\">{}</table>"
             .format(encrypted.translate(trans)))
 
 
 def reverse(encrypted):
     return (u"<i class=\"icon-chevron-left\"></i>"
-            " Reversed text", encrypted[::-1])
+            u" Reversed text", encrypted[::-1])
 
 
 def keymap(encrypted):
-    encrypted = u"{}".format(encrypted)
+    encrypted = unicode(encrypted)
     key = (u"qwertyuiop[]asdfghjkl;'\<zxcvbnm,./`1234567890-="
            u"~!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKL:\"|>ZXCVBNM<>?")
     abc = (u"йцукенгшщзхъфывапролджэ\/ячсмитьбю.ё1234567890-="
            u"Ё!\"№;%:?*()_+ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ/|ЯЧСМИТЬБЮ,")
-    if search(r"[a-z]", encrypted):
+    if search(ur"[a-z]", encrypted):
         abc, key = key, abc
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-    return ("<i class=\"icon-globe\"></i>"
-            " Wrong Keymap", u"{}".format(encrypted.translate(trans)))
+    return (u"<i class=\"icon-globe\"></i>"
+            u" Wrong Keymap", u"{}".format(encrypted.translate(trans)))
 
 
 def morse(encrypted):
@@ -84,11 +86,11 @@ def morse(encrypted):
           u"-..": u'Д',  u".---": u'Й',  u".--.": u'П',  u"--": u'М',
           u"-.": u'Н',  u"....": u'Х',  u"...-": u'Ж'}
 
-    encrypted = u"{}".format(encrypted).split()
+    encrypted = unicode(encrypted).split()
 
-    def decode(input):
+    def decode(text):
         result = []
-        for c in input:
+        for c in text:
             try:
                 result.append(letters[c])
             except KeyError:
@@ -100,45 +102,47 @@ def morse(encrypted):
     table = []
     result = decode(encrypted)
     if not match(ur"^_*$", result):
-        table.append(u"<tr><th>ENG</th><td>{}</td></tr>".format(
-            result))
-    result = decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
-                                                   ord(u'-'): ord(u'.')}
-                                                  ).split())
+        table.append(u"<tr><th>ENG</th><td>{}</td></tr>"
+                     .format(result))
+    result = decode(" ".join(encrypted)
+                    .translate({ord(u'.'): ord(u'-'),
+                                ord(u'-'): ord(u'.')})
+                    .split())
     if not match(ur"^_*$", result):
-        table.append(u"<tr><th>ENG rev</th><td>{}</td></tr>".format(
-            result))
+        table.append(u"<tr><th>ENG rev</th><td>{}</td></tr>"
+                     .format(result))
     letters = signs
     letters.update(ru)
     result = decode(encrypted)
     if not match(ur"^_*$", result):
-        table.append(u"<tr><th>RUS</th><td>{}</td></tr>".format(
-            result))
-    result = decode(" ".join(encrypted).translate({ord(u'.'): ord(u'-'),
-                                                   ord(u'-'): ord(u'.')}
-                                                  ).split())
+        table.append(u"<tr><th>RUS</th><td>{}</td></tr>"
+                     .format(result))
+    result = decode(" ".join(encrypted)
+                    .translate({ord(u'.'): ord(u'-'),
+                                ord(u'-'): ord(u'.')})
+                    .split())
     if not match(ur"^_*$", result):
-        table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>".format(
-            result))
+        table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>"
+                     .format(result))
     if len(table) > 0:
-        return ("<abbr>Morse</abbr>",
+        return (u"<abbr>Morse</abbr>",
                 u"<table class=\"table-bordered table-stripped\">{}</table>"
-                .format("".join(table)))
+                .format(u"".join(table)))
     else:
         return "", ""
 
 
 def from_hex(encrypted):
     try:
-        return "From HEX", u"".join(encrypted.split()).decode("hex")
-    except:
+        return u"From HEX", u"".join(encrypted.split()).decode("hex")
+    except ValueError:
         return "", ""
 
 
 def from_ascii(encrypted):
     try:
-        return "From ASCII", u"".join([chr(int(i)) for i in encrypted.split()])
-    except:
+        return u"From ASCII", u"".join([chr(int(i)) for i in encrypted.split()])
+    except ValueError:
         return "", ""
 
 
@@ -172,13 +176,17 @@ def from_position(encrypted):
 def from_binary(encrypted):
     import binascii
     try:
-        return ("From BIN",
+        return (u"From BIN",
                 binascii.unhexlify("%x" % int("0b{}".format(encrypted), 2)))
-    except:
+    except ValueError:
         return "", ""
 
 
 def bacon(encrypted):
+    """
+    Bacon cipher (http://www.cs.ucf.edu/~gworley/files/baconian_cipher.txt)
+    :param encrypted:
+    """
     bacondict = {}
     plaintext = []
 
@@ -194,9 +202,88 @@ def bacon(encrypted):
         plaintext.append(bacondict.get(encrypted[i * 5:i * 5 + 5], '_'))
     plaintext = u"".join(plaintext)
     if not match(ur"_*", plaintext):
-        return "<abbr title=\"AAABBBABAA\">Bacon</abbr>", plaintext
+        return u"<abbr title=\"AAABBBABAA\">Bacon</abbr>", plaintext
     else:
         return "", ""
+
+
+def decapsulate(encrypted):
+    """
+    Decapsulate from text only:
+        - english letters
+        - russian letters
+        - digits
+        - english capital letters
+        - russian capital letters
+    :param encrypted:
+    """
+    table = [u"<table class=\"table table-bordered\">"]
+    encrypted = unicode(encrypted)
+    eng = findall("[A-Za-z]", encrypted)
+    if len(eng) > 0:
+        table.append(u"<tr><th>ENG letters:</th><td>{}</td></tr>"
+                     .format(u" ".join(eng)))
+    rus = findall(u"[а-яёФ-ЯЁ]", encrypted)
+    if len(rus) > 0:
+        table.append(u"<tr><th>RUS letters:</th><td>{}</td></tr>"
+                     .format(u" ".join(rus)))
+    enCap = findall("[A-Z]", encrypted)
+    if len(enCap) > 0:
+        table.append(u"<tr><th>EN Capital:</th><td>{}</td></tr>"
+                     .format(u" ".join(enCap)))
+    ruCap = findall(u"[А-ЯЁ]", encrypted)
+    if len(ruCap) > 0:
+        table.append(u"<tr><th>RUS Capital:</th><td>{}</td></tr>"
+                     .format(u" ".join(ruCap)))
+    digits = findall(u"[0-9]", encrypted)
+    if len(digits) > 0:
+        table.append(u"<tr><th>Digits:</th><td>{}</td></tr>"
+                     .format(u" ".join(digits)))
+    table.append(u"</table>")
+    if len(table) > 2:
+        return u"Decapsulated", u"".join(table)
+    else:
+        return "", ""
+
+
+def anagram(encrypted):
+    """
+    Do the anagram search.
+    Russian on 4maf.ru (thanks to authors)
+    English on wordsmith.org (thanks, community!)
+    :param encrypted:
+    """
+    encrypted = unicode(encrypted)
+    if match(ur"[А-Яа-яёЁ]+", encrypted):
+        payload = {
+            "sourceword": encrypted,
+            "ModType": 1,
+            "minf": 0
+        }
+        try:
+            r = requests.post("http://4maf.ru/anagram_ajax.php",
+                              data=payload)
+            return (u"Anagram",
+                    r.text)
+        except:
+            pass
+    elif match(r"[A-Za-z]+", encrypted):
+        payload = {
+            "anagram": encrypted,
+            "t": 50,
+            "a": "n"
+        }
+        try:
+            r = requests.get("http://www.wordsmith.org/anagram/anagram.cgi",
+                             params=payload)
+            result = search(r"\d+ found\. Displaying all:\s*?</b>"
+                            "<br>(.*?)<bottomlinks>",
+                            r.text, MULTILINE | DOTALL)
+            return u"Anagram", result.group(1)
+        except:
+            pass
+    return "", ""
+
 
 functions = [
     caesar,
@@ -209,6 +296,8 @@ functions = [
     bacon,
     keymap,
     reverse,
+    decapsulate,
+    anagram,
 ]
 
 

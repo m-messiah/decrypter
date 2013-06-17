@@ -30,6 +30,12 @@ Converting coordinates.
 RELEASES
 ========
 
+v1.1
+----
+
+* Decapsulating english, russian, capital letters and digits from text.
+* Anagrams for english and russian words (Thanks to 4maf.ru and wordsmith.org)
+
 v1.0 (RELEASE)
 ----
 
