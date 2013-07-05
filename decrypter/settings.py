@@ -6,8 +6,8 @@ def rel(*x):
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), *x)
 
 
-#DEBUG = False
-DEBUG = True
+DEBUG = False
+#DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
