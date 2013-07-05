@@ -22,7 +22,7 @@ def decrypter(request):
         try:
             print "[INPUT]: {}".format(encrypted)
         except UnicodeEncodeError:
-            print "[INPUT]: {}".format(" ".join(map(ord, encrypted)))
+            print "[INPUT]: {}".format(" ".join(map(str, map(ord, encrypted))))
         decrypted = []
         for func in sorted(cryptoanalyzis.functions):
             try:
@@ -40,7 +40,7 @@ def decrypter(request):
         try:
             print "[INPUT]: {}".format(coords)
         except UnicodeEncodeError:
-            print "[INPUT]: {}".format(" ".join(map(ord, coords)))
+            print "[INPUT]: {}".format(" ".join(map(str, map(ord, coords))))
         try:
             converted = coordinates.Coordinates(coords)
         except:
