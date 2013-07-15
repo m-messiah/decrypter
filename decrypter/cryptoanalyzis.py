@@ -146,6 +146,13 @@ def from_ascii(encrypted):
         return "", ""
 
 
+def from_base64(encrypted):
+    try:
+        return u"From Base64", u"".format(encrypted.decode("base64"))
+    except ValueError:
+        return "", ""
+
+
 def from_position(encrypted):
     try:
         positions = map(int, encrypted.split())
@@ -292,6 +299,7 @@ functions = [
     from_hex,
     from_ascii,
     from_binary,
+    from_base64,
     from_position,
     bacon,
     keymap,
