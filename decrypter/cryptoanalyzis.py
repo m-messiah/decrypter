@@ -148,7 +148,7 @@ def from_ascii(encrypted):
 
 def from_base64(encrypted):
     try:
-        return u"From Base64", u"".format(encrypted.decode("base64"))
+        return u"From Base64", encrypted.decode("base64")
     except ValueError:
         return "", ""
 
