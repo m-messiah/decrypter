@@ -310,7 +310,7 @@ functions = [
 
 
 def main():
-    pass
+    print u"This is not the function you are looking for!"
 
 
 if __name__ == '__main__':

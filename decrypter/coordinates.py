@@ -30,8 +30,10 @@ class Coordinates(object):
             m = abs((lat - d) * 60)
             if i == 0:
                 l = "N" if lat > 0 else "S"
-            if i > 0:
+            elif i > 0:
                 l = "E" if lat > 0 else "W"
+            else:
+                l = "Impossible shit happens"
             result.append("{}°{}\'{}".format(abs(d), m, l))
         return "{}, {}".format(result[0], result[1])
 
@@ -45,8 +47,10 @@ class Coordinates(object):
             s = round((ms - m) * 60, 2)
             if i == 0:
                 l = "N" if lat > 0 else "S"
-            if i > 0:
+            elif i > 0:
                 l = "E" if lat > 0 else "W"
+            else:
+                l = "Impossible shit happens"
             result.append("{}°{}\'{}\"{}".format(abs(d), m, s, l))
         return "{}, {}".format(result[0], result[1])
 
@@ -89,7 +93,7 @@ class Coordinates(object):
     def dms(self, i):
         d, m, s = self.coords[i]
         lat = ["N", "E"]
-        return "{}°{}\'{}\"{}".format(d, m, s, lat[i])
+        return "{}°{}\'{}\"{}".format(d, m, s, lat[i % 2])
 
     def mindec(self, i):
         d, m = self.coords[i]
@@ -112,11 +116,10 @@ class Coordinates(object):
         else:
             self.allCoords["BadInput"] = 0
         degDec = self.allCoords["DegDec"].split(",")
-        links = []
-        links.append("<a href=\"http://maps.google.com/maps?"
-                     "q=loc:{},{}&z=15\" class='btn'"
-                     "target='_blank'>GoogleMaps</a>"
-                     .format(degDec[0], degDec[1].strip()))
+        links = ["<a href=\"http://maps.google.com/maps?"
+                 "q=loc:{},{}&z=15\" class='btn'"
+                 "target='_blank'>GoogleMaps</a>"
+                 .format(degDec[0], degDec[1].strip())]
         self.allCoords["~ Maps"] = " ".join(links)
 
     def __str__(self):
