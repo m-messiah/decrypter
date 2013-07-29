@@ -4,9 +4,7 @@
 
 {% block content %}
 <button class="btn" type="button" onclick="location.href='/';">Return to the input page</button>
-<br><br>
-<table><tr><th>Your input</th><td>&nbsp;&nbsp;{{ coords }}</td></tr></table>
-<br>
+<table class="table"><tr><th>Your input</th><td>&nbsp;&nbsp;{{ coords }}</td></tr></table>
 <table class="table table-bordered table-stripped">
     {% for typeCoords,value in result %}
     <tr>
