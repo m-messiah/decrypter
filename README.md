@@ -30,6 +30,12 @@ Converting coordinates.
 RELEASES
 ========
 
+v1.2
+----
+
+Updated to Twitter Bootstrap 3 RC1.
+Restyled to userfriendly interface by Miocene.
+
 v1.1
 ----
 

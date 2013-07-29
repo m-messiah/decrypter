@@ -7,11 +7,11 @@
 <h3>Enter your strange text to the field below</h3>
 <form action="/" method="post">
     {% csrf_token %}
-    <textarea cols=40 rows=5 name="encrypted" placeholder="encrypted"></textarea>
+    <textarea rows=5 name="encrypted" placeholder="encrypted" tabindex="1"></textarea>
 <h3>or enter coordinates here.</h3>
-    <input type="text" name="coordinates" placeholder="coordinates">
+    <textarea rows=1 name="coordinates" placeholder="coordinates"></textarea>
 <br>
-    <button class="btn btn-primary" style="width:100%" type="submit"><i class="glyphicon glyphicon-fire glyphicon-white"></i> Analyze!</button>
+    <button class="btn btn-primary" style="width:100%" type="submit" tabindex="2"><i class="glyphicon glyphicon-fire glyphicon-white"></i> Analyze!</button>
 </form>
 </div>
 {% endblock %}
