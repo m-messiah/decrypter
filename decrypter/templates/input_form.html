@@ -3,7 +3,7 @@
 {% block title %}Decrypter{% endblock %}
 
 {% block content %}
-<div style="margin-left:3%; width: 30%;">
+<div>
 <h3>Enter your strange text to the field below</h3>
 <form action="/" method="post">
     {% csrf_token %}
@@ -11,7 +11,7 @@
 <h3>or enter coordinates here.</h3>
     <input type="text" name="coordinates" placeholder="coordinates">
 <br>
-    <button class="btn btn-primary pull-right" type="submit"><i class="glyphicon glyphicon-fire glyphicon-white"></i> Analyze!</button>
+    <button class="btn btn-primary" style="width:100%" type="submit"><i class="glyphicon glyphicon-fire glyphicon-white"></i> Analyze!</button>
 </form>
 </div>
 {% endblock %}
