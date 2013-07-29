@@ -22,9 +22,10 @@ def caesar(encrypted):
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
         decrypted.append(u"<tr><th>ROT{}</th><td>{}</td></tr>"
                          .format(rot, encrypted.translate(trans)))
-    return (u"<abbr title=\"Cyclic shift\"><i class=\"icon-step-forward\"></i>"
+    return (u"<abbr title=\"Cyclic shift\">"
+            u"<i class=\"glyphicon glyphicon-step-forward\"></i>"
             u" Caesar</abbr>",
-            u"<table class=\"table-bordered table-stripped\">{}</table>"
+            u"<table class=\"table table-bordered table-stripped\">{}</table>"
             .format(u"".join(decrypted)))
 
 
@@ -38,14 +39,13 @@ def atbash(encrypted):
         return "", ""
     key = abc[::-1]
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-    return (u"<abbr title=\"A=Z B=Y...Y=B,Z=A\"><i class=\"icon-retweet\"></i>"
-            u" Atbash</abbr>",
-            u"<table class=\"table-bordered table-stripped\">{}</table>"
-            .format(encrypted.translate(trans)))
+    return (u"<abbr title=\"A=Z B=Y...Y=B,Z=A\">"
+            u"<i class=\"glyphicon glyphicon-retweet\"></i>"
+            u" Atbash</abbr>", u"{}".format(encrypted.translate(trans)))
 
 
 def reverse(encrypted):
-    return (u"<i class=\"icon-chevron-left\"></i>"
+    return (u"<i class=\"glyphicon glyphicon-chevron-left\"></i>"
             u" Reversed text", encrypted[::-1])
 
 
@@ -58,7 +58,7 @@ def keymap(encrypted):
     if search(ur"[a-z]", encrypted):
         abc, key = key, abc
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-    return (u"<i class=\"icon-globe\"></i>"
+    return (u"<i class=\"glyphicon glyphicon-globe\"></i>"
             u" Wrong Keymap", u"{}".format(encrypted.translate(trans)))
 
 
@@ -126,8 +126,8 @@ def morse(encrypted):
                      .format(result))
     if len(table) > 0:
         return (u"<abbr>Morse</abbr>",
-                u"<table class=\"table-bordered table-stripped\">{}</table>"
-                .format(u"".join(table)))
+                u"<table class=\"table table-bordered table-stripped\">"
+                u"{}</table>".format(u"".join(table)))
     else:
         return "", ""
 
@@ -141,7 +141,8 @@ def from_hex(encrypted):
 
 def from_ascii(encrypted):
     try:
-        return u"From ASCII", u"".join([chr(int(i)) for i in encrypted.split()])
+        return (u"From ASCII",
+                u"".join([chr(int(i)) for i in encrypted.split()]))
     except ValueError:
         return "", ""
 
