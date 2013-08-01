@@ -11,20 +11,20 @@ class Coordinates(object):
 
     def parse(self, coords):
         coords = coords.split(",")
-        max = 0
+        typeCoord = 0
         result = [0, [[], []]]
-        for lat, i in zip(coords, range(len(coords))):
+        for lat, i in enumerate(coords):
             lat = lat.split()
             count = len(lat)
-            if count > max:
-                max = count
+            if count > typeCoord:
+                typeCoord = count
             result[1][i] = lat
-        result[0] = self.typeCoords[max]
+        result[0] = self.typeCoords[typeCoord]
         return result
 
     def degDec2MinDec(self):
         result = []
-        for lat, i in zip(self.coords, range(2)):
+        for lat, i in enumerate(self.coords):
             lat = float(lat[0])
             d = int(lat)
             m = abs((lat - d) * 60)
@@ -39,7 +39,7 @@ class Coordinates(object):
 
     def degDec2DMS(self):
         result = []
-        for lat, i in zip(self.coords, range(2)):
+        for lat, i in enumerate(self.coords):
             lat = float(lat[0])
             d = int(lat)
             ms = abs((lat - d) * 60)
