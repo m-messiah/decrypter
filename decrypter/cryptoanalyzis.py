@@ -117,7 +117,7 @@ def morse(encrypted):
     if not match(ur"^_*$", result):
         table.append(u"<tr><th>RUS</th><td>{}</td></tr>"
                      .format(result))
-    result = decode(" ".join(encrypted)
+    result = decode(u" ".join(encrypted)
                     .translate({ord(u'.'): ord(u'-'),
                                 ord(u'-'): ord(u'.')})
                     .split())
@@ -142,7 +142,7 @@ def from_hex(encrypted):
 def from_ascii(encrypted):
     try:
         return (u"From ASCII",
-                u"".join([chr(int(i)) for i in encrypted.split()]))
+                u"".join(map(chr, map(int, encrypted.split()))))
     except ValueError:
         return "", ""
 
@@ -231,7 +231,7 @@ def decapsulate(encrypted):
     if len(eng) > 0:
         table.append(u"<tr><th>ENG letters:</th><td>{}</td></tr>"
                      .format(u" ".join(eng)))
-    rus = findall(u"[а-яёФ-ЯЁ]", encrypted)
+    rus = findall(u"[а-яёА-ЯЁ]", encrypted)
     if len(rus) > 0:
         table.append(u"<tr><th>RUS letters:</th><td>{}</td></tr>"
                      .format(u" ".join(rus)))
