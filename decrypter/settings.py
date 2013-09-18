@@ -91,8 +91,8 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-#from secret import SECRET_KEY
-SECRET_KEY = '38ra2tgejxgg93k#kv(2f7m&6ojz7u#20q#as3-$j=b$4%b@^f'
+import random
+SECRET_KEY = "".join([chr(random.randint(16, 128)) for i in range(32)])
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
