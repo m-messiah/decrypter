@@ -24,16 +24,16 @@ def decrypter(request):
         except UnicodeEncodeError:
             print "[INPUT]: {}".format(" ".join(map(str, map(ord, encrypted))))
         decrypted = []
-        for func in sorted(cryptoanalyzis.functions):
+        for func in cryptoanalyzis.functions:
             try:
                 decrypted.append(func(encrypted))
             except:
                 continue
         return render_to_response('answer.html',
                                   {"encrypted": request.POST['encrypted'],
-                                   "decrypted": sorted(filter(lambda x:
-                                                              len(x[0]) > 0,
-                                                              decrypted))
+                                   "decrypted": filter(lambda x:
+                                                       len(x[0]) > 0,
+                                                       decrypted)
                                    })
     elif 'coordinates' in request.POST and request.POST['coordinates']:
         coords = request.POST['coordinates']

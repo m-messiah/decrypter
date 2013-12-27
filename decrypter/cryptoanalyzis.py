@@ -295,19 +295,19 @@ def anagram(encrypted):
 
 
 functions = [
-    atbash,
     morse,
     from_hex,
     from_ascii,
     from_binary,
     from_base64,
     from_position,
-    bacon,
     keymap,
     reverse,
     decapsulate,
     anagram,
+    bacon,
     caesar,
+    atbash,
 ]
 
 
