@@ -1,8 +1,8 @@
-Django==1.5.1
-argparse==1.2.1
-distribute==0.6.34
-dj-database-url==0.2.1
-gunicorn==0.17.4
-psycopg2==2.5
-wsgiref==0.1.2
-requests==1.2.3
+Django
+argparse
+distribute
+dj-database-url
+gunicorn
+psycopg2
+wsgiref
+requests

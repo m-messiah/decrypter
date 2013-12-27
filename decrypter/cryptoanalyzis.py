@@ -2,6 +2,13 @@
 __author__ = 'Messiah'
 RUS = u"абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 ENG = "abcdefghijklmnopqrstuvwxyz"
+BACONDICT = {}
+for letter_counter in range(26):
+    tmp = bin(letter_counter)[2:].zfill(5)
+    tmp = tmp.replace('0', 'a')
+    tmp = tmp.replace('1', 'b')
+    BACONDICT[tmp] = chr(65 + letter_counter)
+
 from re import search, sub, match, findall, MULTILINE, DOTALL
 
 import requests
@@ -195,19 +202,13 @@ def bacon(encrypted):
     Bacon cipher (http://www.cs.ucf.edu/~gworley/files/baconian_cipher.txt)
     :param encrypted:
     """
-    bacondict = {}
     plaintext = []
 
     encrypted = encrypted.lower()
-    encrypted = sub("[\W\d]", "", encrypted.strip())
-    for i in range(26):
-        tmp = bin(i)[2:].zfill(5)
-        tmp = tmp.replace('0', 'a')
-        tmp = tmp.replace('1', 'b')
-        bacondict[tmp] = chr(65 + i)
+    encrypted = sub("[^AB]", "", encrypted.strip())
 
     for i in range(len(encrypted) / 5):
-        plaintext.append(bacondict.get(encrypted[i * 5:i * 5 + 5], '_'))
+        plaintext.append(BACONDICT.get(encrypted[i * 5:i * 5 + 5], '_'))
     plaintext = u"".join(plaintext)
     if not match(ur"_*", plaintext):
         return u"<abbr title=\"AAABBBABAA\">Bacon</abbr>", plaintext
@@ -294,7 +295,6 @@ def anagram(encrypted):
 
 
 functions = [
-    caesar,
     atbash,
     morse,
     from_hex,
@@ -307,6 +307,7 @@ functions = [
     reverse,
     decapsulate,
     anagram,
+    caesar,
 ]
 
 
