@@ -107,30 +107,30 @@ def morse(encrypted):
     letters = signs
     letters.update(en)
     table = []
-    result = decode(encrypted)
-    if not match(ur"^_*$", result):
+    plain_text = decode(encrypted)
+    if not match(ur"^_*$", plain_text):
         table.append(u"<tr><th>ENG</th><td>{}</td></tr>"
-                     .format(result))
-    result = decode(" ".join(encrypted)
-                    .translate({ord(u'.'): ord(u'-'),
-                                ord(u'-'): ord(u'.')})
-                    .split())
-    if not match(ur"^_*$", result):
+                     .format(plain_text))
+    plain_text = decode(" ".join(encrypted)
+                        .translate({ord(u'.'): ord(u'-'),
+                                    ord(u'-'): ord(u'.')})
+                        .split())
+    if not match(ur"^_*$", plain_text):
         table.append(u"<tr><th>ENG rev</th><td>{}</td></tr>"
-                     .format(result))
+                     .format(plain_text))
     letters = signs
     letters.update(ru)
-    result = decode(encrypted)
-    if not match(ur"^_*$", result):
+    plain_text = decode(encrypted)
+    if not match(ur"^_*$", plain_text):
         table.append(u"<tr><th>RUS</th><td>{}</td></tr>"
-                     .format(result))
-    result = decode(u" ".join(encrypted)
-                    .translate({ord(u'.'): ord(u'-'),
-                                ord(u'-'): ord(u'.')})
-                    .split())
-    if not match(ur"^_*$", result):
+                     .format(plain_text))
+    plain_text = decode(u" ".join(encrypted)
+                        .translate({ord(u'.'): ord(u'-'),
+                                    ord(u'-'): ord(u'.')})
+                        .split())
+    if not match(ur"^_*$", plain_text):
         table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>"
-                     .format(result))
+                     .format(plain_text))
     if len(table) > 0:
         return (u"<abbr>Morse</abbr>",
                 u"<table class=\"table table-bordered table-stripped\">"
@@ -236,14 +236,14 @@ def decapsulate(encrypted):
     if len(rus) > 0:
         table.append(u"<tr><th>RUS letters:</th><td>{}</td></tr>"
                      .format(u" ".join(rus)))
-    enCap = findall("[A-Z]", encrypted)
-    if len(enCap) > 0:
+    en_cap = findall("[A-Z]", encrypted)
+    if len(en_cap) > 0:
         table.append(u"<tr><th>EN Capital:</th><td>{}</td></tr>"
-                     .format(u" ".join(enCap)))
-    ruCap = findall(u"[А-ЯЁ]", encrypted)
-    if len(ruCap) > 0:
+                     .format(u" ".join(en_cap)))
+    ru_cap = findall(u"[А-ЯЁ]", encrypted)
+    if len(ru_cap) > 0:
         table.append(u"<tr><th>RUS Capital:</th><td>{}</td></tr>"
-                     .format(u" ".join(ruCap)))
+                     .format(u" ".join(ru_cap)))
     digits = findall(u"[0-9]", encrypted)
     if len(digits) > 0:
         table.append(u"<tr><th>Digits:</th><td>{}</td></tr>"

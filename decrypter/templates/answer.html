@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}Decrypted{% endblock %}
-
 {% block content %}
-<button class="btn" type="button" onclick="location.href='/';"><i class="glyphicon glyphicon-home"></i> Return to the input page</button>
 <table class="table"><tr><th>Encrypted text</th><td>{{ encrypted }}</td></tr></table>
 <table class="table table-bordered table-stripped">
     {% for typeCrypto,result in decrypted %}

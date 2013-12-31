@@ -25,16 +25,23 @@ Converting coordinates.
 * Degrees, Minutes
 * Degrees
 
+Show link to maps <img height=48 src="http://img4-1.realsimple.timeinc.net/images/products/googlemaps-logo_300.jpg"
+
 
 
 RELEASES
 ========
 
+v1.3
+----
+
+Speed improvements, bug-fixes, refactoring.
+
 v1.2
 ----
 
 Updated to Twitter Bootstrap 3 RC1.
-Restyled to userfriendly interface by Miocene.
+Restyled to user-friendly interface by Miocene.
 
 v1.1
 ----

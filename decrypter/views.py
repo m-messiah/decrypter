@@ -1,10 +1,5 @@
 # ~*~ coding: utf-8 ~*~
 
-# функция генерирующая 404 страницу
-from django.http import Http404, HttpResponse
-
-# функция отрисовки страницы, принимающая путь до шаблона
-# и данные помещенные в шаблон
 from django.shortcuts import render_to_response
 from django.shortcuts import render
 
@@ -49,6 +44,6 @@ def decrypter(request):
             return render_to_response('coords.html',
                                       {"coords": coords,
                                        "result":
-                                       sorted(converted.allCoords.items())})
+                                       sorted(converted.all_coords.items())})
 
     return render(request, "input_form.html")
