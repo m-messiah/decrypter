@@ -27,7 +27,7 @@ def caesar(encrypted):
     for rot in range(1, len(abc)):
         key = abc[rot:] + abc[:rot]
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-        decrypted.append(u"<tr><td class=\"fat\">ROT{}</td><td>{}</td></tr>"
+        decrypted.append(u"<tr><th>ROT{}</th><td>{}</td></tr>"
                          .format(rot, encrypted.translate(trans)))
     return (u"<abbr title=\"Cyclic shift\">"
             u"Caesar</abbr>",
@@ -105,27 +105,27 @@ def morse(encrypted):
     table = []
     plain_text = decode(encrypted)
     if not match(ur"^_*$", plain_text):
-        table.append(u"<tr><td class=\"fat\">ENG</td><td>{}</td></tr>"
+        table.append(u"<tr><th>ENG</th><td>{}</td></tr>"
                      .format(plain_text))
     plain_text = decode(" ".join(encrypted)
                         .translate({ord(u'.'): ord(u'-'),
                                     ord(u'-'): ord(u'.')})
                         .split())
     if not match(ur"^_*$", plain_text):
-        table.append(u"<tr><td class=\"fat\">ENG rev</td><td>{}</td></tr>"
+        table.append(u"<tr><th>ENG rev</th><td>{}</td></tr>"
                      .format(plain_text))
     letters = signs
     letters.update(ru)
     plain_text = decode(encrypted)
     if not match(ur"^_*$", plain_text):
-        table.append(u"<tr><td class=\"fat\">RUS</td><td>{}</td></tr>"
+        table.append(u"<tr><th>RUS</th><td>{}</td></tr>"
                      .format(plain_text))
     plain_text = decode(u" ".join(encrypted)
                         .translate({ord(u'.'): ord(u'-'),
                                     ord(u'-'): ord(u'.')})
                         .split())
     if not match(ur"^_*$", plain_text):
-        table.append(u"<tr><td class=\"fat\">RUS rev</td><td>{}</td></tr>"
+        table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>"
                      .format(plain_text))
     if len(table) > 0:
         return (u"Morse",
@@ -174,10 +174,10 @@ def from_position(encrypted):
         eng = u""
     table = [u"<table class=\"pure-table pure-table-horizontal\">"]
     if rus:
-        table.append(u"<tr><td class=\"fat\">RUS</td>"
+        table.append(u"<tr><th>RUS</th>"
                      u"<td>{}</td></tr>".format("".join(rus)))
     if eng:
-        table.append(u"<tr><td class=\"fat\">ENG</td>"
+        table.append(u"<tr><th>ENG</th>"
                      u"<td>{}</td></tr>".format("".join(eng)))
     table.append(u"</table>")
     if len(table) > 2:
@@ -228,23 +228,23 @@ def decapsulate(encrypted):
     encrypted = unicode(encrypted)
     eng = findall("[A-Za-z]", encrypted)
     if len(eng) > 0:
-        table.append(u"<tr><td class=\"fat\">ENG letters:</td>"
+        table.append(u"<tr><th>ENG letters:</th>"
                      u"<td>{}</td></tr>".format(u" ".join(eng)))
     rus = findall(u"[а-яёА-ЯЁ]", encrypted)
     if len(rus) > 0:
-        table.append(u"<tr><td class=\"fat\">RUS letters:</td>"
+        table.append(u"<tr><th>RUS letters:</th>"
                      u"<td>{}</td></tr>".format(u" ".join(rus)))
     en_cap = findall("[A-Z]", encrypted)
     if len(en_cap) > 0:
-        table.append(u"<tr><td class=\"fat\">EN Capital:</td>"
+        table.append(u"<tr><th>EN Capital:</th>"
                      u"<td>{}</td></tr>".format(u" ".join(en_cap)))
     ru_cap = findall(u"[А-ЯЁ]", encrypted)
     if len(ru_cap) > 0:
-        table.append(u"<tr><td class=\"fat\">RUS Capital:</td>"
+        table.append(u"<tr><th>RUS Capital:</th>"
                      u"<td>{}</td></tr>".format(u" ".join(ru_cap)))
     digits = findall(u"[0-9]", encrypted)
     if len(digits) > 0:
-        table.append(u"<tr><td class=\"fat\">Digits:</td>"
+        table.append(u"<tr><th>Digits:</th>"
                      u"<td>{}</td></tr>".format(u" ".join(digits)))
     table.append(u"</table>")
     if len(table) > 2:
