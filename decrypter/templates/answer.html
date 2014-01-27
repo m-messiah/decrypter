@@ -7,7 +7,7 @@
     {% for typeCrypto,result in decrypted %}
     <tbody>
         <tr>
-            <th>{{ typeCrypto|safe }}</th><td>{{ result|safe }}</td>
+            <td class="thead">{{ typeCrypto|safe }}</td><td>{{ result|safe }}</td>
         </tr>
     </tbody>
     {% endfor %}
