@@ -113,8 +113,7 @@ class Coordinates(object):
         deg_dec = self.all_coords["DegDec"].split(",")
         links = ["<a href=\"http://maps.google.com/maps?"
                  "q=loc:{},{}&z=15\" class='btn'"
-                 "target='_blank'><i class=\"glyphicon glyphicon-globe\"></i>"
-                 "GoogleMaps</a>"
+                 "target='_blank'>GoogleMaps</a>"
                  .format(deg_dec[0], deg_dec[1].strip())]
         self.all_coords["~ Maps"] = " ".join(links)
 

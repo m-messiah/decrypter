@@ -2,12 +2,14 @@
 
 {% block title %}Decrypted{% endblock %}
 {% block content %}
-<table class="pure-table"><tr><th>Encrypted text</th><td>{{ encrypted }}</td></tr></table>
-<table class="pure-table pure-table-bordered pure-table-stripped">
+<table class="pure-table pure-table-horizontal"><tr><th>Encrypted text</th><td>{{ encrypted }}</td></tr></table>
+<table class="pure-table pure-table-bordered">
     {% for typeCrypto,result in decrypted %}
-    <tr>
-        <th>{{ typeCrypto|safe }}</th><td>{{ result|safe }}</td>
-    </tr>
+    <tbody>
+        <tr>
+            <th>{{ typeCrypto|safe }}</th><td>{{ result|safe }}</td>
+        </tr>
+    </tbody>
     {% endfor %}
 </table>
 {% endblock %}

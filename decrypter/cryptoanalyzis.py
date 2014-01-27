@@ -30,7 +30,6 @@ def caesar(encrypted):
         decrypted.append(u"<tr><th>ROT{}</th><td>{}</td></tr>"
                          .format(rot, encrypted.translate(trans)))
     return (u"<abbr title=\"Cyclic shift\">"
-            u"<i class=\"glyphicon glyphicon-step-forward\"></i>"
             u" Caesar</abbr>",
             u"<table class=\"table table-bordered table-stripped\">{}</table>"
             .format(u"".join(decrypted)))
@@ -47,13 +46,11 @@ def atbash(encrypted):
     key = abc[::-1]
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
     return (u"<abbr title=\"A=Z B=Y...Y=B,Z=A\">"
-            u"<i class=\"glyphicon glyphicon-retweet\"></i>"
             u" Atbash</abbr>", u"{}".format(encrypted.translate(trans)))
 
 
 def reverse(encrypted):
-    return (u"<i class=\"glyphicon glyphicon-chevron-left\"></i>"
-            u" Reversed text", encrypted[::-1])
+    return u" Reversed text", encrypted[::-1]
 
 
 def keymap(encrypted):
@@ -65,8 +62,7 @@ def keymap(encrypted):
     if search(ur"[a-z]", encrypted):
         abc, key = key, abc
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-    return (u"<i class=\"glyphicon glyphicon-globe\"></i>"
-            u" Wrong Keymap", u"{}".format(encrypted.translate(trans)))
+    return u" Wrong Keymap", u"{}".format(encrypted.translate(trans))
 
 
 def morse(encrypted):
@@ -133,7 +129,7 @@ def morse(encrypted):
                      .format(plain_text))
     if len(table) > 0:
         return (u"<abbr>Morse</abbr>",
-                u"<table class=\"table table-bordered table-stripped\">"
+                u"<table class=\"pure-table pure-table-bordered\">"
                 u"{}</table>".format(u"".join(table)))
     else:
         return "", ""
@@ -176,7 +172,7 @@ def from_position(encrypted):
         eng = map(lambda i: ENG[(i - 1) % 26], positions)
     except IndexError:
         eng = u""
-    table = [u"<table class=\"table table-stripped\">"]
+    table = [u"<table class=\"pure-table pure-table-horizontal\">"]
     if rus:
         table.append(u"<tr><th>RUS</th><td>{}</td></tr>".format("".join(rus)))
     if eng:
@@ -226,7 +222,7 @@ def decapsulate(encrypted):
         - russian capital letters
     :param encrypted:
     """
-    table = [u"<table class=\"table table-bordered\">"]
+    table = [u"<table class=\"pure-table pure-table-bordered\">"]
     encrypted = unicode(encrypted)
     eng = findall("[A-Za-z]", encrypted)
     if len(eng) > 0:

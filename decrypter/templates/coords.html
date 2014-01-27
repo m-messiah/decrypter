@@ -4,8 +4,8 @@
 
 {% block content %}
 
-<table class="table"><tr><th>Your input</th><td>&nbsp;&nbsp;{{ coords }}</td></tr></table>
-<table class="table table-bordered table-stripped">
+<table class="pure-table pure-table-horizontal"><tr><th>Your input</th><td>&nbsp;&nbsp;{{ coords }}</td></tr></table>
+<table class="pure-table pure-table-bordered">
     {% for typeCoords,value in result %}
     <tr>
         <th>{{ typeCoords }}</th><td>{{ value|safe }}</td>
