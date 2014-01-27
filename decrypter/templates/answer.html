@@ -2,8 +2,8 @@
 
 {% block title %}Decrypted{% endblock %}
 {% block content %}
-<table class="table"><tr><th>Encrypted text</th><td>{{ encrypted }}</td></tr></table>
-<table class="table table-bordered table-stripped">
+<table class="pure-table"><tr><th>Encrypted text</th><td>{{ encrypted }}</td></tr></table>
+<table class="pure-table pure-table-bordered pure-table-stripped">
     {% for typeCrypto,result in decrypted %}
     <tr>
         <th>{{ typeCrypto|safe }}</th><td>{{ result|safe }}</td>

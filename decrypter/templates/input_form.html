@@ -5,13 +5,13 @@
 {% block content %}
 <div>
 <h3>Enter your strange text to the field below</h3>
-<form action="/" method="post">
+<form action="/" method="post" class="pure-form pure-form-stacked">
     {% csrf_token %}
     <textarea class="form-control" rows=5 name="encrypted" placeholder="encrypted" tabindex="1"></textarea>
 <h3>or enter coordinates here.</h3>
     <textarea class="form-control" rows=1 name="coordinates" placeholder="coordinates"></textarea>
 
-    <button class="btn btn-primary" style="width:100%;margin-top:5px;" type="submit" tabindex="2"><i class="glyphicon glyphicon-fire glyphicon-white"></i> Analyze!</button>
+    <button class="pure-button pure-button-primary" style="width:100%;margin-top:5px;" type="submit" tabindex="2"><i class="glyphicon glyphicon-fire glyphicon-white"></i> Analyze!</button>
 </form>
 </div>
 {% endblock %}
