@@ -31,7 +31,7 @@ def caesar(encrypted):
                          .format(rot, encrypted.translate(trans)))
     return (u"<abbr title=\"Cyclic shift\">"
             u"Caesar</abbr>",
-            u"<table class=\"pure-table pure-table-bordered\">{}</table>"
+            u"<table class=\"pure-table pure-table-horizontal\">{}</table>"
             .format(u"".join(decrypted)))
 
 
@@ -129,7 +129,7 @@ def morse(encrypted):
                      .format(plain_text))
     if len(table) > 0:
         return (u"Morse",
-                u"<table class=\"pure-table pure-table-bordered\">"
+                u"<table class=\"pure-table pure-table-horizontal\">"
                 u"{}</table>".format(u"".join(table)))
     else:
         return "", ""
@@ -224,7 +224,7 @@ def decapsulate(encrypted):
         - russian capital letters
     :param encrypted:
     """
-    table = [u"<table class=\"pure-table pure-table-bordered\">"]
+    table = [u"<table class=\"pure-table pure-table-horizontal\">"]
     encrypted = unicode(encrypted)
     eng = findall("[A-Za-z]", encrypted)
     if len(eng) > 0:

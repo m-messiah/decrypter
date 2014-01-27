@@ -3,7 +3,7 @@
 {% block title %}Decrypted{% endblock %}
 {% block content %}
 <table class="pure-table pure-table-horizontal"><tr><th>Encrypted text</th><td>{{ encrypted }}</td></tr></table>
-<table class="pure-table pure-table-bordered">
+<table class="pure-table pure-table-horizontal">
     {% for typeCrypto,result in decrypted %}
     <tbody>
         <tr>

@@ -5,7 +5,7 @@
 {% block content %}
 
 <table class="pure-table pure-table-horizontal"><tr><th>Your input</th><td>&nbsp;&nbsp;{{ coords }}</td></tr></table>
-<table class="pure-table pure-table-bordered">
+<table class="pure-table pure-table-horizontal">
     {% for typeCoords,value in result %}
     <tr>
         <th>{{ typeCoords }}</th><td>{{ value|safe }}</td>
