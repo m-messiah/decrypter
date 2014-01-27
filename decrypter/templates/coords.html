@@ -8,7 +8,7 @@
 <table class="pure-table pure-table-bordered">
     {% for typeCoords,value in result %}
     <tr>
-        <th>{{ typeCoords }}</th><td>{{ value|safe }}</td>
+        <td class="fat">{{ typeCoords }}</td><td>{{ value|safe }}</td>
     </tr>
     {% endfor %}
 </table>
