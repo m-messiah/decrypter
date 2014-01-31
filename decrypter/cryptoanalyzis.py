@@ -9,13 +9,10 @@ for letter_counter in range(26):
     tmp = tmp.replace('1', 'b')
     BACONDICT[tmp] = chr(65 + letter_counter)
 
-from pytrie import SortedStringTrie as Trie
-tree = [Trie(zip(map(lambda x: x.rstrip(), d), range(len(d))))
-        for d in [map(lambda x: x.decode("utf-8"),
-                      open("decrypter/words/en.txt").readlines()),
-                  map(lambda x: x.decode("utf-8"),
-                      open("decrypter/words/ru.txt").readlines())]
-        ]
+dictionary = [set(map(lambda x: x.decode("utf-8").rstrip(),
+                  open("decrypter/words/en.txt").readlines())),
+              set(map(lambda x: x.decode("utf-8").rstrip(),
+                  open("decrypter/words/ru.txt").readlines()))]
 
 phonepad = [[
     [u" "],
@@ -316,7 +313,6 @@ def anagram(encrypted):
             pass
     return "", ""
 
-
 def from_t9(encrypted):
     """
     Get text from T9
@@ -331,13 +327,16 @@ def from_t9(encrypted):
         for lang in [0, 1]:
             prefix[lang] = [phonepad[lang][int(digit)] for digit in code]
             for p in itertools.product(*prefix[lang]):
-                trash = tree[lang].keys(u"".join(p))
-                word[lang].extend(filter(lambda x: len(x) == len(code), trash))
+                p = u"".join(p)
+                if p in dictionary[lang]:
+                    word[lang].extend([p])
             words[lang].append(word[lang])
+
     table = [u"<table class=\"pure-table pure-table-horizontal\">"]
     for lang in enumerate([u"EN", u"RU"]):
         table.append(u"<tr><th>" + lang[1] + u":</th><td>")
-        for sentence in itertools.product(*words[lang[0]]):
+        for sentence in itertools.product(*filter(lambda x: len(x) > 0,
+                                                  words[lang[0]])):
             table.append(u"{}<br>".format(u" ".join(sentence)))
         table[-1] = table[-1][:-4]
         table.append(u"</td></tr>")
