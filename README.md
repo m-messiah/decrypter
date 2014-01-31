@@ -32,6 +32,13 @@ Show link to maps <img height=48 src="http://img4-1.realsimple.timeinc.net/image
 RELEASES
 ========
 
+v1.4
+----
+
+T9 to words.
+Accept: (\d*\s*)*
+Word - digits without spaces. Can't accept any punctuation.
+
 v1.3
 ----
 
