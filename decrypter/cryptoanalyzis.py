@@ -9,9 +9,55 @@ for letter_counter in range(26):
     tmp = tmp.replace('1', 'b')
     BACONDICT[tmp] = chr(65 + letter_counter)
 
+from pytrie import SortedStringTrie as Trie
+tree = [Trie(zip(map(lambda x: x.rstrip(), d), range(len(d))))
+        for d in [open("words/en.txt").readlines(),
+                  open("words/ru.txt").readlines()]
+        ]
+
+phonepad = [[
+    [u" "],
+    [u""],               [u"a", u"b", u"c"],    [u"d", u"e", u"f"],
+    [u"g", u"h", u"i"],  [u"j", u"k", u"l"],    [u"m", u"n", u"o"],
+    [u"p", u"q", u"r", u"s"], [u"t", u"u", u"v"], [u"w", u"x", u"y", u"z"]
+],
+    [
+    [u" "], [u""],
+    [u"а", u"б", u"в", u"г"], [u"д", u"е", u"ж", u"з"],
+    [u"и", u"й", u"к", u"л"], [u"м", u"н", u"о", u"п"],
+    [u"р", u"с", u"т", u"у"], [u"ф", u"х", u"ц", u"ч"],
+    [u"ш", u"щ", u"ъ", u"ы"], [u"ь", u"э", u"ю", u"я"]
+    ]
+]
+
+signs = {u'.....': u'5', u'-.--.-': u'(', u'..--..': u'?', u'.----': u'1',
+         u'---...': u':', u'......': u'.', u'----.': u'9', u'---..': u'8',
+         u'..---': u'2', u'-.-.--': u'!', u'....-': u'4', u'-....': u'6',
+         u'-.-.-.': u';', u'-----': u'0', u'-.-.-.-': u',', u'...--': u'3',
+         u'.-..-.': u"'", u'--...': u'7', u'/': u' ', u'--..--': u','}
+
+en = {u'---': u'O', u'--.': u'G', u'-...': u'B', u'-..-': u'X',
+      u'.-.': u'R', u'--.-': u'Q', u'--..': u'Z', u'.--': u'W',
+      u'.-': u'A', u'..': u'I', u'-.-.': u'C', u'..-.': u'F',
+      u'-.--': u'Y', u'-': u'T', u'.': u'E', u'.-..': u'L', u'...': u'S',
+      u'..-': u'U', u'-.-': u'K', u'-..': u'D', u'.---': u'J',
+      u'.--.': u'P', u'--': u'M', u'-.': u'N', u'....': u'H',
+      u'...-': u'V'}
+
+ru = {u"..-..": u'Э',  u"---": u'О',  u"--.": u'Г',  u"-...": u'Б',
+      u"-..-": u'Ь',  u".-.": u'Р',  u"--.-": u'Ы',  u"--..": u'З',
+      u".--": u'В',  u".-": u'А',  u"..": u'И',  u"-.-.": u'Ц',
+      u"..-.": u'Ф',  u"..--": u'Ю',  u"-": u'Т',  u".": u'Е',
+      u".-.-": u'Я',  u".-..": u'Л',  u"--.--": u'Ъ',  u"...": u'С',
+      u"..-": u'У',  u"----": u'Ш',  u"---.": u'Ч',  u"-.-": u'К',
+      u"-..": u'Д',  u".---": u'Й',  u".--.": u'П',  u"--": u'М',
+      u"-.": u'Н',  u"....": u'Х',  u"...-": u'Ж'}
+
+
 from re import search, sub, match, findall, MULTILINE, DOTALL
 
 import requests
+import itertools
 
 
 def caesar(encrypted):
@@ -66,29 +112,6 @@ def keymap(encrypted):
 
 
 def morse(encrypted):
-    signs = {u'.....': u'5', u'-.--.-': u'(', u'..--..': u'?', u'.----': u'1',
-             u'---...': u':', u'......': u'.', u'----.': u'9', u'---..': u'8',
-             u'..---': u'2', u'-.-.--': u'!', u'....-': u'4', u'-....': u'6',
-             u'-.-.-.': u';', u'-----': u'0', u'-.-.-.-': u',', u'...--': u'3',
-             u'.-..-.': u"'", u'--...': u'7', u'/': u' ', u'--..--': u','}
-
-    en = {u'---': u'O', u'--.': u'G', u'-...': u'B', u'-..-': u'X',
-          u'.-.': u'R', u'--.-': u'Q', u'--..': u'Z', u'.--': u'W',
-          u'.-': u'A', u'..': u'I', u'-.-.': u'C', u'..-.': u'F',
-          u'-.--': u'Y', u'-': u'T', u'.': u'E', u'.-..': u'L', u'...': u'S',
-          u'..-': u'U', u'-.-': u'K', u'-..': u'D', u'.---': u'J',
-          u'.--.': u'P', u'--': u'M', u'-.': u'N', u'....': u'H',
-          u'...-': u'V'}
-
-    ru = {u"..-..": u'Э',  u"---": u'О',  u"--.": u'Г',  u"-...": u'Б',
-          u"-..-": u'Ь',  u".-.": u'Р',  u"--.-": u'Ы',  u"--..": u'З',
-          u".--": u'В',  u".-": u'А',  u"..": u'И',  u"-.-.": u'Ц',
-          u"..-.": u'Ф',  u"..--": u'Ю',  u"-": u'Т',  u".": u'Е',
-          u".-.-": u'Я',  u".-..": u'Л',  u"--.--": u'Ъ',  u"...": u'С',
-          u"..-": u'У',  u"----": u'Ш',  u"---.": u'Ч',  u"-.-": u'К',
-          u"-..": u'Д',  u".---": u'Й',  u".--.": u'П',  u"--": u'М',
-          u"-.": u'Н',  u"....": u'Х',  u"...-": u'Ж'}
-
     encrypted = unicode(encrypted).split()
 
     def decode(text):
@@ -290,6 +313,34 @@ def anagram(encrypted):
         except:
             pass
     return "", ""
+
+
+def from_t9(encrypted):
+    """
+    Get text from T9
+    """
+    if not match(ur'^[\d\s]*$', unicode(encrypted)):
+        return "", ""
+    codes = map(list, unicode(encrypted).split())
+    words = [[], []]
+    for code in codes:
+        prefix = [[], []]
+        word = [[], []]
+        for lang in [0, 1]:
+            prefix[lang] = [phonepad[lang][int(digit)] for digit in code]
+            for p in itertools.product(*prefix[lang]):
+                trash = tree[lang].keys(u"".join(p))
+                word[lang].extend(filter(lambda x: len(x) == len(code), trash))
+            words[lang].append(word[lang])
+    table = [u"<table class=\"pure-table pure-table-horizontal\">"]
+    for lang in enumerate([u"EN", u"RU"]):
+        table.append(u"<tr><th>" + lang[1] + u":</th><td>")
+        for sentence in itertools.product(*words[lang[0]]):
+            table.append(u"{}<br>".format(u" ".join(sentence)))
+        table[-1] = table[-1][:-4]
+        table.append(u"</td></tr>")
+    table.append(u"</table>")
+    return u"T9", u"".join(table)
 
 
 functions = [

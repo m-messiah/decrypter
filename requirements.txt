@@ -1,3 +1,4 @@
+pytrie
 Django
 argparse
 distribute
