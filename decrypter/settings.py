@@ -18,7 +18,7 @@ MANAGERS = ADMINS
 
 DATABASES = {'default': {}}
 
-ALLOWED_HOSTS = ["localhost", "decrypter.herokuapp.com"]
+ALLOWED_HOSTS = ["localhost", "decrypter.herokuapp.com", "decrypter.tk"]
 
 TIME_ZONE = 'Asia/Yekaterinburg'
 
