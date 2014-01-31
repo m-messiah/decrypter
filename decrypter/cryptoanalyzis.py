@@ -11,8 +11,10 @@ for letter_counter in range(26):
 
 from pytrie import SortedStringTrie as Trie
 tree = [Trie(zip(map(lambda x: x.rstrip(), d), range(len(d))))
-        for d in [open("words/en.txt").readlines(),
-                  open("words/ru.txt").readlines()]
+        for d in [map(lambda x: x.decode("utf-8"),
+                      open("decrypter/words/en.txt").readlines()),
+                  map(lambda x: x.decode("utf-8"),
+                      open("decrypter/words/ru.txt").readlines())]
         ]
 
 phonepad = [[
@@ -345,6 +347,7 @@ def from_t9(encrypted):
 
 functions = [
     morse,
+    from_t9,
     from_hex,
     from_ascii,
     from_binary,
