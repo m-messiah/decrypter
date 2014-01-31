@@ -319,7 +319,8 @@ def from_t9(encrypted):
     """
     if not match(ur'^[\d\s]*$', unicode(encrypted)):
         return "", ""
-    codes = map(list, unicode(encrypted).split())
+    encrypted = unicode(encrypted).replace(u"0", " ")
+    codes = map(list, encrypted.split())
     words = [[], []]
     for code in codes:
         prefix = [[], []]
