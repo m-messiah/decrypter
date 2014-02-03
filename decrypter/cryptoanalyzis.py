@@ -319,7 +319,7 @@ def anagram(encrypted):
                              params=payload).text
             result = search(r"\d+ found\. Displaying all:\s*?</b>"
                             "<br>(.*?)<bottomlinks>", r, MULTILINE | DOTALL)
-            return u"Anagram", result.group(1)
+            return u"Anagram", result.group(1).replace("\n", "")
         except:
             pass
     return "", ""
@@ -348,12 +348,12 @@ def from_t9(encrypted):
     table = []
     for lang in enumerate([u"EN", u"RU"]):
         table.append(u"<div class=\"pure-u-1-4\"><p>" + lang[1] +
-                     u":</p></div><div class=\"pure-u-3-4\"")
+                     u":</p></div><div class=\"pure-u-3-4\"><p>")
         for sentence in itertools.product(*filter(lambda x: len(x) > 0,
                                                   words[lang[0]])):
-            table.append(u"<p>{}</p>".format(u" ".join(sentence)))
+            table.append(u"{}<br>".format(u" ".join(sentence)))
         table[-1] = table[-1][:-4]
-        table.append(u"</div>")
+        table.append(u"</p></div>")
     return u"T9", u"<div class=\"pure-g\">{}</div>".format(u"".join(table))
 
 
