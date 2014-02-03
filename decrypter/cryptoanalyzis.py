@@ -313,6 +313,7 @@ def anagram(encrypted):
             pass
     return "", ""
 
+
 def from_t9(encrypted):
     """
     Get text from T9
