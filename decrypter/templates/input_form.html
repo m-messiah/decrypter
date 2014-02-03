@@ -4,13 +4,13 @@
 {% block header %}{% endblock %}
 {% block content %}
 <h3>Enter your strange text to the field below</h3>
-<form action="/" method="post" class="pure-form pure-form-stacked">
+<form action="/" method="post" class="pure-form pure-form-stacked" novalidate>
     {% csrf_token %}
-    <textarea class="pure-input-1" autofocus="autofocus" rows=5 name="encrypted" placeholder="encrypted" tabindex="1"></textarea>
+    <textarea class="pure-input-1" autofocus rows=5 name="encrypted" placeholder="encrypted" tabindex="1"></textarea>
 <h3>or enter coordinates here.</h3>
     <div class="pure-g">
-        <div class="pure-u-1-2"><input class="pure-input-1" type="numeric" name="coordinates1" placeholder="latitude" /></div>
-        <div class="pure-u-1-2"><input class="pure-input-1" type="text" pattern="\d*" name="coordinates2" placeholder="longitude" /></div>
+        <div class="pure-u-1-2"><input class="pure-input-1" type="number" name="coordinates1" placeholder="latitude" /></div>
+        <div class="pure-u-1-2"><input class="pure-input-1" type="text" pattern="[0-9 ]*" name="coordinates2" placeholder="longitude" /></div>
     </div>
     <button class="pure-button pure-input-1 pure-button-primary" type="submit" tabindex="2">Analyze!</button>
 </form>
