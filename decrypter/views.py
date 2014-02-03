@@ -26,8 +26,10 @@ def decrypter(request):
                                                        len(x[0]) > 0,
                                                        decrypted)
                                    })
-    elif 'coordinates' in request.POST and request.POST['coordinates']:
-        coords = request.POST['coordinates']
+    elif (('coordinates1' in request.POST and request.POST['coordinates1'])
+          and ('coordinates2' in request.POST and request.POST['coordinates2'])
+          ):
+        coords = request.POST['coordinates1'], request.POST['coordinates2']
         try:
             print "[INPUT]: {}".format(coords)
         except UnicodeEncodeError:

@@ -10,7 +10,6 @@ class Coordinates(object):
         self.convert()
 
     def parse(self, coords):
-        coords = coords.split(",")
         type_coord = 0
         result = [0, [[], []]]
         for i, lat in enumerate(coords):
