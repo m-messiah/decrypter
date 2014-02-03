@@ -72,7 +72,7 @@ def caesar(encrypted):
     for rot in range(1, len(abc)):
         key = abc[rot:] + abc[:rot]
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-        decrypted.append(u"<div class=\pure-u-1-3\"><p>ROT{}</p></div>"
+        decrypted.append(u"<div class=\"pure-u-1-3\"><p>ROT{}</p></div>"
                          .format(rot))
         decrypted.append(u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
                          .format(encrypted.translate(trans)))
