@@ -3,13 +3,13 @@
 {% block title %}Decrypted{% endblock %}
 {% block content %}
 <div class="pure-g-r">
-    <div class="pure-u-1-2"><p class="tbleh"><b>Encrypted text</b></p></div>
-    <div class="pure-u-1-2"><p class="tble">{{ encrypted }}</p></div>
+    <div class="pure-u-1-2"><b>Encrypted text</b></div>
+    <div class="pure-u-1-2">{{ encrypted }}</div>
 </div>
 <div class="pure-g">
     {% for typeCrypto,result in decrypted %}
-    <div class="pure-u-1-2"><p class="tbleh"><b>{{ typeCrypto|safe }}</b></p></div>
-    <div class="pure-u-1-2"><p class="tble">{{ result|safe }}</p></div>
+    <div class="pure-u-1-2"><b>{{ typeCrypto|safe }}</b></div>
+    <div class="pure-u-1-2">>{{ result|safe }}</div>
     {% endfor %}
 </div>
 {% endblock %}

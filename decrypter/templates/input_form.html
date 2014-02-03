@@ -3,7 +3,6 @@
 {% block title %}Decrypter{% endblock %}
 {% block header %}{% endblock %}
 {% block content %}
-<div>
 <h3>Enter your strange text to the field below</h3>
 <form action="/" method="post" class="pure-form pure-form-stacked">
     {% csrf_token %}
@@ -13,5 +12,4 @@
 
     <button class="pure-button pure-input-1 pure-button-primary" style="width:100%;margin-top:5px;" type="submit" tabindex="2">Analyze!</button>
 </form>
-</div>
 {% endblock %}
