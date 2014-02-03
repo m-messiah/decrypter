@@ -9,7 +9,7 @@
 <div class="pure-g">
     {% for typeCrypto,result in decrypted %}
     <div class="pure-u-1-2"><b>{{ typeCrypto|safe }}</b></div>
-    <div class="pure-u-1-2">>{{ result|safe }}</div>
+    <div class="pure-u-1-2">{{ result|safe }}</div>
     {% endfor %}
 </div>
 {% endblock %}
