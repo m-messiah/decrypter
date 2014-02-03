@@ -8,8 +8,10 @@
     {% csrf_token %}
     <textarea class="pure-input-1" rows=5 name="encrypted" placeholder="encrypted" tabindex="1"></textarea>
 <h3>or enter coordinates here.</h3>
-    <div class="pure-u-1-2"><input class="pure-input-1" type="text" name="coordinates1" placeholder="latitude" /></div>
-    <div class="pure-u-1-2"><input class="pure-input-1" type="text" name="coordinates2" placeholder="longitude" /></div>
-    <button class="pure-button pure-input-1 pure-button-primary" style="width:100%;margin-top:5px;" type="submit" tabindex="2">Analyze!</button>
+    <div class="pure-g">
+        <div class="pure-u-1-2"><input class="pure-input-1" type="text" name="coordinates1" placeholder="latitude" /></div>
+        <div class="pure-u-1-2"><input class="pure-input-1" type="text" name="coordinates2" placeholder="longitude" /></div>
+    </div>
+    <button class="pure-button pure-input-1 pure-button-primary" type="submit" tabindex="2">Analyze!</button>
 </form>
 {% endblock %}

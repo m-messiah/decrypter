@@ -72,12 +72,12 @@ def caesar(encrypted):
     for rot in range(1, len(abc)):
         key = abc[rot:] + abc[:rot]
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-        decrypted.append(u"<tr><th>ROT{}</th><td>{}</td></tr>"
-                         .format(rot, encrypted.translate(trans)))
-    return (u"<abbr title=\"Cyclic shift\">"
-            u"Caesar</abbr>",
-            u"<table class=\"pure-table pure-table-horizontal\">{}</table>"
-            .format(u"".join(decrypted)))
+        decrypted.append(u"<div class=\pure-u-1-3\"><p>ROT{}</p></div>"
+                         .format(rot))
+        decrypted.append(u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                         .format(encrypted.translate(trans)))
+    return (u"<abbr title=\"Cyclic shift\">Caesar</abbr>",
+            u"<div class=\"pure-g\">{}</div>".format(u"".join(decrypted)))
 
 
 def atbash(encrypted):
@@ -90,8 +90,8 @@ def atbash(encrypted):
         return "", ""
     key = abc[::-1]
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-    return (u"<abbr title=\"A=Z B=Y...Y=B,Z=A\">"
-            u" Atbash</abbr>", u"{}".format(encrypted.translate(trans)))
+    return (u"<abbr title=\"A=Z B=Y...Y=B,Z=A\">Atbash</abbr>",
+            u"{}".format(encrypted.translate(trans)))
 
 
 def reverse(encrypted):
@@ -127,32 +127,35 @@ def morse(encrypted):
     table = []
     plain_text = decode(encrypted)
     if not match(ur"^_*$", plain_text):
-        table.append(u"<tr><th>ENG</th><td>{}</td></tr>"
+        table.append(u"<div class=\"pure-u-1-4\"><p>ENG</p></div>"
+                     u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
                      .format(plain_text))
     plain_text = decode(" ".join(encrypted)
                         .translate({ord(u'.'): ord(u'-'),
                                     ord(u'-'): ord(u'.')})
                         .split())
     if not match(ur"^_*$", plain_text):
-        table.append(u"<tr><th>ENG rev</th><td>{}</td></tr>"
+        table.append(u"<div class=\"pure-u-1-4\"><p>ENG rev</p></div>"
+                     u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
                      .format(plain_text))
     letters = signs
     letters.update(ru)
     plain_text = decode(encrypted)
     if not match(ur"^_*$", plain_text):
-        table.append(u"<tr><th>RUS</th><td>{}</td></tr>"
+        table.append(u"<div class=\"pure-u-1-4\"><p>RUS</p></div>"
+                     u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
                      .format(plain_text))
     plain_text = decode(u" ".join(encrypted)
                         .translate({ord(u'.'): ord(u'-'),
                                     ord(u'-'): ord(u'.')})
                         .split())
     if not match(ur"^_*$", plain_text):
-        table.append(u"<tr><th>RUS rev</th><td>{}</td></tr>"
+        table.append(u"<div class=\"pure-u-1-4\"><p>RUS rev</p></div>"
+                     u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
                      .format(plain_text))
     if len(table) > 0:
         return (u"Morse",
-                u"<table class=\"pure-table pure-table-horizontal\">"
-                u"{}</table>".format(u"".join(table)))
+                u"<div class=\"pure-g\">{}</div>".format(u"".join(table)))
     else:
         return "", ""
 
@@ -194,16 +197,18 @@ def from_position(encrypted):
         eng = map(lambda i: ENG[(i - 1) % 26], positions)
     except IndexError:
         eng = u""
-    table = [u"<table class=\"pure-table pure-table-horizontal\">"]
+    table = []
     if rus:
-        table.append(u"<tr><th>RUS</th>"
-                     u"<td>{}</td></tr>".format("".join(rus)))
+        table.append(u"<div class=\"pure-u-1-4\"><p>RUS</p></div>"
+                     u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
+                     .format(u"".join(rus)))
     if eng:
-        table.append(u"<tr><th>ENG</th>"
-                     u"<td>{}</td></tr>".format("".join(eng)))
-    table.append(u"</table>")
+        table.append(u"<div class=\"pure-u-1-4\"><p>ENG</p></div>"
+                     u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
+                     .format(u"".join(eng)))
     if len(table) > 2:
-        return u"From position", u"".join(table)
+        return (u"From position",
+                u"<div class=\"pure-g\">{}</div>".format(u"".join(table)))
     else:
         return "", ""
 
@@ -246,31 +251,36 @@ def decapsulate(encrypted):
         - russian capital letters
     :param encrypted:
     """
-    table = [u"<table class=\"pure-table pure-table-horizontal\">"]
+    table = []
     encrypted = unicode(encrypted)
     eng = findall("[A-Za-z]", encrypted)
     if len(eng) > 0:
-        table.append(u"<tr><th>ENG letters:</th>"
-                     u"<td>{}</td></tr>".format(u" ".join(eng)))
+        table.append(u"<div class=\"pure-u-1-3\"><p>ENG letters:</p></div>"
+                     u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                     .format(u" ".join(eng)))
     rus = findall(u"[а-яёА-ЯЁ]", encrypted)
     if len(rus) > 0:
-        table.append(u"<tr><th>RUS letters:</th>"
-                     u"<td>{}</td></tr>".format(u" ".join(rus)))
+        table.append(u"<div class=\"pure-u-1-3\"><p>RUS letters:</p></div>"
+                     u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                     .format(u" ".join(rus)))
     en_cap = findall("[A-Z]", encrypted)
     if len(en_cap) > 0:
-        table.append(u"<tr><th>EN Capital:</th>"
-                     u"<td>{}</td></tr>".format(u" ".join(en_cap)))
+        table.append(u"<div class=\"pure-u-1-3\"><p>EN Capital:</p></div>"
+                     u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                     .format(u" ".join(en_cap)))
     ru_cap = findall(u"[А-ЯЁ]", encrypted)
     if len(ru_cap) > 0:
-        table.append(u"<tr><th>RUS Capital:</th>"
-                     u"<td>{}</td></tr>".format(u" ".join(ru_cap)))
+        table.append(u"<div class=\"pure-u-1-3\"><p>RUS Capital:</p></div>"
+                     u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                     .format(u" ".join(ru_cap)))
     digits = findall(u"[0-9]", encrypted)
     if len(digits) > 0:
-        table.append(u"<tr><th>Digits:</th>"
-                     u"<td>{}</td></tr>".format(u" ".join(digits)))
-    table.append(u"</table>")
+        table.append(u"<div class=\"pure-u-1-3\"><p>Digits:</p></div>"
+                     u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                     .format(u" ".join(digits)))
     if len(table) > 2:
-        return u"Decapsulated", u"".join(table)
+        return (u"Decapsulated",
+                u"<div class=\"pure-g\">{}</div>".format(u"".join(table)))
     else:
         return "", ""
 
@@ -291,9 +301,11 @@ def anagram(encrypted):
         }
         try:
             r = requests.post("http://4maf.ru/anagram_ajax.php",
-                              data=payload)
-            return (u"Anagram",
-                    r.text)
+                              data=payload).text
+            if u"<b>Внимание!</b>" in r:
+                return "", ""
+            else:
+                return u"Anagram", r.text
         except:
             pass
     elif match(r"[A-Za-z]+", encrypted):
@@ -304,10 +316,9 @@ def anagram(encrypted):
         }
         try:
             r = requests.get("http://www.wordsmith.org/anagram/anagram.cgi",
-                             params=payload)
+                             params=payload).text
             result = search(r"\d+ found\. Displaying all:\s*?</b>"
-                            "<br>(.*?)<bottomlinks>",
-                            r.text, MULTILINE | DOTALL)
+                            "<br>(.*?)<bottomlinks>", r, MULTILINE | DOTALL)
             return u"Anagram", result.group(1)
         except:
             pass
@@ -334,16 +345,16 @@ def from_t9(encrypted):
                     word[lang].extend([p])
             words[lang].append(word[lang])
 
-    table = [u"<table class=\"pure-table pure-table-horizontal\">"]
+    table = []
     for lang in enumerate([u"EN", u"RU"]):
-        table.append(u"<tr><th>" + lang[1] + u":</th><td>")
+        table.append(u"<div class=\"pure-u-1-4\"><p>" + lang[1] +
+                     u":</p></div><div class=\"pure-u-3-4\"")
         for sentence in itertools.product(*filter(lambda x: len(x) > 0,
                                                   words[lang[0]])):
-            table.append(u"{}<br>".format(u" ".join(sentence)))
+            table.append(u"<p>{}</p>".format(u" ".join(sentence)))
         table[-1] = table[-1][:-4]
-        table.append(u"</td></tr>")
-    table.append(u"</table>")
-    return u"T9", u"".join(table)
+        table.append(u"</div>")
+    return u"T9", u"<div class=\"pure-g\">{}</div>".format(u"".join(table))
 
 
 functions = [
