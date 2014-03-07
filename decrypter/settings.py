@@ -22,7 +22,11 @@ ALLOWED_HOSTS = ["localhost", "decrypter.herokuapp.com", "decrypter.tk"]
 
 TIME_ZONE = 'Asia/Yekaterinburg'
 
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGE_CODE = 'ru'
+LANGUAGES = (
+    ('ru', 'Russian'),
+    ('en', 'English'),
+)
 
 SITE_ID = 1
 
@@ -53,8 +57,6 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.static",
@@ -64,10 +66,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 MIDDLEWARE_CLASSES = (
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
+    'django.middleware.locale.LocaleMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -80,10 +80,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    #"django.contrib.admin",
-    #"django.contrib.auth",
     "django.contrib.contenttypes",
-    #"django.contrib.flatpages",
     "django.contrib.redirects",
     "django.contrib.sessions",
     "django.contrib.sites",

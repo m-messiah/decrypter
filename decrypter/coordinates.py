@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Messiah'
+__author__ = 'm_messiah'
 
 
 class Coordinates(object):
