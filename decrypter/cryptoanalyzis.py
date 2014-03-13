@@ -206,7 +206,7 @@ def from_position(encrypted):
         table.append(u"<div class=\"pure-u-1-4\"><p>ENG</p></div>"
                      u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
                      .format(u"".join(eng)))
-    if len(table) > 2:
+    if len(table):
         return (u"From position",
                 u"<div class=\"pure-g\">{}</div>".format(u"".join(table)))
     else:
@@ -278,7 +278,7 @@ def decapsulate(encrypted):
         table.append(u"<div class=\"pure-u-1-3\"><p>Digits:</p></div>"
                      u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
                      .format(u" ".join(digits)))
-    if len(table) > 2:
+    if len(table):
         return (u"Decapsulated",
                 u"<div class=\"pure-g\">{}</div>".format(u"".join(table)))
     else:
@@ -344,9 +344,18 @@ def from_t9(encrypted):
                 if p in dictionary[lang]:
                     word[lang].extend([p])
             words[lang].append(word[lang])
+    # Clear one-digit trash
+    for lang in [0, 1]:
+        joined = u"".join(words[lang])
+        if (len(words[lang]) == len(joined)) and (joined in dictionary[lang]):
+            words[lang] = [u"".join(words[lang])]
+        else:
+            words[lang] = []
 
     table = []
     for lang in enumerate([u"EN", u"RU"]):
+        if len(words[lang[0]]) == 0:
+            continue
         table.append(u"<div class=\"pure-u-1-4\"><p>" + lang[1] +
                      u":</p></div><div class=\"pure-u-3-4\"><p>")
         for sentence in itertools.product(*filter(lambda x: len(x) > 0,
@@ -354,7 +363,11 @@ def from_t9(encrypted):
             table.append(u"{}<br>".format(u" ".join(sentence)))
         table[-1] = table[-1][:-4]
         table.append(u"</p></div>")
-    return u"T9", u"<div class=\"pure-g\">{}</div>".format(u"".join(table))
+    if len(table):
+        return (u"T9",
+                u"<div class=\"pure-g\">{}</div>".format(u"".join(table)))
+    else:
+        return "", ""
 
 
 functions = [
