@@ -359,7 +359,6 @@ def from_t9(encrypted):
 
 functions = [
     morse,
-    from_t9,
     from_hex,
     from_ascii,
     from_binary,
@@ -372,6 +371,7 @@ functions = [
     bacon,
     caesar,
     atbash,
+    from_t9,
 ]
 
 
