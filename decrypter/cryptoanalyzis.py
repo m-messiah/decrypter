@@ -214,6 +214,9 @@ def from_position(encrypted):
 
 
 def from_binary(encrypted):
+    """
+    Binary decoder
+    """
     import binascii
     try:
         return (u"From BIN",
@@ -344,13 +347,6 @@ def from_t9(encrypted):
                 if p in dictionary[lang]:
                     word[lang].extend([p])
             words[lang].append(word[lang])
-    # Clear one-digit trash
-    for lang in [0, 1]:
-        joined = u"".join(words[lang])
-        if (len(words[lang]) == len(joined)) and (joined in dictionary[lang]):
-            words[lang] = [u"".join(words[lang])]
-        else:
-            words[lang] = []
 
     table = []
     for lang in enumerate([u"EN", u"RU"]):
