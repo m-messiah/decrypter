@@ -54,7 +54,6 @@ ru = {u"..-..": u'Э',  u"---": u'О',  u"--.": u'Г',  u"-...": u'Б',
 
 
 from re import search, sub, match, findall, MULTILINE, DOTALL
-
 import requests
 import itertools
 

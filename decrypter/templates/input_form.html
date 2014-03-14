@@ -1,28 +1,15 @@
 {% extends "base.html" %}
-{% load i18n %}
 {% block title %}Decrypter{% endblock %}
 {% block header %}{% endblock %}
 {% block content %}
-<h3>{% trans "Enter your strange text to the field below" %}</h3>
+<h3>Enter your strange text to the field below</h3>
 <form action="/" method="post" class="pure-form pure-form-stacked" novalidate>
-    {% csrf_token %}
-    <textarea class="pure-input-1" autofocus rows=5 name="encrypted" placeholder="{% trans "encrypted" %}" tabindex="1"></textarea>
-<h3>{% trans "or enter coordinates here." %}</h3>
+    <textarea class="pure-input-1" autofocus rows=5 name="encrypted" placeholder="encrypted" tabindex="1"></textarea>
+<h3>or enter coordinates here</h3>
     <div class="pure-g">
-        <div class="pure-u-1-2"><input class="pure-input-1" type="text" name="coordinates1" placeholder="{% trans "latitude" %}" /></div>
-        <div class="pure-u-1-2"><input class="pure-input-1" type="text" name="coordinates2" placeholder="{% trans "longitude" %}" /></div>
+        <div class="pure-u-1-2"><input class="pure-input-1" type="text" name="coordinates1" placeholder="latitude" /></div>
+        <div class="pure-u-1-2"><input class="pure-input-1" type="text" name="coordinates2" placeholder="longitude" /></div>
     </div>
-    <button class="pure-button pure-input-1 pure-button-primary" type="submit" tabindex="2">{% trans "Analyze!" %}</button>
+    <button class="pure-button pure-input-1 pure-button-primary" type="submit" tabindex="2">Analyze!</button>
 </form>
-{% comment %}
-{% trans 'Change your locale' %}:
-<form action="/i18n/setlang/" method="POST">
-	<select name="language">
-		{% for lang in LANGUAGES %}
-			<option value="{{ lang.0 }}">{{ lang.1 }}</option>
-		{% endfor %}
-	</select><br/>
-	<input type="submit" value="{% trans 'change' %}" />
-</form>
-{% endcomment %}
 {% endblock %}

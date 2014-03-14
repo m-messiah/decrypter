@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import patterns, url, include, i18n
 from django.conf import settings
 from django.views.generic.base import TemplateView
 from django.views.generic import RedirectView
@@ -14,5 +14,4 @@ urlpatterns = patterns(
         TemplateView.as_view(template_name='robots.txt',
                              content_type='text/plain')),
     url(r'^favicon\.png$', RedirectView.as_view(url='/static/favicon.png')),
-    url(r'^i18n/', include('django.conf.urls.i18n')),
 )

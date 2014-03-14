@@ -11,7 +11,7 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Messiah', 'm.muzafarov@gmail.com'),
+    ('m_messiah', 'm.muzafarov@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -22,11 +22,7 @@ ALLOWED_HOSTS = ["localhost", "decrypter.herokuapp.com", "decrypter.tk"]
 
 TIME_ZONE = 'Asia/Yekaterinburg'
 
-LANGUAGE_CODE = 'ru'
-LANGUAGES = (
-    ('ru', 'Russian'),
-    ('en', 'English'),
-)
+LANGUAGE_CODE = 'en'
 
 SITE_ID = 1
 
@@ -58,7 +54,6 @@ TEMPLATE_LOADERS = (
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
     "django.core.context_processors.static",
     "django.core.context_processors.media",
     "django.core.context_processors.request",

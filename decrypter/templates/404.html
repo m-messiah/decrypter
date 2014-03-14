@@ -1,8 +1,7 @@
 {% extends "base.html" %}
-{% load i18n %}
 {% block title %}Wrong way{% endblock %}
 
 {% block content %}
-<h1 class="text-error">{% trans "Ooops. Page" %} {{ request_path }} {% trans "not found." %}</h1>
-<h2>{% trans "Maybe It would be better to go" %} <a href="/">{% trans "Home" %}</a>?</h2>
+<h1 class="text-error">Ooops. Page {{ request_path }} not found.</h1>
+<h2>Maybe It would be better to go <a href="/">Home</a>?</h2>
 {% endblock %}
