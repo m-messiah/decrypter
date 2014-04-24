@@ -109,15 +109,16 @@ class Coordinates(object):
         else:
             self.all_coords["BadInput"] = 0
 
-        deg_dec = self.all_coords["DegDec"].split(",")
+        dms = self.all_coords["DMS"].split(",")
         link = ["<a href=\"http://google.com/maps/place/"]
         coords = []
-        for lat in range(2):
-            coords.append("{}°{}'{}%22".format(self.coords[lat]))
+        for cor in dms:
+            d, m, s = cor.strip().split()
+            coords.append("{}°{}'{}%22".format(d, m, s))
 
         link.append("+".join(coords))
         link.append("\" class='btn' target='_blank'>GoogleMaps</a>")
-        self.all_coords["~ Maps"] = " ".join(link)
+        self.all_coords["~ Maps"] = "".join(link)
 
     def __str__(self):
         res = ["------"]
@@ -128,4 +129,5 @@ class Coordinates(object):
 
 if __name__ == "__main__":
     from sys import argv
-    print Coordinates(argv[1])
+
+    print Coordinates((argv[1], argv[2]))
