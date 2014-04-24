@@ -50,7 +50,7 @@ class Coordinates(object):
                 l = "E" if lat > 0 else "W"
             else:
                 l = "Impossible shit happens"
-            result.append("{}°{}\'{}\"{}".format(abs(d), m, s, l))
+            result.append("{} {} {} {}".format(abs(d), m, s, l))
         return ", ".join(result)
 
     def min_dec2deg_dec(self):
@@ -66,7 +66,7 @@ class Coordinates(object):
             d, ms = map(float, lat)
             m = int(ms)
             s = round((ms - m) * 60, 2)
-            result.append("{}°{}\'{}\"".format(int(d), m, s))
+            result.append("{} {} {}".format(int(d), m, s))
         return ", ".join(result)
 
     def dms2deg_dec(self):
@@ -80,17 +80,17 @@ class Coordinates(object):
         result = []
         for lat in self.coords:
             d, m, s = map(float, lat)
-            result.append("{}°{}\'".format(int(d), m + s / 60))
+            result.append("{} {}".format(int(d), m + s / 60))
         return ", ".join(result)
 
     def dms(self, i):
         d, m, s = self.coords[i]
         lat = ["N", "E"]
-        return "{}°{}\'{}\"{}".format(d, m, s, lat[i % 2])
+        return "{} {} {} {}".format(d, m, s, lat[i % 2])
 
     def min_dec(self, i):
         d, m = self.coords[i]
-        return "{}° {}".format(d, m)
+        return "{} {}".format(d, m)
 
     def convert(self):
         if self.type == "DMS":
@@ -110,8 +110,8 @@ class Coordinates(object):
             self.all_coords["BadInput"] = 0
 
         deg_dec = self.all_coords["DegDec"].split(",")
-        links = ["<a href=\"http://maps.google.com/maps?"
-                 "q=loc:{},{}&z=15\" class='btn'"
+        links = ["<a href=\"http://maps.google.com/maps/"
+                 "@{},{},15z\" class='btn'"
                  "target='_blank'>GoogleMaps</a>"
                  .format(deg_dec[0], deg_dec[1].strip())]
         self.all_coords["~ Maps"] = " ".join(links)
