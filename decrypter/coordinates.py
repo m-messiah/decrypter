@@ -110,11 +110,14 @@ class Coordinates(object):
             self.all_coords["BadInput"] = 0
 
         deg_dec = self.all_coords["DegDec"].split(",")
-        links = ["<a href=\"http://maps.google.com/maps/"
-                 "@{},{},15z\" class='btn'"
-                 "target='_blank'>GoogleMaps</a>"
-                 .format(deg_dec[0], deg_dec[1].strip())]
-        self.all_coords["~ Maps"] = " ".join(links)
+        link = ["<a href=\"http://google.com/maps/place/"]
+        coords = []
+        for lat in range(2):
+            coords.append("{}°{}'{}%22".format(self.coords[lat]))
+
+        link.append("+".join(coords))
+        link.append("\" class='btn' target='_blank'>GoogleMaps</a>")
+        self.all_coords["~ Maps"] = " ".join(link)
 
     def __str__(self):
         res = ["------"]
