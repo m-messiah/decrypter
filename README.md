@@ -1,6 +1,8 @@
 Decrypter
 ===================
 
+[ ![Codeship Status for m-messiah/decrypter](https://www.codeship.io/projects/e98f2880-ed45-0131-3df8-72e23ebe4803/status)](https://www.codeship.io/projects/26661)
+
 Specialized for Night Game DozoR, but useful for another Quests.
 
 
@@ -25,7 +27,7 @@ Converting coordinates.
 * Degrees, Minutes
 * Degrees
 
-Show link to maps <img height=48 src="http://img4-1.realsimple.timeinc.net/images/products/googlemaps-logo_300.jpg"
+Show link to maps ![google_maps](http://cms.cerritos.edu/uploads/CampusGuide/google-maps-icon-48x.png)
 
 
 
