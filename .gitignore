@@ -3,4 +3,4 @@
 *.db
 venv
 .DS_Store
-static
+static/
