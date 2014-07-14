@@ -10,23 +10,26 @@ for letter_counter in range(26):
     BACONDICT[tmp] = chr(65 + letter_counter)
 
 dictionary = [set(map(lambda x: x.decode("utf-8").rstrip(),
-                  open("decrypter/words/en.txt").readlines())),
+                      open("decrypter/words/en.txt").readlines())).union(
               set(map(lambda x: x.decode("utf-8").rstrip(),
-                  open("decrypter/words/ru.txt").readlines()))]
+                      open("decrypter/words/tr.txt").readlines()))),
+              set(map(lambda x: x.decode("utf-8").rstrip(),
+                      open("decrypter/words/ru.txt").readlines()))]
 
 phonepad = [[
-    [u" "],
-    [u""],               [u"a", u"b", u"c"],    [u"d", u"e", u"f"],
-    [u"g", u"h", u"i"],  [u"j", u"k", u"l"],    [u"m", u"n", u"o"],
-    [u"p", u"q", u"r", u"s"], [u"t", u"u", u"v"], [u"w", u"x", u"y", u"z"]
-],
-    [
-    [u" "], [u""],
-    [u"а", u"б", u"в", u"г"], [u"д", u"е", u"ж", u"з"],
-    [u"и", u"й", u"к", u"л"], [u"м", u"н", u"о", u"п"],
-    [u"р", u"с", u"т", u"у"], [u"ф", u"х", u"ц", u"ч"],
-    [u"ш", u"щ", u"ъ", u"ы"], [u"ь", u"э", u"ю", u"я"]
-    ]
+                [u" "],
+                [u""], [u"a", u"b", u"c"], [u"d", u"e", u"f"],
+                [u"g", u"h", u"i"], [u"j", u"k", u"l"], [u"m", u"n", u"o"],
+                [u"p", u"q", u"r", u"s"], [u"t", u"u", u"v"],
+                [u"w", u"x", u"y", u"z"]
+            ],
+            [
+                [u" "], [u""],
+                [u"а", u"б", u"в", u"г"], [u"д", u"е", u"ж", u"з"],
+                [u"и", u"й", u"к", u"л"], [u"м", u"н", u"о", u"п"],
+                [u"р", u"с", u"т", u"у"], [u"ф", u"х", u"ц", u"ч"],
+                [u"ш", u"щ", u"ъ", u"ы"], [u"ь", u"э", u"ю", u"я"]
+            ]
 ]
 
 signs = {u'.....': u'5', u'-.--.-': u'(', u'..--..': u'?', u'.----': u'1',
@@ -43,15 +46,14 @@ en = {u'---': u'O', u'--.': u'G', u'-...': u'B', u'-..-': u'X',
       u'.--.': u'P', u'--': u'M', u'-.': u'N', u'....': u'H',
       u'...-': u'V'}
 
-ru = {u"..-..": u'Э',  u"---": u'О',  u"--.": u'Г',  u"-...": u'Б',
-      u"-..-": u'Ь',  u".-.": u'Р',  u"--.-": u'Ы',  u"--..": u'З',
-      u".--": u'В',  u".-": u'А',  u"..": u'И',  u"-.-.": u'Ц',
-      u"..-.": u'Ф',  u"..--": u'Ю',  u"-": u'Т',  u".": u'Е',
-      u".-.-": u'Я',  u".-..": u'Л',  u"--.--": u'Ъ',  u"...": u'С',
-      u"..-": u'У',  u"----": u'Ш',  u"---.": u'Ч',  u"-.-": u'К',
-      u"-..": u'Д',  u".---": u'Й',  u".--.": u'П',  u"--": u'М',
-      u"-.": u'Н',  u"....": u'Х',  u"...-": u'Ж'}
-
+ru = {u"..-..": u'Э', u"---": u'О', u"--.": u'Г', u"-...": u'Б',
+      u"-..-": u'Ь', u".-.": u'Р', u"--.-": u'Ы', u"--..": u'З',
+      u".--": u'В', u".-": u'А', u"..": u'И', u"-.-.": u'Ц',
+      u"..-.": u'Ф', u"..--": u'Ю', u"-": u'Т', u".": u'Е',
+      u".-.-": u'Я', u".-..": u'Л', u"--.--": u'Ъ', u"...": u'С',
+      u"..-": u'У', u"----": u'Ш', u"---.": u'Ч', u"-.-": u'К',
+      u"-..": u'Д', u".---": u'Й', u".--.": u'П', u"--": u'М',
+      u"-.": u'Н', u"....": u'Х', u"...-": u'Ж'}
 
 from re import search, sub, match, findall, MULTILINE, DOTALL
 import requests
@@ -62,8 +64,10 @@ def caesar(encrypted):
     encrypted = unicode(encrypted).lower()
     if search(ur"[a-z]", encrypted):
         abc = ENG
+        language = dictionary[0]
     elif search(ur"[а-яё]", encrypted):
         abc = RUS
+        language = dictionary[1]
     else:
         return "", ""
 
@@ -71,12 +75,20 @@ def caesar(encrypted):
     for rot in range(1, len(abc)):
         key = abc[rot:] + abc[:rot]
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-        decrypted.append(u"<div class=\"pure-u-1-3\"><p>ROT{}</p></div>"
-                         .format(rot))
-        decrypted.append(u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
-                         .format(encrypted.translate(trans)))
-    return (u"<abbr title=\"Cyclic shift\">Caesar</abbr>",
-            u"<div class=\"pure-g\">{}</div>".format(u"".join(decrypted)))
+        out = encrypted.translate(trans)
+        if any(filter(lambda x: out in x, language)):
+            decrypted = [(rot, out)] + decrypted
+        else:
+            decrypted.append((rot, out))
+
+    return (
+        u"<abbr title=\"Cyclic shift\">Caesar</abbr>",
+        u"<div class=\"pure-g\">{}</div>".format(
+            u"".join(
+                map(lambda d:
+                    u"<div class=\"pure-u-1-3\"><p>ROT{}</p></div>"
+                    u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                    .format(d[0], d[1]), decrypted))))
 
 
 def atbash(encrypted):
@@ -217,11 +229,14 @@ def from_binary(encrypted):
     Binary decoder
     """
     import binascii
-    try:
-        return (u"From BIN",
-                binascii.unhexlify("%x" % int("0b{}".format(encrypted), 2)))
-    except ValueError:
-        return "", ""
+    result = []
+    for enc in encrypted.split():
+        try:
+            result.append(
+                binascii.unhexlify("%x" % int("0b{}".format(enc), 2)))
+        except ValueError:
+            pass
+    return u"From BIN", u" ".join(result)
 
 
 def bacon(encrypted):
@@ -377,8 +392,8 @@ functions = [
     decapsulate,
     anagram,
     bacon,
-    caesar,
     atbash,
+    caesar,
     from_t9,
 ]
 
