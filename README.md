@@ -34,6 +34,13 @@ Show link to maps ![google_maps](http://cms.cerritos.edu/uploads/CampusGuide/goo
 RELEASES
 ========
 
+v1.5
+----
+
+Smart Caesar: words at the top of list.
+Coordinates: DMS works.
+
+
 v1.4
 ----
 
