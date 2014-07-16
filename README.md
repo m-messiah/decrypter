@@ -43,16 +43,16 @@ v1.6
 v1.5
 ----
 
-Smart Caesar: words at the top of list.
-Coordinates: DMS works.
+- Smart Caesar: words at the top of list.
+- Coordinates: DMS works.
 
 
 v1.4
 ----
 
 T9 to words.
-Accept: (\d*\s*)*
-Word - digits without spaces. Can't accept any punctuation.
+- Accept: (\d*\s*)*
+- Word - digits without spaces. Can't accept any punctuation.
 
 v1.3
 ----
@@ -62,8 +62,8 @@ Speed improvements, bug-fixes, refactoring.
 v1.2
 ----
 
-Updated to Twitter Bootstrap 3 RC1.
-Restyled to user-friendly interface by Miocene.
+- Updated to Twitter Bootstrap 3 RC1.
+- Restyled to user-friendly interface by Miocene.
 
 v1.1
 ----
@@ -75,9 +75,10 @@ v1.0 (RELEASE)
 ----
 
 Filtering by bad input:
-    Alphabetic ciphers only for letters.
-    Morse only for dots and tirets.
-    Numbers only for numbers.
+
+- Alphabetic ciphers only for letters.
+- Morse only for dots and tirets.
+- Numbers only for numbers.
 
 
 v0.9
