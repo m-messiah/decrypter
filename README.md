@@ -34,6 +34,12 @@ Show link to maps ![google_maps](http://cms.cerritos.edu/uploads/CampusGuide/goo
 RELEASES
 ========
 
+v1.6
+----
+
+* Home page redesign
+* Speed improvements
+
 v1.5
 ----
 

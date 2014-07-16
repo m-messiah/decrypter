@@ -101,15 +101,15 @@ class Coordinates(object):
             self.all_coords["BadInput"] = 0
 
         dms = self.all_coords["DMS"].split(",")
-        link = ["<a href=\"http://google.com/maps/place/"]
+        link = [u"<a href=\"http://google.com/maps/place/"]
         coords = []
         for cor in dms:
             d, m, s = cor.strip().split()[:3]
-            coords.append("{}°{}'{}%22".format(d, m, s))
+            coords.append(u"{}°{}'{}%22".format(d, m, s))
 
-        link.append("+".join(coords))
-        link.append("\" class='btn' target='_blank'>GoogleMaps</a>")
-        self.all_coords["~ Maps"] = "".join(link)
+        link.append(u"+".join(coords))
+        link.append(u"\" class='btn' target='_blank'>GoogleMaps</a>")
+        self.all_coords["~ Maps"] = u"".join(link)
 
     def __str__(self):
         res = ["------"]
