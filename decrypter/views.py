@@ -2,10 +2,12 @@
 
 from django.shortcuts import render_to_response
 from django.shortcuts import render
+from django.views.decorators.gzip import gzip_page
 
 import cryptoanalyzis
 
 
+@gzip_page
 def decrypter(request):
     if 'encrypted' in request.POST and request.POST['encrypted']:
         encrypted = request.POST['encrypted']
