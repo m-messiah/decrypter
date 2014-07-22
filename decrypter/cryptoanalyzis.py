@@ -17,11 +17,11 @@ for letter_counter in range(26):
     BACONDICT[tmp] = chr(65 + letter_counter)
 
 dictionary = [set(map(lambda x: x.rstrip(),
-                      open("decrypter/words/en.txt").readlines())).union(
+                      open("words/en.txt").readlines())).union(
               set(map(lambda x: x.rstrip(),
-                      open("decrypter/words/tr.txt").readlines()))),
+                      open("words/tr.txt").readlines()))),
               set(map(lambda x: x.rstrip(),
-                      open("decrypter/words/ru.txt").readlines()))]
+                      open("words/ru.txt").readlines()))]
 
 phonepad = [[
             [" "],
