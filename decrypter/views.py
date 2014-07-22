@@ -1,20 +1,15 @@
-# ~*~ coding: utf-8 ~*~
-
 from django.shortcuts import render_to_response
 from django.shortcuts import render
 from django.views.decorators.gzip import gzip_page
 
-import cryptoanalyzis
+from decrypter import cryptoanalyzis
 
 
 @gzip_page
 def decrypter(request):
     if 'encrypted' in request.POST and request.POST['encrypted']:
         encrypted = request.POST['encrypted']
-        try:
-            print "[INPUT]: {}".format(encrypted)
-        except UnicodeEncodeError:
-            print "[INPUT]: {}".format(" ".join(map(str, map(ord, encrypted))))
+        print("[INPUT]: {}".format(encrypted).encode("utf8"))
         decrypted = []
         for func in cryptoanalyzis.functions:
             try:

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 __author__ = 'm_messiah'
 
 
@@ -94,7 +94,7 @@ class Coordinates(object):
             self.all_coords["DegDec"] = self.min_dec2deg_dec()
         elif self.type == "DegDec":
             self.all_coords["DegDec"] = "{0[0]}, {0[1]}".format(
-                map(lambda x: round(float(x[0]), 6), self.coords))
+                list(map(lambda x: round(float(x[0]), 6), self.coords)))
             self.all_coords["MinDec"] = self.deg_dec2min_dec()
             self.all_coords["DMS"] = self.deg_dec2dms()
         else:
@@ -121,4 +121,4 @@ class Coordinates(object):
 if __name__ == "__main__":
     from sys import argv
 
-    print Coordinates((argv[1], argv[2]))
+    print(Coordinates((argv[1], argv[2])))

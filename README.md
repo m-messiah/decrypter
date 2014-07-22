@@ -34,6 +34,13 @@ Show link to maps ![google_maps](http://cms.cerritos.edu/uploads/CampusGuide/goo
 RELEASES
 ========
 
+
+v1.7
+----
+
+Switch to Python3
+
+
 v1.6
 ----
 

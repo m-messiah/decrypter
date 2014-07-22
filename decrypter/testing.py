@@ -1,7 +1,8 @@
-#!/usr/bin/python
 __author__ = 'm_messiah'
 
 from django.test.runner import DiscoverRunner
+
+
 class DatabaselessTestRunner(DiscoverRunner):
     """A test suite runner that does not set up and tear down a database."""
 

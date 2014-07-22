@@ -4,5 +4,4 @@ distribute
 dj-database-url
 gunicorn
 psycopg2
-wsgiref
 requests

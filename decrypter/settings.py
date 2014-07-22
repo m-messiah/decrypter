@@ -7,7 +7,7 @@ def rel(*x):
 
 
 DEBUG = False
-#DEBUG = True
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -64,7 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'decrypter.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'wsgi.application'
@@ -76,17 +76,11 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     "django.contrib.contenttypes",
     "django.contrib.redirects",
-    "django.contrib.sessions",
     "django.contrib.sites",
-    "django.contrib.sitemaps",
     "django.contrib.staticfiles",
     "gunicorn",
 )
 
-OPTIONAL_APPS = (
-    "debug_toolbar",
-    "django_extensions",
-)
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

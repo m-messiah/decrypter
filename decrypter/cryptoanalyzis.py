@@ -1,6 +1,8 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
+import base64
+
 __author__ = 'm_messiah'
-RUS = u"абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+RUS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 ENG = "abcdefghijklmnopqrstuvwxyz"
 BACONDICT = {}
 for letter_counter in range(26):
@@ -14,75 +16,75 @@ for letter_counter in range(26):
     tmp = tmp.replace('1', 'b')
     BACONDICT[tmp] = chr(65 + letter_counter)
 
-dictionary = [set(map(lambda x: x.decode("utf-8").rstrip(),
+dictionary = [set(map(lambda x: x.rstrip(),
                       open("decrypter/words/en.txt").readlines())).union(
-              set(map(lambda x: x.decode("utf-8").rstrip(),
+              set(map(lambda x: x.rstrip(),
                       open("decrypter/words/tr.txt").readlines()))),
-              set(map(lambda x: x.decode("utf-8").rstrip(),
+              set(map(lambda x: x.rstrip(),
                       open("decrypter/words/ru.txt").readlines()))]
 
 phonepad = [[
-            [u" "],
-            [u""], [u"a", u"b", u"c"], [u"d", u"e", u"f"],
-            [u"g", u"h", u"i"], [u"j", u"k", u"l"], [u"m", u"n", u"o"],
-            [u"p", u"q", u"r", u"s"], [u"t", u"u", u"v"],
-            [u"w", u"x", u"y", u"z"]
+            [" "],
+            [""], ["a", "b", "c"], ["d", "e", "f"],
+            ["g", "h", "i"], ["j", "k", "l"], ["m", "n", "o"],
+            ["p", "q", "r", "s"], ["t", "u", "v"],
+            ["w", "x", "y", "z"]
             ],
             [
-            [u" "], [u""],
-            [u"а", u"б", u"в", u"г"], [u"д", u"е", u"ж", u"з"],
-            [u"и", u"й", u"к", u"л"], [u"м", u"н", u"о", u"п"],
-            [u"р", u"с", u"т", u"у"], [u"ф", u"х", u"ц", u"ч"],
-            [u"ш", u"щ", u"ъ", u"ы"], [u"ь", u"э", u"ю", u"я"]
+            [" "], [""],
+            ["а", "б", "в", "г"], ["д", "е", "ж", "з"],
+            ["и", "й", "к", "л"], ["м", "н", "о", "п"],
+            ["р", "с", "т", "у"], ["ф", "х", "ц", "ч"],
+            ["ш", "щ", "ъ", "ы"], ["ь", "э", "ю", "я"]
             ]]
 
-signs = {u'.....': u'5', u'-.--.-': u'(', u'..--..': u'?', u'.----': u'1',
-         u'---...': u':', u'......': u'.', u'----.': u'9', u'---..': u'8',
-         u'..---': u'2', u'-.-.--': u'!', u'....-': u'4', u'-....': u'6',
-         u'-.-.-.': u';', u'-----': u'0', u'-.-.-.-': u',', u'...--': u'3',
-         u'.-..-.': u"'", u'--...': u'7', u'/': u' ', u'--..--': u','}
+signs = {'.....': '5', '-.--.-': '(', '..--..': '?', '.----': '1',
+         '---...': ':', '......': '.', '----.': '9', '---..': '8',
+         '..---': '2', '-.-.--': '!', '....-': '4', '-....': '6',
+         '-.-.-.': ';', '-----': '0', '-.-.-.-': ',', '...--': '3',
+         '.-..-.': "'", '--...': '7', '/': ' ', '--..--': ','}
 
-en = {u'---': u'O', u'--.': u'G', u'-...': u'B', u'-..-': u'X',
-      u'.-.': u'R', u'--.-': u'Q', u'--..': u'Z', u'.--': u'W',
-      u'.-': u'A', u'..': u'I', u'-.-.': u'C', u'..-.': u'F',
-      u'-.--': u'Y', u'-': u'T', u'.': u'E', u'.-..': u'L', u'...': u'S',
-      u'..-': u'U', u'-.-': u'K', u'-..': u'D', u'.---': u'J',
-      u'.--.': u'P', u'--': u'M', u'-.': u'N', u'....': u'H',
-      u'...-': u'V'}
+en = {'---': 'O', '--.': 'G', '-...': 'B', '-..-': 'X',
+      '.-.': 'R', '--.-': 'Q', '--..': 'Z', '.--': 'W',
+      '.-': 'A', '..': 'I', '-.-.': 'C', '..-.': 'F',
+      '-.--': 'Y', '-': 'T', '.': 'E', '.-..': 'L', '...': 'S',
+      '..-': 'U', '-.-': 'K', '-..': 'D', '.---': 'J',
+      '.--.': 'P', '--': 'M', '-.': 'N', '....': 'H',
+      '...-': 'V'}
 
-ru = {u"..-..": u'Э', u"---": u'О', u"--.": u'Г', u"-...": u'Б',
-      u"-..-": u'Ь', u".-.": u'Р', u"--.-": u'Ы', u"--..": u'З',
-      u".--": u'В', u".-": u'А', u"..": u'И', u"-.-.": u'Ц',
-      u"..-.": u'Ф', u"..--": u'Ю', u"-": u'Т', u".": u'Е',
-      u".-.-": u'Я', u".-..": u'Л', u"--.--": u'Ъ', u"...": u'С',
-      u"..-": u'У', u"----": u'Ш', u"---.": u'Ч', u"-.-": u'К',
-      u"-..": u'Д', u".---": u'Й', u".--.": u'П', u"--": u'М',
-      u"-.": u'Н', u"....": u'Х', u"...-": u'Ж'}
+ru = {"..-..": 'Э', "---": 'О', "--.": 'Г', "-...": 'Б',
+      "-..-": 'Ь', ".-.": 'Р', "--.-": 'Ы', "--..": 'З',
+      ".--": 'В', ".-": 'А', "..": 'И', "-.-.": 'Ц',
+      "..-.": 'Ф', "..--": 'Ю', "-": 'Т', ".": 'Е',
+      ".-.-": 'Я', ".-..": 'Л', "--.--": 'Ъ', "...": 'С',
+      "..-": 'У', "----": 'Ш', "---.": 'Ч', "-.-": 'К',
+      "-..": 'Д', ".---": 'Й', ".--.": 'П', "--": 'М',
+      "-.": 'Н', "....": 'Х', "...-": 'Ж'}
 
 from re import search, sub, match, findall, MULTILINE, DOTALL
 import requests
 import itertools
-import coordinates
+from decrypter import coordinates
 
 
 def coords(encrypted):
     converted = coordinates.Coordinates(encrypted.split(',')).all_coords
     result = [
-        u"<div class=\"pure-u-1-4\">{}</div>"
-        u"<div class=\"pure-u-3-4\">{}</div>".format(k, v)
+        "<div class=\"pure-u-1-4\">{}</div>"
+        "<div class=\"pure-u-3-4\">{}</div>".format(k, v)
         for k, v in sorted(converted.items())
     ]
 
-    return (u"Coordinates",
-            u"<div class=\"pure-g\">{}</div>".format(u"".join(result)))
+    return ("Coordinates",
+            "<div class=\"pure-g\">{}</div>".format("".join(result)))
 
 
 def caesar(encrypted):
-    encrypted = unicode(encrypted).lower()
-    if search(ur"[a-z]", encrypted):
+    encrypted = encrypted.lower()
+    if search(r"[a-z]", encrypted):
         abc = ENG
         language = dictionary[0]
-    elif search(ur"[а-яё]", encrypted):
+    elif search(r"[а-яё]", encrypted):
         abc = RUS
         language = dictionary[1]
     else:
@@ -99,46 +101,46 @@ def caesar(encrypted):
             decrypted.append((rot, out))
 
     return (
-        u"<abbr title=\"Cyclic shift\">Caesar</abbr>",
-        u"<div class=\"pure-g\">{}</div>".format(
-            u"".join(
+        "<abbr title=\"Cyclic shift\">Caesar</abbr>",
+        "<div class=\"pure-g\">{}</div>".format(
+            "".join(
                 map(lambda d:
-                    u"<div class=\"pure-u-1-3\"><p>ROT{}</p></div>"
-                    u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                    "<div class=\"pure-u-1-3\"><p>ROT{}</p></div>"
+                    "<div class=\"pure-u-2-3\"><p>{}</p></div>"
                     .format(d[0], d[1]), decrypted))))
 
 
 def atbash(encrypted):
-    encrypted = unicode(encrypted).lower()
-    if search(ur"[a-z]", encrypted):
+    encrypted = encrypted.lower()
+    if search(r"[a-z]", encrypted):
         abc = ENG
-    elif search(ur"[а-яё]", encrypted):
+    elif search(r"[а-яё]", encrypted):
         abc = RUS
     else:
         raise Exception("Not a words")
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, abc[::-1]))
-    return (u"<abbr title=\"A=Z B=Y...Y=B,Z=A\">Atbash</abbr>",
-            u"{}".format(encrypted.translate(trans)))
+    return ("<abbr title=\"A=Z B=Y...Y=B,Z=A\">Atbash</abbr>",
+            "{}".format(encrypted.translate(trans)))
 
 
 def reverse(encrypted):
-    return u" Reversed text", encrypted[::-1]
+    return "Reversed text", encrypted[::-1]
 
 
 def keymap(encrypted):
-    encrypted = unicode(encrypted)
-    key = (u"qwertyuiop[]asdfghjkl;'\<zxcvbnm,./`1234567890-="
-           u"~!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKL:\"|>ZXCVBNM<>?")
-    abc = (u"йцукенгшщзхъфывапролджэ\/ячсмитьбю.ё1234567890-="
-           u"Ё!\"№;%:?*()_+ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ/|ЯЧСМИТЬБЮ,")
-    if search(ur"[a-z]", encrypted):
+    encrypted = encrypted
+    key = ("qwertyuiop[]asdfghjkl;'\<zxcvbnm,./`1234567890-="
+           "~!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKL:\"|>ZXCVBNM<>?")
+    abc = ("йцукенгшщзхъфывапролджэ\/ячсмитьбю.ё1234567890-="
+           "Ё!\"№;%:?*()_+ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ/|ЯЧСМИТЬБЮ,")
+    if search(r"[a-z]", encrypted):
         abc, key = key, abc
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-    return u" Wrong Keymap", u"{}".format(encrypted.translate(trans))
+    return "Wrong Keymap", "{}".format(encrypted.translate(trans))
 
 
 def morse(encrypted):
-    encrypted = unicode(encrypted).split()
+    encrypted = encrypted.split()
 
     def decode(text):
         result = []
@@ -146,65 +148,68 @@ def morse(encrypted):
             try:
                 result.append(letters[c])
             except KeyError:
-                result.append(u"_")
-        return u"".join(result)
+                result.append("_")
+        return "".join(result)
 
     def invert(word):
-        return word.translate({ord(u'.'): ord(u'-'),
-                               ord(u'-'): ord(u'.')})
+        return word.translate({ord('.'): ord('-'),
+                               ord('-'): ord('.')})
 
     letters = signs
     letters.update(en)
     table = []
     plain_text = decode(encrypted)
-    if not match(ur"^_*$", plain_text):
-        table.append(u"<div class=\"pure-u-1-4\"><p>ENG</p></div>"
-                     u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
+    if not match(r"^_*$", plain_text):
+        table.append("<div class=\"pure-u-1-4\"><p>ENG</p></div>"
+                     "<div class=\"pure-u-3-4\"><p>{}</p></div>"
                      .format(plain_text))
     plain_text = decode(map(invert, encrypted))
-    if not match(ur"^_*$", plain_text):
-        table.append(u"<div class=\"pure-u-1-4\"><p>ENG rev</p></div>"
-                     u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
+    if not match(r"^_*$", plain_text):
+        table.append("<div class=\"pure-u-1-4\"><p>ENG rev</p></div>"
+                     "<div class=\"pure-u-3-4\"><p>{}</p></div>"
                      .format(plain_text))
     letters = signs
     letters.update(ru)
     plain_text = decode(encrypted)
-    if not match(ur"^_*$", plain_text):
-        table.append(u"<div class=\"pure-u-1-4\"><p>RUS</p></div>"
-                     u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
+    if not match(r"^_*$", plain_text):
+        table.append("<div class=\"pure-u-1-4\"><p>RUS</p></div>"
+                     "<div class=\"pure-u-3-4\"><p>{}</p></div>"
                      .format(plain_text))
     plain_text = decode(map(invert, encrypted))
-    if not match(ur"^_*$", plain_text):
-        table.append(u"<div class=\"pure-u-1-4\"><p>RUS rev</p></div>"
-                     u"<div class=\"pure-u-3-4\"><p>{}</p></div>"
+    if not match(r"^_*$", plain_text):
+        table.append("<div class=\"pure-u-1-4\"><p>RUS rev</p></div>"
+                     "<div class=\"pure-u-3-4\"><p>{}</p></div>"
                      .format(plain_text))
     assert len(table)
-    return u"Morse", u"<div class=\"pure-g\">{}</div>".format(u"".join(table))
+    return "Morse", "<div class=\"pure-g\">{}</div>".format("".join(table))
 
 
 def from_hex(encrypted):
-    return u"From HEX", u"".join(encrypted.split()).decode("hex")
+    return ("From HEX",
+            bytes.fromhex("".join(encrypted.split())).decode("utf-8"))
 
 
 def from_ascii(encrypted):
-    return u"From ASCII", u"".join(map(chr, map(int, encrypted.split())))
+    return "From ASCII", "".join(map(chr, map(int, encrypted.split())))
 
 
 def from_base64(encrypted):
-    return u"From Base64", encrypted.decode("base64")
+    result = base64.b64decode(encrypted.encode("utf8"))
+    assert len(result)
+    return "From Base64", result.decode("utf8")
 
 
 def from_position(encrypted):
-    positions = map(int, encrypted.split())
-    rus = map(lambda i: RUS[(i - 1) % 33], positions)
-    eng = map(lambda i: ENG[(i - 1) % 26], positions)
-    return (u"From position",
-            u"""<div class="pure-g">
+    positions = list(map(int, encrypted.split()))
+    rus = "".join(map(lambda i: RUS[(i - 1) % 33], positions))
+    eng = "".join(map(lambda i: ENG[(i - 1) % 26], positions))
+    return ("From position",
+            """<div class="pure-g">
             <div class="pure-u-1-4"><p>RUS</p></div>
             <div class="pure-u-3-4"><p>{}</p></div>
             <div class="pure-u-1-4"><p>ENG</p></div>
             <div class="pure-u-3-4"><p>{}</p></div>
-            </div>""".format(u"".join(rus), u"".join(eng)))
+            </div>""".format(rus, eng))
 
 
 def from_binary(encrypted):
@@ -216,11 +221,12 @@ def from_binary(encrypted):
     for enc in encrypted.split():
         try:
             result.append(
-                binascii.unhexlify("%x" % int("0b{}".format(enc), 2)))
+                binascii.unhexlify("%x" % int("0b{}".format(enc), 2))
+                .decode("utf8"))
         except ValueError:
             pass
     assert len(result)
-    return u"From BIN", u" ".join(result)
+    return "From BIN", "".join(result)
 
 
 def bacon(encrypted):
@@ -233,11 +239,11 @@ def bacon(encrypted):
     encrypted = encrypted.lower()
     encrypted = sub("[^ab]", "", encrypted.strip())
 
-    for i in range(len(encrypted) / 5):
+    for i in range(len(encrypted) // 5):
         plaintext.append(BACONDICT.get(encrypted[i * 5:i * 5 + 5], '_'))
-    plaintext = u"".join(plaintext)
-    assert match(ur"_*", plaintext) and len(plaintext)
-    return u"<abbr title=\"AAABBBABAA\">Bacon</abbr>", plaintext
+    plaintext = "".join(plaintext)
+    assert match(r"_*", plaintext) and len(plaintext)
+    return "<abbr title=\"AAABBBABAA\">Bacon</abbr>", plaintext
 
 
 def decapsulate(encrypted):
@@ -251,35 +257,35 @@ def decapsulate(encrypted):
     :param encrypted:
     """
     table = []
-    encrypted = unicode(encrypted)
+    encrypted = encrypted
     eng = findall("[A-Za-z]", encrypted)
     if len(eng):
-        table.append(u"<div class=\"pure-u-1-3\"><p>ENG letters:</p></div>"
-                     u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
-                     .format(u" ".join(eng)))
-    rus = findall(u"[а-яёА-ЯЁ]", encrypted)
+        table.append("<div class=\"pure-u-1-3\"><p>ENG letters:</p></div>"
+                     "<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                     .format(" ".join(eng)))
+    rus = findall("[а-яёА-ЯЁ]", encrypted)
     if len(rus):
-        table.append(u"<div class=\"pure-u-1-3\"><p>RUS letters:</p></div>"
-                     u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
-                     .format(u" ".join(rus)))
+        table.append("<div class=\"pure-u-1-3\"><p>RUS letters:</p></div>"
+                     "<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                     .format(" ".join(rus)))
     en_cap = findall("[A-Z]", encrypted)
     if len(en_cap):
-        table.append(u"<div class=\"pure-u-1-3\"><p>EN Capital:</p></div>"
-                     u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
-                     .format(u" ".join(en_cap)))
-    ru_cap = findall(u"[А-ЯЁ]", encrypted)
+        table.append("<div class=\"pure-u-1-3\"><p>EN Capital:</p></div>"
+                     "<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                     .format(" ".join(en_cap)))
+    ru_cap = findall("[А-ЯЁ]", encrypted)
     if len(ru_cap):
-        table.append(u"<div class=\"pure-u-1-3\"><p>RUS Capital:</p></div>"
-                     u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
-                     .format(u" ".join(ru_cap)))
-    digits = findall(u"[0-9]", encrypted)
+        table.append("<div class=\"pure-u-1-3\"><p>RUS Capital:</p></div>"
+                     "<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                     .format(" ".join(ru_cap)))
+    digits = findall("[0-9]", encrypted)
     if len(digits):
-        table.append(u"<div class=\"pure-u-1-3\"><p>Digits:</p></div>"
-                     u"<div class=\"pure-u-2-3\"><p>{}</p></div>"
-                     .format(u" ".join(digits)))
+        table.append("<div class=\"pure-u-1-3\"><p>Digits:</p></div>"
+                     "<div class=\"pure-u-2-3\"><p>{}</p></div>"
+                     .format(" ".join(digits)))
     assert len(table)
-    return (u"Decapsulated",
-            u"<div class=\"pure-g\">{}</div>".format(u"".join(table)))
+    return ("Decapsulated",
+            "<div class=\"pure-g\">{}</div>".format("".join(table)))
 
 
 def anagram(encrypted):
@@ -289,8 +295,8 @@ def anagram(encrypted):
     English on wordsmith.org (thanks, community!)
     :param encrypted:
     """
-    encrypted = unicode(encrypted)
-    if match(ur"[А-Яа-яёЁ]+", encrypted):
+    encrypted = encrypted
+    if match(r"[А-Яа-яёЁ]+", encrypted):
         payload = {
             "sourceword": encrypted,
             "ModType": 1,
@@ -298,8 +304,8 @@ def anagram(encrypted):
         }
         r = requests.post("http://4maf.ru/anagram_ajax.php",
                           data=payload).text
-        assert u"<b>Внимание!</b>" not in r
-        return u"Anagram", r.text
+        assert "<b>Внимание!</b>" not in r
+        return "Anagram", r.text
 
     elif match(r"[A-Za-z]+", encrypted):
         payload = {
@@ -311,7 +317,7 @@ def anagram(encrypted):
                          params=payload).text
         result = search(r"\d+ found\. Displaying all:\s*?</b>"
                         "<br>(.*?)<bottomlinks>", r, MULTILINE | DOTALL)
-        return u"Anagram", result.group(1).replace("\n", "")
+        return "Anagram", result.group(1).replace("\n", "")
     else:
         raise Exception("Not a words")
 
@@ -320,8 +326,8 @@ def from_t9(encrypted):
     """
     Get text from T9
     """
-    assert match(ur'^[\d\s]*$', unicode(encrypted))
-    encrypted = unicode(encrypted).replace(u"0", " ")
+    assert match(r'^[\d\s]*$', encrypted)
+    encrypted = encrypted.replace("0", " ")
     codes = map(list, encrypted.split())
     words = [[], []]
     for code in codes:
@@ -330,24 +336,24 @@ def from_t9(encrypted):
         for lang in [0, 1]:
             prefix[lang] = [phonepad[lang][int(digit)] for digit in code]
             for p in itertools.product(*prefix[lang]):
-                p = u"".join(p)
+                p = "".join(p)
                 if p in dictionary[lang]:
                     word[lang].extend([p])
             words[lang].append(word[lang])
 
     table = []
-    for lang in enumerate([u"EN", u"RU"]):
+    for lang in enumerate(["EN", "RU"]):
         if len(words[lang[0]]) == 0:
             continue
-        table.append(u"<div class=\"pure-u-1-4\"><p>" + lang[1] +
-                     u":</p></div><div class=\"pure-u-3-4\"><p>")
+        table.append("<div class=\"pure-u-1-4\"><p>" + lang[1] +
+                     ":</p></div><div class=\"pure-u-3-4\"><p>")
         for sentence in itertools.product(*filter(lambda x: len(x) > 0,
                                                   words[lang[0]])):
-            table.append(u"{}<br>".format(u" ".join(sentence)))
+            table.append("{}<br>".format(" ".join(sentence)))
         table[-1] = table[-1][:-4]
-        table.append(u"</p></div>")
+        table.append("</p></div>")
     assert len(table)
-    return u"T9", u"<div class=\"pure-g\">{}</div>".format(u"".join(table))
+    return "T9", "<div class=\"pure-g\">{}</div>".format("".join(table))
 
 
 functions = [
@@ -370,7 +376,7 @@ functions = [
 
 
 def main():
-    print u"This is not the function you are looking for!"
+    raise Exception("This is not the function you are looking for!")
 
 
 if __name__ == '__main__':
