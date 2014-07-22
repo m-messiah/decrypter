@@ -7,7 +7,7 @@ def rel(*x):
 
 
 DEBUG = False
-DEBUG = True
+#DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
