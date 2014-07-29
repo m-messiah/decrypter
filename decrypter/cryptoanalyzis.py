@@ -185,8 +185,11 @@ def morse(encrypted):
 
 
 def from_hex(encrypted):
-    return ("From HEX",
-            bytes.fromhex("".join(encrypted.split())).decode("utf-8"))
+    r = bytes.fromhex("".join(encrypted.split()))
+    try:
+        return ("From HEX", r.decode("utf8"))
+    except UnicodeDecodeError:
+        return ("From HEX", r.decode("cp1251"))
 
 
 def from_ascii(encrypted):
@@ -196,7 +199,10 @@ def from_ascii(encrypted):
 def from_base64(encrypted):
     result = base64.b64decode(encrypted.encode("utf8"))
     assert len(result)
-    return "From Base64", result.decode("utf8")
+    try:
+        return "From Base64", result.decode("utf8")
+    except UnicodeDecodeError:
+        return "From Base64", result.decode("cp1251")
 
 
 def from_position(encrypted):
@@ -216,17 +222,18 @@ def from_binary(encrypted):
     """
     Binary decoder
     """
-    import binascii
     result = []
     for enc in encrypted.split():
         try:
             result.append(
-                binascii.unhexlify("%x" % int("0b{}".format(enc), 2))
-                .decode("utf8"))
+                bytes.fromhex("%x" % int("0b{}".format(enc), 2)))
         except ValueError:
             pass
     assert len(result)
-    return "From BIN", "".join(result)
+    try:
+        return "From BIN", "".join(map(lambda x: x.decode("utf8"), result))
+    except UnicodeDecodeError:
+        return "From BIN", "".join(map(lambda x: x.decode("cp1251"), result))
 
 
 def bacon(encrypted):
