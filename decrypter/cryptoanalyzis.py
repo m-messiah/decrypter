@@ -107,7 +107,7 @@ def caesar(encrypted):
                 map(lambda d:
                     "<div class=\"pure-u-1-4 descr\">{}ROT{}</div>"
                     "<div class=\"pure-u-3-4\">{}</div>"
-                    .format("&nbsp;" if d[0] < 10 else "", d[0], d[1]),
+                    .format("&nbsp;&nbsp;" if d[0] < 10 else "", d[0], d[1]),
                     decrypted))))
 
 
@@ -268,27 +268,27 @@ def decapsulate(encrypted):
     encrypted = encrypted
     eng = findall("[A-Za-z]", encrypted)
     if len(eng):
-        table.append("<div class=\"pure-u-1-4 descr\">ENG</div>"
+        table.append("<div class=\"pure-u-1-4 descr\">Eng</div>"
                      "<div class=\"pure-u-3-4\">{}</div>"
                      .format(" ".join(eng)))
     rus = findall("[а-яёА-ЯЁ]", encrypted)
     if len(rus):
-        table.append("<div class=\"pure-u-1-4 descr\">RUS</div>"
+        table.append("<div class=\"pure-u-1-4 descr\">Rus</div>"
                      "<div class=\"pure-u-3-4\">{}</div>"
                      .format(" ".join(rus)))
     en_cap = findall("[A-Z]", encrypted)
     if len(en_cap):
-        table.append("<div class=\"pure-u-1-4 descr\">EN Cap</div>"
+        table.append("<div class=\"pure-u-1-4 descr\">ENG</div>"
                      "<div class=\"pure-u-3-4\">{}</div>"
                      .format(" ".join(en_cap)))
     ru_cap = findall("[А-ЯЁ]", encrypted)
     if len(ru_cap):
-        table.append("<div class=\"pure-u-1-4 descr\">RUS Cap</div>"
+        table.append("<div class=\"pure-u-1-4 descr\">RUS</div>"
                      "<div class=\"pure-u-3-4\">{}</div>"
                      .format(" ".join(ru_cap)))
     digits = findall("[0-9]", encrypted)
     if len(digits):
-        table.append("<div class=\"pure-u-1-4 descr\">Digits</div>"
+        table.append("<div class=\"pure-u-1-4 descr\">0-9</div>"
                      "<div class=\"pure-u-3-4\">{}</div>"
                      .format(" ".join(digits)))
     assert len(table)
@@ -354,7 +354,7 @@ def from_t9(encrypted):
         if len(words[lang[0]]) == 0:
             continue
         table.append("<div class=\"pure-u-1-4 descr\">" + lang[1] +
-                     ":</div><div class=\"pure-u-3-4\">")
+                     "</div><div class=\"pure-u-3-4\">")
         for sentence in itertools.product(*filter(lambda x: len(x) > 0,
                                                   words[lang[0]])):
             table.append("{}<br>".format(" ".join(sentence)))
