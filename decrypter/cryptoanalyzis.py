@@ -62,9 +62,12 @@ ru = {"..-..": 'Э', "---": 'О', "--.": 'Г', "-...": 'Б',
       "-.": 'Н', "....": 'Х', "...-": 'Ж'}
 
 from re import search, sub, match, findall, MULTILINE, DOTALL
-import requests
-import itertools
-from decrypter import coordinates
+from requests import get as rget, post as rpost
+from itertools import product
+try:
+    from decrypter import coordinates
+except ImportError:
+    import coordinates
 
 
 def coords(encrypted):
@@ -101,7 +104,7 @@ def caesar(encrypted):
             decrypted.append((rot, out))
 
     return (
-        "<abbr title=\"Cyclic shift\">Caesar</abbr>",
+        "Caesar",
         "<div class=\"pure-g\">{}</div>".format(
             "".join(
                 map(lambda d:
@@ -120,7 +123,7 @@ def atbash(encrypted):
     else:
         raise Exception("Not a words")
     trans = dict((ord(a), ord(b)) for a, b in zip(abc, abc[::-1]))
-    return ("<abbr title=\"A=Z B=Y...Y=B,Z=A\">Atbash</abbr>",
+    return ("Atbash",
             "{}".format(encrypted.translate(trans)))
 
 
@@ -188,9 +191,9 @@ def morse(encrypted):
 def from_hex(encrypted):
     r = bytes.fromhex("".join(encrypted.split()))
     try:
-        return ("From HEX", r.decode("utf8"))
+        return "From HEX", r.decode("utf8")
     except UnicodeDecodeError:
-        return ("From HEX", r.decode("cp1251"))
+        return "From HEX", r.decode("cp1251")
 
 
 def from_ascii(encrypted):
@@ -251,7 +254,7 @@ def bacon(encrypted):
         plaintext.append(BACONDICT.get(encrypted[i * 5:i * 5 + 5], '_'))
     plaintext = "".join(plaintext)
     assert match(r"_*", plaintext) and len(plaintext)
-    return "<abbr title=\"AAABBBABAA\">Bacon</abbr>", plaintext
+    return "Bacon", plaintext
 
 
 def decapsulate(encrypted):
@@ -303,15 +306,14 @@ def anagram(encrypted):
     English on wordsmith.org (thanks, community!)
     :param encrypted:
     """
-    encrypted = encrypted
     if match(r"[А-Яа-яёЁ]+", encrypted):
         payload = {
             "sourceword": encrypted,
             "ModType": 1,
             "minf": 0
         }
-        r = requests.post("http://4maf.ru/anagram_ajax.php",
-                          data=payload).text
+        r = rpost("http://4maf.ru/anagram_ajax.php",
+                  data=payload).text
         assert "<strong>Внимание!</strong>" not in r
         return "Anagram", r.text
 
@@ -321,9 +323,9 @@ def anagram(encrypted):
             "t": 50,
             "a": "n"
         }
-        r = requests.get("http://www.wordsmith.org/anagram/anagram.cgi",
-                         params=payload).text
-        result = search(r"\d+ found\. Displaying all:\s*?</strong>"
+        r = rget("http://www.wordsmith.org/anagram/anagram.cgi",
+                 params=payload).text
+        result = search(r"\d+ found\. Displaying all:\s*?</b>"
                         "<br>(.*?)<bottomlinks>", r, MULTILINE | DOTALL)
         return "Anagram", result.group(1).replace("\n", "")
     else:
@@ -343,7 +345,7 @@ def from_t9(encrypted):
         word = [[], []]
         for lang in [0, 1]:
             prefix[lang] = [phonepad[lang][int(digit)] for digit in code]
-            for p in itertools.product(*prefix[lang]):
+            for p in product(*prefix[lang]):
                 p = "".join(p)
                 if p in dictionary[lang]:
                     word[lang].extend([p])
@@ -355,8 +357,8 @@ def from_t9(encrypted):
             continue
         table.append("<div class=\"pure-u-1-4 descr\">" + lang[1] +
                      "</div><div class=\"pure-u-3-4\">")
-        for sentence in itertools.product(*filter(lambda x: len(x) > 0,
-                                                  words[lang[0]])):
+        for sentence in product(*filter(lambda x: len(x) > 0,
+                                        words[lang[0]])):
             table.append("{}<br>".format(" ".join(sentence)))
         table[-1] = table[-1][:-4]
         table.append("</div>")
@@ -365,21 +367,21 @@ def from_t9(encrypted):
 
 
 functions = [
-    coords,
-    morse,
-    from_hex,
-    from_ascii,
-    from_binary,
-    from_base64,
-    from_position,
-    keymap,
-    reverse,
-    decapsulate,
+    # coords,
+    # morse,
+    # from_hex,
+    # from_ascii,
+    # from_binary,
+    # from_base64,
+    # from_position,
+    # keymap,
+    # reverse,
+    # decapsulate,
     anagram,
-    bacon,
-    atbash,
-    caesar,
-    from_t9,
+    # bacon,
+    # atbash,
+    # caesar,
+    # from_t9,
 ]
 
 
