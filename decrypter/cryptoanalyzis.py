@@ -314,6 +314,7 @@ def anagram(encrypted):
         word = "".join(word)
         if word in dictionary[lang]:
             result.add(word)
+    assert len(result)
     return "Anagram", "<br>".join(result)
 
 
