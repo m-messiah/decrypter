@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 from django.shortcuts import render
 from django.views.decorators.gzip import gzip_page
 
-import cryptoanalyzis
+from decrypter import cryptoanalyzis
 
 
 @gzip_page

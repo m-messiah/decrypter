@@ -70,7 +70,7 @@ from decrypter import coordinates
 def coords(encrypted):
     converted = coordinates.Coordinates(encrypted.split(',')).all_coords
     result = [
-        "<div class=\"pure-u-1-4\">{}</div>"
+        "<div class=\"pure-u-1-4 descr\">{}</div>"
         "<div class=\"pure-u-3-4\">{}</div>".format(k, v)
         for k, v in sorted(converted.items())
     ]
@@ -105,9 +105,10 @@ def caesar(encrypted):
         "<div class=\"pure-g\">{}</div>".format(
             "".join(
                 map(lambda d:
-                    "<div class=\"pure-u-1-3\"><p>ROT{}</p></div>"
-                    "<div class=\"pure-u-2-3\"><p>{}</p></div>"
-                    .format(d[0], d[1]), decrypted))))
+                    "<div class=\"pure-u-1-4 descr\">{}ROT{}</div>"
+                    "<div class=\"pure-u-3-4\">{}</div>"
+                    .format("&nbsp;" if d[0] < 10 else "", d[0], d[1]),
+                    decrypted))))
 
 
 def atbash(encrypted):
@@ -160,25 +161,25 @@ def morse(encrypted):
     table = []
     plain_text = decode(encrypted)
     if not match(r"^_*$", plain_text):
-        table.append("<div class=\"pure-u-1-4\"><p>ENG</p></div>"
-                     "<div class=\"pure-u-3-4\"><p>{}</p></div>"
+        table.append("<div class=\"pure-u-1-4 descr\">ENG</div>"
+                     "<div class=\"pure-u-3-4\">{}</div>"
                      .format(plain_text))
     plain_text = decode(map(invert, encrypted))
     if not match(r"^_*$", plain_text):
-        table.append("<div class=\"pure-u-1-4\"><p>ENG rev</p></div>"
-                     "<div class=\"pure-u-3-4\"><p>{}</p></div>"
+        table.append("<div class=\"pure-u-1-4 descr\">ENG rev</div>"
+                     "<div class=\"pure-u-3-4\">{}</div>"
                      .format(plain_text))
     letters = signs
     letters.update(ru)
     plain_text = decode(encrypted)
     if not match(r"^_*$", plain_text):
-        table.append("<div class=\"pure-u-1-4\"><p>RUS</p></div>"
-                     "<div class=\"pure-u-3-4\"><p>{}</p></div>"
+        table.append("<div class=\"pure-u-1-4 descr\">RUS</div>"
+                     "<div class=\"pure-u-3-4\">{}</div>"
                      .format(plain_text))
     plain_text = decode(map(invert, encrypted))
     if not match(r"^_*$", plain_text):
-        table.append("<div class=\"pure-u-1-4\"><p>RUS rev</p></div>"
-                     "<div class=\"pure-u-3-4\"><p>{}</p></div>"
+        table.append("<div class=\"pure-u-1-4 descr\">RUS rev</div>"
+                     "<div class=\"pure-u-3-4\">{}</div>"
                      .format(plain_text))
     assert len(table)
     return "Morse", "<div class=\"pure-g\">{}</div>".format("".join(table))
@@ -211,10 +212,10 @@ def from_position(encrypted):
     eng = "".join(map(lambda i: ENG[(i - 1) % 26], positions))
     return ("From position",
             """<div class="pure-g">
-            <div class="pure-u-1-4"><p>RUS</p></div>
-            <div class="pure-u-3-4"><p>{}</p></div>
-            <div class="pure-u-1-4"><p>ENG</p></div>
-            <div class="pure-u-3-4"><p>{}</p></div>
+            <div class="pure-u-1-4 descr">RUS</div>
+            <div class="pure-u-3-4">{}</div>
+            <div class="pure-u-1-4 descr">ENG</div>
+            <div class="pure-u-3-4">{}</div>
             </div>""".format(rus, eng))
 
 
@@ -267,28 +268,28 @@ def decapsulate(encrypted):
     encrypted = encrypted
     eng = findall("[A-Za-z]", encrypted)
     if len(eng):
-        table.append("<div class=\"pure-u-1-3\"><p>ENG letters:</p></div>"
-                     "<div class=\"pure-u-2-3\"><p>{}</p></div>"
+        table.append("<div class=\"pure-u-1-4 descr\">ENG</div>"
+                     "<div class=\"pure-u-3-4\">{}</div>"
                      .format(" ".join(eng)))
     rus = findall("[а-яёА-ЯЁ]", encrypted)
     if len(rus):
-        table.append("<div class=\"pure-u-1-3\"><p>RUS letters:</p></div>"
-                     "<div class=\"pure-u-2-3\"><p>{}</p></div>"
+        table.append("<div class=\"pure-u-1-4 descr\">RUS</div>"
+                     "<div class=\"pure-u-3-4\">{}</div>"
                      .format(" ".join(rus)))
     en_cap = findall("[A-Z]", encrypted)
     if len(en_cap):
-        table.append("<div class=\"pure-u-1-3\"><p>EN Capital:</p></div>"
-                     "<div class=\"pure-u-2-3\"><p>{}</p></div>"
+        table.append("<div class=\"pure-u-1-4 descr\">EN Cap</div>"
+                     "<div class=\"pure-u-3-4\">{}</div>"
                      .format(" ".join(en_cap)))
     ru_cap = findall("[А-ЯЁ]", encrypted)
     if len(ru_cap):
-        table.append("<div class=\"pure-u-1-3\"><p>RUS Capital:</p></div>"
-                     "<div class=\"pure-u-2-3\"><p>{}</p></div>"
+        table.append("<div class=\"pure-u-1-4 descr\">RUS Cap</div>"
+                     "<div class=\"pure-u-3-4\">{}</div>"
                      .format(" ".join(ru_cap)))
     digits = findall("[0-9]", encrypted)
     if len(digits):
-        table.append("<div class=\"pure-u-1-3\"><p>Digits:</p></div>"
-                     "<div class=\"pure-u-2-3\"><p>{}</p></div>"
+        table.append("<div class=\"pure-u-1-4 descr\">Digits</div>"
+                     "<div class=\"pure-u-3-4\">{}</div>"
                      .format(" ".join(digits)))
     assert len(table)
     return ("Decapsulated",
@@ -311,7 +312,7 @@ def anagram(encrypted):
         }
         r = requests.post("http://4maf.ru/anagram_ajax.php",
                           data=payload).text
-        assert "<b>Внимание!</b>" not in r
+        assert "<strong>Внимание!</strong>" not in r
         return "Anagram", r.text
 
     elif match(r"[A-Za-z]+", encrypted):
@@ -322,7 +323,7 @@ def anagram(encrypted):
         }
         r = requests.get("http://www.wordsmith.org/anagram/anagram.cgi",
                          params=payload).text
-        result = search(r"\d+ found\. Displaying all:\s*?</b>"
+        result = search(r"\d+ found\. Displaying all:\s*?</strong>"
                         "<br>(.*?)<bottomlinks>", r, MULTILINE | DOTALL)
         return "Anagram", result.group(1).replace("\n", "")
     else:
@@ -352,13 +353,13 @@ def from_t9(encrypted):
     for lang in enumerate(["EN", "RU"]):
         if len(words[lang[0]]) == 0:
             continue
-        table.append("<div class=\"pure-u-1-4\"><p>" + lang[1] +
-                     ":</p></div><div class=\"pure-u-3-4\"><p>")
+        table.append("<div class=\"pure-u-1-4 descr\">" + lang[1] +
+                     ":</div><div class=\"pure-u-3-4\">")
         for sentence in itertools.product(*filter(lambda x: len(x) > 0,
                                                   words[lang[0]])):
             table.append("{}<br>".format(" ".join(sentence)))
         table[-1] = table[-1][:-4]
-        table.append("</p></div>")
+        table.append("</div>")
     assert len(table)
     return "T9", "<div class=\"pure-g\">{}</div>".format("".join(table))
 
