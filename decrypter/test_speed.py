@@ -16,6 +16,5 @@ def decrypter(encrypted):
     return decrypted
 
 
-print(decrypter("oehll"))
-#import cProfile
-#cProfile.run('decrypter("hello123")')
+import cProfile
+cProfile.run('decrypter("hello123")')

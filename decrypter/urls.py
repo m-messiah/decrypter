@@ -2,7 +2,9 @@ from django.conf.urls import patterns, url
 from django.conf import settings
 from django.views.generic.base import TemplateView
 from django.views.generic import RedirectView
+
 from decrypter import views
+
 
 urlpatterns = patterns(
     '',

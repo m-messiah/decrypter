@@ -1,6 +1,7 @@
 __author__ = 'm_messiah'
 
 import unittest
+
 from coordinates import Coordinates
 
 

@@ -3,6 +3,7 @@ __author__ = 'm_messiah'
 
 import unittest
 import codecs
+
 from cryptoanalyzis import *
 
 

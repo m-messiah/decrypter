@@ -61,9 +61,8 @@ ru = {"..-..": 'Э', "---": 'О', "--.": 'Г', "-...": 'Б',
       "-..": 'Д', ".---": 'Й', ".--.": 'П', "--": 'М',
       "-.": 'Н', "....": 'Х', "...-": 'Ж'}
 
-from re import search, sub, match, findall, MULTILINE, DOTALL
-from requests import get as rget, post as rpost
-from itertools import product
+from re import search, sub, match, findall
+from itertools import product, permutations
 try:
     from decrypter import coordinates
 except ImportError:
@@ -302,34 +301,20 @@ def decapsulate(encrypted):
 def anagram(encrypted):
     """
     Do the anagram search.
-    Russian on 4maf.ru (thanks to authors)
-    English on wordsmith.org (thanks, community!)
     :param encrypted:
     """
     if match(r"[А-Яа-яёЁ]+", encrypted):
-        payload = {
-            "sourceword": encrypted,
-            "ModType": 1,
-            "minf": 0
-        }
-        r = rpost("http://4maf.ru/anagram_ajax.php",
-                  data=payload).text
-        assert "<strong>Внимание!</strong>" not in r
-        return "Anagram", r.text
-
+        lang = 1
     elif match(r"[A-Za-z]+", encrypted):
-        payload = {
-            "anagram": encrypted,
-            "t": 50,
-            "a": "n"
-        }
-        r = rget("http://www.wordsmith.org/anagram/anagram.cgi",
-                 params=payload).text
-        result = search(r"\d+ found\. Displaying all:\s*?</b>"
-                        "<br>(.*?)<bottomlinks>", r, MULTILINE | DOTALL)
-        return "Anagram", result.group(1).replace("\n", "")
+        lang = 0
     else:
         raise Exception("Not a words")
+    result = set()
+    for word in permutations(encrypted):
+        word = "".join(word)
+        if word in dictionary[lang]:
+            result.add(word)
+    return "Anagram", "<br>".join(result)
 
 
 def from_t9(encrypted):
@@ -367,21 +352,21 @@ def from_t9(encrypted):
 
 
 functions = [
-    # coords,
-    # morse,
-    # from_hex,
-    # from_ascii,
-    # from_binary,
-    # from_base64,
-    # from_position,
-    # keymap,
-    # reverse,
-    # decapsulate,
+    coords,
+    morse,
+    from_hex,
+    from_ascii,
+    from_binary,
+    from_base64,
+    from_position,
+    keymap,
+    reverse,
+    decapsulate,
     anagram,
-    # bacon,
-    # atbash,
-    # caesar,
-    # from_t9,
+    bacon,
+    atbash,
+    caesar,
+    from_t9,
 ]
 
 
