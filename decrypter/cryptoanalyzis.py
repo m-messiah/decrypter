@@ -303,9 +303,9 @@ def anagram(encrypted):
     Do the anagram search.
     :param encrypted:
     """
-    if match(r"[А-Яа-яёЁ]+", encrypted):
+    if match(r"^[А-Яа-яёЁ]+$", encrypted):
         lang = 1
-    elif match(r"[A-Za-z]+", encrypted):
+    elif match(r"^[A-Za-z]+$", encrypted):
         lang = 0
     else:
         raise Exception("Not a words")
