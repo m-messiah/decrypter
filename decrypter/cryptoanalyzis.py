@@ -97,7 +97,7 @@ def caesar(encrypted):
         key = abc[rot:] + abc[:rot]
         trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
         out = encrypted.translate(trans)
-        if any(o in language for o in out.split()):
+        if any(o in language for o in out.split()[:5]):
             decrypted = [(rot, out)] + decrypted
         else:
             decrypted.append((rot, out))
