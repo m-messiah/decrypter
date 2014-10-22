@@ -34,6 +34,19 @@ Show link to maps ![google_maps](http://cms.cerritos.edu/uploads/CampusGuide/goo
 RELEASES
 ========
 
+v2.0
+----
+
+There is no cryptoanalitic better than man, so:
+
+    /abc - picture alphabets and ciphers.
+
+
+v1.8
+----
+
+Own anagramizer, caesar speed-up
+
 
 v1.7
 ----
