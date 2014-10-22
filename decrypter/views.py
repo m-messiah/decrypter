@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.shortcuts import render
 from django.views.decorators.gzip import gzip_page
+from os import walk
 
 try:
     from decrypter import cryptoanalyzis
@@ -25,3 +26,10 @@ def decrypter(request):
                                    })
 
     return render(request, "input_form.html")
+
+@gzip_page
+def abc(request):
+    pictures = dict()
+    for (_, _, filename) in walk("static/abc/"):
+        pictures[filename] = "/static/abc/{0}".format(filename)
+    return render(request, "abc.html")
