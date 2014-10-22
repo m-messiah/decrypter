@@ -34,4 +34,4 @@ def abc(request):
     for (_, _, filenames) in walk(settings.STATIC_ROOT + "abc/"):
         for filename in filenames:
             pictures.append((filename[:filename.rfind(".")], "/static/abc/{0}".format(filename)))
-    return render(request, "abc.html", {"pictures": pictures})
+    return render(request, "abc.html", {"pictures": sorted(pictures)})
