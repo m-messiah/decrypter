@@ -5,7 +5,7 @@ body{margin:0;}
 {% endblock %}
 {% block content %}
 <div class="pure-g">
-    {% for name, path in pictures.items %}
+    {% for name,path in pictures %}
     <div class="pure-u-1">
         <h6>{{ name }}</h6>
         <img src="{{ path }}">{{name}}</img>
