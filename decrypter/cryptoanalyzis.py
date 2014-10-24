@@ -1,12 +1,15 @@
 # coding=utf-8
-import base64
-
 __author__ = 'm_messiah'
-RUS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
-ENG = "abcdefghijklmnopqrstuvwxyz"
-BACONDICT = {}
+#RUS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+RUS = (1072, 1073, 1074, 1075, 1076, 1077, 1105, 1078, 1079, 1080, 1081, 1082,
+       1083, 1084, 1085, 1086, 1087, 1088, 1089, 1090, 1091, 1092, 1093, 1094,
+       1095, 1096, 1097, 1098, 1099, 1100, 1101, 1102, 1103)
+#ENG = "abcdefghijklmnopqrstuvwxyz"
+ENG = (97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+       112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122)
+BACONDICT = dict()
 for letter_counter in range(26):
-    if letter_counter in [9, 21]:
+    if letter_counter in (9, 21):
         continue
     current_letter = (letter_counter - 2 if letter_counter > 20
                       else (letter_counter - 1 if letter_counter > 8
@@ -22,47 +25,55 @@ dictionary = [set(map(lambda x: x.rstrip(),
                       open("words/tr.txt").readlines()))),
               set(map(lambda x: x.rstrip(),
                       open("words/ru.txt").readlines()))]
+# T9
+phonepad = ((
+            (" ",),
+            ("",), ("a", "b", "c"), ("d", "e", "f"),
+            ("g", "h", "i"), ("j", "k", "l"), ("m", "n", "o"),
+            ("p", "q", "r", "s"), ("t", "u", "v"),
+            ("w", "x", "y", "z")
+            ),
+            (
+            (" ",), ("",),
+            ("а", "б", "в", "г"), ("д", "е", "ж", "з"),
+            ("и", "й", "к", "л"), ("м", "н", "о", "п"),
+            ("р", "с", "т", "у"), ("ф", "х", "ц", "ч"),
+            ("ш", "щ", "ъ", "ы"), ("ь", "э", "ю", "я")
+            ))
+# Morse
+MORSE_EN = {
+    '.....': '5', '-.--.-': '(', '..--..': '?', '.----': '1',
+    '---...': ':', '......': '.', '----.': '9', '---..': '8',
+    '..---': '2', '-.-.--': '!', '....-': '4', '-....': '6',
+    '-.-.-.': ';', '-----': '0', '-.-.-.-': ',', '...--': '3',
+    '.-..-.': "'", '--...': '7', '/': ' ', '--..--': ',',
+    '---': 'O', '--.': 'G', '-...': 'B', '-..-': 'X',
+    '.-.': 'R', '--.-': 'Q', '--..': 'Z', '.--': 'W',
+    '.-': 'A', '..': 'I', '-.-.': 'C', '..-.': 'F',
+    '-.--': 'Y', '-': 'T', '.': 'E', '.-..': 'L', '...': 'S',
+    '..-': 'U', '-.-': 'K', '-..': 'D', '.---': 'J',
+    '.--.': 'P', '--': 'M', '-.': 'N', '....': 'H',
+    '...-': 'V'}
 
-phonepad = [[
-            [" "],
-            [""], ["a", "b", "c"], ["d", "e", "f"],
-            ["g", "h", "i"], ["j", "k", "l"], ["m", "n", "o"],
-            ["p", "q", "r", "s"], ["t", "u", "v"],
-            ["w", "x", "y", "z"]
-            ],
-            [
-            [" "], [""],
-            ["а", "б", "в", "г"], ["д", "е", "ж", "з"],
-            ["и", "й", "к", "л"], ["м", "н", "о", "п"],
-            ["р", "с", "т", "у"], ["ф", "х", "ц", "ч"],
-            ["ш", "щ", "ъ", "ы"], ["ь", "э", "ю", "я"]
-            ]]
-
-signs = {'.....': '5', '-.--.-': '(', '..--..': '?', '.----': '1',
-         '---...': ':', '......': '.', '----.': '9', '---..': '8',
-         '..---': '2', '-.-.--': '!', '....-': '4', '-....': '6',
-         '-.-.-.': ';', '-----': '0', '-.-.-.-': ',', '...--': '3',
-         '.-..-.': "'", '--...': '7', '/': ' ', '--..--': ','}
-
-en = {'---': 'O', '--.': 'G', '-...': 'B', '-..-': 'X',
-      '.-.': 'R', '--.-': 'Q', '--..': 'Z', '.--': 'W',
-      '.-': 'A', '..': 'I', '-.-.': 'C', '..-.': 'F',
-      '-.--': 'Y', '-': 'T', '.': 'E', '.-..': 'L', '...': 'S',
-      '..-': 'U', '-.-': 'K', '-..': 'D', '.---': 'J',
-      '.--.': 'P', '--': 'M', '-.': 'N', '....': 'H',
-      '...-': 'V'}
-
-ru = {"..-..": 'Э', "---": 'О', "--.": 'Г', "-...": 'Б',
-      "-..-": 'Ь', ".-.": 'Р', "--.-": 'Ы', "--..": 'З',
-      ".--": 'В', ".-": 'А', "..": 'И', "-.-.": 'Ц',
-      "..-.": 'Ф', "..--": 'Ю', "-": 'Т', ".": 'Е',
-      ".-.-": 'Я', ".-..": 'Л', "--.--": 'Ъ', "...": 'С',
-      "..-": 'У', "----": 'Ш', "---.": 'Ч', "-.-": 'К',
-      "-..": 'Д', ".---": 'Й', ".--.": 'П', "--": 'М',
-      "-.": 'Н', "....": 'Х', "...-": 'Ж'}
+MORSE_RU = {
+    '.....': '5', '-.--.-': '(', '..--..': '?', '.----': '1',
+    '---...': ':', '......': '.', '----.': '9', '---..': '8',
+    '..---': '2', '-.-.--': '!', '....-': '4', '-....': '6',
+    '-.-.-.': ';', '-----': '0', '-.-.-.-': ',', '...--': '3',
+    '.-..-.': "'", '--...': '7', '/': ' ', '--..--': ',',
+    "..-..": 'Э', "---": 'О', "--.": 'Г', "-...": 'Б',
+    "-..-": 'Ь', ".-.": 'Р', "--.-": 'Ы', "--..": 'З',
+    ".--": 'В', ".-": 'А', "..": 'И', "-.-.": 'Ц',
+    "..-.": 'Ф', "..--": 'Ю', "-": 'Т', ".": 'Е',
+    ".-.-": 'Я', ".-..": 'Л', "--.--": 'Ъ', "...": 'С',
+    "..-": 'У', "----": 'Ш', "---.": 'Ч', "-.-": 'К',
+    "-..": 'Д', ".---": 'Й', ".--.": 'П', "--": 'М',
+    "-.": 'Н', "....": 'Х', "...-": 'Ж'}
 
 from re import search, sub, match, findall
 from itertools import product, permutations
+from base64 import b64decode
+
 try:
     from decrypter import coordinates
 except ImportError:
@@ -72,13 +83,13 @@ except ImportError:
 def coords(encrypted):
     converted = coordinates.Coordinates(encrypted.split(',')).all_coords
     result = [
-        "<div class=\"pure-u-1-4 descr\">{}</div>"
-        "<div class=\"pure-u-3-4\">{}</div>".format(k, v)
+        "<div class=\"pure-u-1-4 descr\">{0}</div>"
+        "<div class=\"pure-u-3-4\">{1}</div>".format(k, v)
         for k, v in sorted(converted.items())
     ]
 
     return ("Coordinates",
-            "<div class=\"pure-g\">{}</div>".format("".join(result)))
+            "<div class=\"pure-g\">{0}</div>".format("".join(result)))
 
 
 def caesar(encrypted):
@@ -95,20 +106,20 @@ def caesar(encrypted):
     decrypted = []
     for rot in range(1, len(abc)):
         key = abc[rot:] + abc[:rot]
-        trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
+        trans = dict(zip(abc, key))
         out = encrypted.translate(trans)
         if any(o in language for o in out.split()[:5]):
-            decrypted = [(rot, out)] + decrypted
+            decrypted.insert(0, (rot, out))
         else:
             decrypted.append((rot, out))
 
     return (
         "Caesar",
-        "<div class=\"pure-g\">{}</div>".format(
+        "<div class=\"pure-g\">{0}</div>".format(
             "".join(
                 map(lambda d:
-                    "<div class=\"pure-u-1-4 descr\">{}ROT{}</div>"
-                    "<div class=\"pure-u-3-4\">{}</div>"
+                    "<div class=\"pure-u-1-4 descr\">{0}ROT{1}</div>"
+                    "<div class=\"pure-u-3-4\">{2}</div>"
                     .format("&nbsp;&nbsp;" if d[0] < 10 else "", d[0], d[1]),
                     decrypted))))
 
@@ -121,9 +132,8 @@ def atbash(encrypted):
         abc = RUS
     else:
         raise Exception("Not a words")
-    trans = dict((ord(a), ord(b)) for a, b in zip(abc, abc[::-1]))
-    return ("Atbash",
-            "{}".format(encrypted.translate(trans)))
+    trans = dict(zip(abc, abc[::-1]))
+    return "Atbash", encrypted.translate(trans)
 
 
 def reverse(encrypted):
@@ -131,58 +141,71 @@ def reverse(encrypted):
 
 
 def keymap(encrypted):
-    encrypted = encrypted
-    key = ("qwertyuiop[]asdfghjkl;'\<zxcvbnm,./`1234567890-="
-           "~!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKL:\"|>ZXCVBNM<>?")
-    abc = ("йцукенгшщзхъфывапролджэ\/ячсмитьбю.ё1234567890-="
-           "Ё!\"№;%:?*()_+ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ/|ЯЧСМИТЬБЮ,")
+    #key = ("qwertyuiop[]asdfghjkl;'\<zxcvbnm,./`1234567890-="
+    #       "~!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKL:\"|>ZXCVBNM<>?")
+    key = (113, 119, 101, 114, 116, 121, 117, 105, 111, 112, 91, 93, 97, 115,
+           100, 102, 103, 104, 106, 107, 108, 59, 39, 92, 60, 122, 120, 99,
+           118, 98, 110, 109, 44, 46, 47, 96, 49, 50, 51, 52, 53, 54, 55, 56,
+           57, 48, 45, 61, 126, 33, 64, 35, 36, 37, 94, 38, 42, 40, 41, 95,
+           43, 81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 123, 125, 65, 83, 68,
+           70, 71, 72, 74, 75, 76, 58, 34, 124, 62, 90, 88, 67, 86, 66, 78,
+           77, 60, 62, 63)
+
+    #abc = ("йцукенгшщзхъфывапролджэ\/ячсмитьбю.ё1234567890-="
+    #       "Ё!\"№;%:?*()_+ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ/|ЯЧСМИТЬБЮ,")
+    abc = (1081, 1094, 1091, 1082, 1077, 1085, 1075, 1096, 1097, 1079, 1093,
+           1098, 1092, 1099, 1074, 1072, 1087, 1088, 1086, 1083, 1076, 1078,
+           1101, 92, 47, 1103, 1095, 1089, 1084, 1080, 1090, 1100, 1073, 1102,
+           46, 1105, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 45, 61, 1025, 33,
+           34, 8470, 59, 37, 58, 63, 42, 40, 41, 95, 43, 1049, 1062, 1059,
+           1050, 1045, 1053, 1043, 1064, 1065, 1047, 1061, 1066, 1060, 1067,
+           1042, 1040, 1055, 1056, 1054, 1051, 1044, 1046, 1069, 47, 124,
+           1071, 1063, 1057, 1052, 1048, 1058, 1068, 1041, 1070, 44)
+
     if search(r"[a-z]", encrypted):
         abc, key = key, abc
-    trans = dict((ord(a), ord(b)) for a, b in zip(abc, key))
-    return "Wrong Keymap", "{}".format(encrypted.translate(trans))
+    trans = dict(zip(abc, key))
+    return "Wrong Keymap", encrypted.translate(trans)
 
 
 def morse(encrypted):
     encrypted = encrypted.split()
 
     def decode(text):
-        result = []
-        for c in text:
-            try:
-                result.append(letters[c])
-            except KeyError:
-                result.append("_")
+        result = (letters.get(c, "_") for c in text)
         return "".join(result)
 
     def invert(word):
-        return word.translate({ord('.'): ord('-'),
-                               ord('-'): ord('.')})
+        # ord('-') = 45, ord('.') = 46
+        return word.translate({46: 45, 45: 46})
 
-    letters = signs
-    letters.update(en)
+    letters = MORSE_EN
     table = []
     plain_text = decode(encrypted)
     if not match(r"^_*$", plain_text):
-        table.append("<div class=\"pure-u-1-4 descr\">ENG</div>"
-                     "<div class=\"pure-u-3-4\">{}</div>"
-                     .format(plain_text))
+        table.extend(["<div class=\"pure-u-1-4 descr\">ENG</div>",
+                      "<div class=\"pure-u-3-4\">",
+                      plain_text, "</div>"])
+
     plain_text = decode(map(invert, encrypted))
     if not match(r"^_*$", plain_text):
-        table.append("<div class=\"pure-u-1-4 descr\">ENG rev</div>"
-                     "<div class=\"pure-u-3-4\">{}</div>"
-                     .format(plain_text))
-    letters = signs
-    letters.update(ru)
+        table.extend(["<div class=\"pure-u-1-4 descr\">ENG rev</div>",
+                     "<div class=\"pure-u-3-4\">",
+                     plain_text, "</div>"])
+
+    letters = MORSE_RU
     plain_text = decode(encrypted)
     if not match(r"^_*$", plain_text):
-        table.append("<div class=\"pure-u-1-4 descr\">RUS</div>"
-                     "<div class=\"pure-u-3-4\">{}</div>"
-                     .format(plain_text))
+        table.extend(["<div class=\"pure-u-1-4 descr\">RUS</div>",
+                     "<div class=\"pure-u-3-4\">",
+                     plain_text, "</div>"])
+
     plain_text = decode(map(invert, encrypted))
     if not match(r"^_*$", plain_text):
-        table.append("<div class=\"pure-u-1-4 descr\">RUS rev</div>"
-                     "<div class=\"pure-u-3-4\">{}</div>"
-                     .format(plain_text))
+        table.extend(["<div class=\"pure-u-1-4 descr\">RUS rev</div>",
+                     "<div class=\"pure-u-3-4\">",
+                     plain_text, "</div>"])
+
     assert len(table)
     return "Morse", "<div class=\"pure-g\">{}</div>".format("".join(table))
 
@@ -195,12 +218,20 @@ def from_hex(encrypted):
         return "From HEX", r.decode("cp1251")
 
 
+def from_dec(encrypted):
+    r = bytes.fromhex(hex(int("".join(encrypted.split())))[2:])
+    try:
+        return "From DEC", r.decode("utf8")
+    except UnicodeDecodeError:
+        return "From DEC", r.decode("cp1251")
+
+
 def from_ascii(encrypted):
     return "From ASCII", "".join(map(chr, map(int, encrypted.split())))
 
 
 def from_base64(encrypted):
-    result = base64.b64decode(encrypted.encode("utf8"))
+    result = b64decode(encrypted.encode("utf8"))
     assert len(result)
     try:
         return "From Base64", result.decode("utf8")
@@ -210,14 +241,14 @@ def from_base64(encrypted):
 
 def from_position(encrypted):
     positions = list(map(int, encrypted.split()))
-    rus = "".join(map(lambda i: RUS[(i - 1) % 33], positions))
-    eng = "".join(map(lambda i: ENG[(i - 1) % 26], positions))
+    rus = "".join(map(lambda i: chr(RUS[(i - 1) % 33]), positions))
+    eng = "".join(map(lambda i: chr(ENG[(i - 1) % 26]), positions))
     return ("From position",
             """<div class="pure-g">
             <div class="pure-u-1-4 descr">RUS</div>
-            <div class="pure-u-3-4">{}</div>
+            <div class="pure-u-3-4">{0}</div>
             <div class="pure-u-1-4 descr">ENG</div>
-            <div class="pure-u-3-4">{}</div>
+            <div class="pure-u-3-4">{1}</div>
             </div>""".format(rus, eng))
 
 
@@ -229,7 +260,7 @@ def from_binary(encrypted):
     for enc in encrypted.split():
         try:
             result.append(
-                bytes.fromhex("%x" % int("0b{}".format(enc), 2)))
+                bytes.fromhex(hex(int("0b{}".format(enc), 2))[2:]))
         except ValueError:
             pass
     assert len(result)
@@ -267,32 +298,36 @@ def decapsulate(encrypted):
     :param encrypted:
     """
     table = []
-    encrypted = encrypted
     eng = findall("[A-Za-z]", encrypted)
     if len(eng):
-        table.append("<div class=\"pure-u-1-4 descr\">Eng</div>"
-                     "<div class=\"pure-u-3-4\">{}</div>"
-                     .format(" ".join(eng)))
+        table.extend(["<div class=\"pure-u-1-4 descr\">Eng</div>",
+                      "<div class=\"pure-u-3-4\">",
+                      " ".join(eng), "</div>"])
+
     rus = findall("[а-яёА-ЯЁ]", encrypted)
     if len(rus):
-        table.append("<div class=\"pure-u-1-4 descr\">Rus</div>"
-                     "<div class=\"pure-u-3-4\">{}</div>"
-                     .format(" ".join(rus)))
+        table.extend(["<div class=\"pure-u-1-4 descr\">Rus</div>",
+                      "<div class=\"pure-u-3-4\">",
+                      " ".join(rus), "</div>"])
+
     en_cap = findall("[A-Z]", encrypted)
     if len(en_cap):
-        table.append("<div class=\"pure-u-1-4 descr\">ENG</div>"
-                     "<div class=\"pure-u-3-4\">{}</div>"
-                     .format(" ".join(en_cap)))
+        table.extend(["<div class=\"pure-u-1-4 descr\">ENG</div>",
+                      "<div class=\"pure-u-3-4\">",
+                      " ".join(en_cap), "</div>"])
+
     ru_cap = findall("[А-ЯЁ]", encrypted)
     if len(ru_cap):
-        table.append("<div class=\"pure-u-1-4 descr\">RUS</div>"
-                     "<div class=\"pure-u-3-4\">{}</div>"
-                     .format(" ".join(ru_cap)))
+        table.extend(["<div class=\"pure-u-1-4 descr\">RUS</div>",
+                      "<div class=\"pure-u-3-4\">",
+                      " ".join(ru_cap), "</div>"])
+
     digits = findall("[0-9]", encrypted)
     if len(digits):
-        table.append("<div class=\"pure-u-1-4 descr\">0-9</div>"
-                     "<div class=\"pure-u-3-4\">{}</div>"
-                     .format(" ".join(digits)))
+        table.extend(["<div class=\"pure-u-1-4 descr\">0-9</div>",
+                      "<div class=\"pure-u-3-4\">",
+                     " ".join(digits), "</div>"])
+
     assert len(table)
     return ("Decapsulated",
             "<div class=\"pure-g\">{}</div>".format("".join(table)))
@@ -324,9 +359,8 @@ def from_t9(encrypted):
     """
     assert match(r'^[\d\s]*$', encrypted)
     encrypted = encrypted.replace("0", " ")
-    codes = map(list, encrypted.split())
     words = [[], []]
-    for code in codes:
+    for code in encrypted.split():
         prefix = [[], []]
         word = [[], []]
         for lang in [0, 1]:
@@ -334,20 +368,19 @@ def from_t9(encrypted):
             for p in product(*prefix[lang]):
                 p = "".join(p)
                 if p in dictionary[lang]:
-                    word[lang].extend([p])
+                    word[lang].append(p)
             words[lang].append(word[lang])
 
     table = []
-    for lang in enumerate(["EN", "RU"]):
+    for lang in enumerate(("EN", "RU")):
         if len(words[lang[0]]) == 0:
             continue
-        table.append("<div class=\"pure-u-1-4 descr\">" + lang[1] +
-                     "</div><div class=\"pure-u-3-4\">")
-        for sentence in product(*filter(lambda x: len(x) > 0,
-                                        words[lang[0]])):
-            table.append("{}<br>".format(" ".join(sentence)))
-        table[-1] = table[-1][:-4]
-        table.append("</div>")
+        table.extend(["<div class=\"pure-u-1-4 descr\">", lang[1],
+                      "</div><div class=\"pure-u-3-4\">"])
+        for sentence in product(*filter(lambda x: bool(x), words[lang[0]])):
+            table.append(" ".join(sentence))
+            table.append("<br>")
+        table[-1] = "</div>"
     assert len(table)
     return "T9", "<div class=\"pure-g\">{}</div>".format("".join(table))
 

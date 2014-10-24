@@ -23,6 +23,9 @@ class CryptoTestCase(unittest.TestCase):
     def test_hex(self):
         self.assertEqual("hello", from_hex("68656c6c6f")[1])
 
+    def test_dec(self):
+        self.assertEqual("hello", from_dec("448378203247")[1])
+
     def test_pos(self):
         self.assertTrue("hello" in from_position("8 5 12 12 15")[1])
 
@@ -41,6 +44,7 @@ class CryptoTestCase(unittest.TestCase):
 
     def test_morse(self):
         self.assertTrue("hello" in morse(".... . .-.. .-.. ---")[1].lower())
+
 
 
 

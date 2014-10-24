@@ -19,7 +19,7 @@ for (_, _, filenames) in walk(settings.STATIC_ROOT + "abc/"):
 def decrypter(request):
     if 'encrypted' in request.POST and request.POST['encrypted']:
         encrypted = request.POST['encrypted']
-        print("[INPUT]: {}".format(encrypted).encode("utf8"))
+        print("[INPUT]: {0}".format(encrypted).encode("utf8"))
         decrypted = []
         for func in cryptoanalyzis.functions:
             try:
