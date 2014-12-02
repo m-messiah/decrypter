@@ -360,6 +360,8 @@ def from_t9(encrypted):
     """
     assert match(r'^[\d\s]*$', encrypted)
     encrypted = encrypted.replace("0", " ")
+    encrypted_array = encrypted.split()
+    assert (sum(map(len, encrypted_array)) / len(encrypted_array) < 3 and len(encrypted_array) > 3)
     words = [[], []]
     for code in encrypted.split():
         prefix = [[], []]
