@@ -109,7 +109,7 @@ def caesar(encrypted):
         key = abc[rot:] + abc[:rot]
         trans = dict(zip(abc, key))
         out = encrypted.translate(trans)
-        if any(o in language for o in out.split()[:5]):
+        if any(o in language for o in out.split()[:3]):
             decrypted.insert(0, (rot, out))
         else:
             decrypted.append((rot, out))
@@ -173,8 +173,7 @@ def morse(encrypted):
     encrypted = encrypted.split()
 
     def decode(text):
-        result = (letters.get(c, "_") for c in text)
-        return "".join(result)
+        return "".join(letters.get(c, "_") for c in text)
 
     def invert(word):
         # ord('-') = 45, ord('.') = 46
@@ -183,26 +182,26 @@ def morse(encrypted):
     letters = MORSE_EN
     table = []
     plain_text = decode(encrypted)
-    if not match(r"^_*$", plain_text):
+    if any(c is not "_" for c in plain_text):
         table.extend(["<div class=\"pure-u-1-4 descr\">ENG</div>",
                       "<div class=\"pure-u-3-4\">",
                       plain_text, "</div>"])
 
     plain_text = decode(map(invert, encrypted))
-    if not match(r"^_*$", plain_text):
+    if any(c is not "_" for c in plain_text):
         table.extend(["<div class=\"pure-u-1-4 descr\">ENG rev</div>",
                      "<div class=\"pure-u-3-4\">",
                      plain_text, "</div>"])
 
     letters = MORSE_RU
     plain_text = decode(encrypted)
-    if not match(r"^_*$", plain_text):
+    if any(c is not "_" for c in plain_text):
         table.extend(["<div class=\"pure-u-1-4 descr\">RUS</div>",
                      "<div class=\"pure-u-3-4\">",
                      plain_text, "</div>"])
 
     plain_text = decode(map(invert, encrypted))
-    if not match(r"^_*$", plain_text):
+    if any(c is not "_" for c in plain_text):
         table.extend(["<div class=\"pure-u-1-4 descr\">RUS rev</div>",
                      "<div class=\"pure-u-3-4\">",
                      plain_text, "</div>"])
@@ -212,7 +211,7 @@ def morse(encrypted):
 
 
 def from_hex(encrypted):
-    r = bytes.fromhex("".join(encrypted.split()))
+    r = bytes.fromhex(encrypted.replace(" ", ""))
     try:
         return "From HEX", r.decode("utf8")
     except UnicodeDecodeError:
@@ -220,7 +219,7 @@ def from_hex(encrypted):
 
 
 def from_dec(encrypted):
-    r = bytes.fromhex(hex(int("".join(encrypted.split())))[2:])
+    r = bytes.fromhex(hex(int(encrypted.replace(" ", "")))[2:])
     try:
         return "From DEC", r.decode("utf8")
     except UnicodeDecodeError:
@@ -284,7 +283,7 @@ def bacon(encrypted):
     for i in range(len(encrypted) // 5):
         plaintext.append(BACONDICT.get(encrypted[i * 5:i * 5 + 5], '_'))
     plaintext = "".join(plaintext)
-    assert match(r"_*", plaintext) and len(plaintext)
+    assert len(plaintext)
     return "Bacon", plaintext
 
 
