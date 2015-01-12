@@ -19,12 +19,11 @@ for letter_counter in range(26):
     tmp = tmp.replace('1', 'b')
     BACONDICT[tmp] = chr(65 + letter_counter)
 
-dictionary = [set(map(lambda x: x.rstrip(),
-                      open("words/en.txt").readlines())).union(
-              set(map(lambda x: x.rstrip(),
-                      open("words/tr.txt").readlines()))),
-              set(map(lambda x: x.rstrip(),
-                      open("words/ru.txt").readlines()))]
+dictionary = (frozenset(map(lambda x: x.rstrip(),
+                        open("words/en.txt").readlines()
+                        + open("words/tr.txt").readlines())),
+              frozenset(map(lambda x: x.rstrip(),
+                        open("words/ru.txt").readlines())))
 # T9
 phonepad = ((
             (" ",),
@@ -71,9 +70,12 @@ MORSE_RU = {
     "-.": 'Н', "....": 'Х', "...-": 'Ж', "-.--": "Ы", '-....-': '–',
     '-..-.': '/', '.--.-.': '@'}
 
-from re import search, sub, match, findall
+from re import search, sub, match, findall, compile
 from itertools import product, permutations
 from base64 import b64decode
+
+eng_letters = compile(r"[a-z]")
+rus_letters = compile(r"[а-яё]")
 
 try:
     from decrypter import coordinates
@@ -84,21 +86,21 @@ except ImportError:
 def coords(encrypted):
     converted = coordinates.Coordinates(encrypted.split(',')).all_coords
     result = [
-        "<div class=\"pure-u-1-4 descr\">{0}</div>"
-        "<div class=\"pure-u-3-4\">{1}</div>".format(k, v)
+        "<div class=\"pure-u-1-4 descr\">%s</div>"
+        "<div class=\"pure-u-3-4\">%s</div>" % (k, v)
         for k, v in sorted(converted.items())
     ]
 
     return ("Coordinates",
-            "<div class=\"pure-g\">{0}</div>".format("".join(result)))
+            "<div class=\"pure-g\">%s</div>" % "".join(result))
 
 
 def caesar(encrypted):
     encrypted = encrypted.lower()
-    if search(r"[a-z]", encrypted):
+    if eng_letters.search(encrypted):
         abc = ENG
         language = dictionary[0]
-    elif search(r"[а-яё]", encrypted):
+    elif rus_letters.search(encrypted):
         abc = RUS
         language = dictionary[1]
     else:
@@ -116,20 +118,19 @@ def caesar(encrypted):
 
     return (
         "Caesar",
-        "<div class=\"pure-g\">{0}</div>".format(
-            "".join(
-                map(lambda d:
-                    "<div class=\"pure-u-1-4 descr\">{0}ROT{1}</div>"
-                    "<div class=\"pure-u-3-4\">{2}</div>"
-                    .format("&nbsp;&nbsp;" if d[0] < 10 else "", d[0], d[1]),
-                    decrypted))))
+        "<div class=\"pure-g\">%s</div>" % "".join(
+            map(lambda d:
+                "<div class=\"pure-u-1-4 descr\">%sROT%s</div>"
+                "<div class=\"pure-u-3-4\">%s</div>"
+                % ("&nbsp;&nbsp;" if d[0] < 10 else "", d[0], d[1]),
+                decrypted)))
 
 
 def atbash(encrypted):
     encrypted = encrypted.lower()
-    if search(r"[a-z]", encrypted):
+    if eng_letters.search(encrypted):
         abc = ENG
-    elif search(r"[а-яё]", encrypted):
+    elif rus_letters.search(encrypted):
         abc = RUS
     else:
         raise Exception("Not a words")
@@ -163,7 +164,7 @@ def keymap(encrypted):
            1042, 1040, 1055, 1056, 1054, 1051, 1044, 1046, 1069, 47, 124,
            1071, 1063, 1057, 1052, 1048, 1058, 1068, 1041, 1070, 44)
 
-    if search(r"[a-z]", encrypted):
+    if eng_letters.search(encrypted):
         abc, key = key, abc
     trans = dict(zip(abc, key))
     return "Wrong Keymap", encrypted.translate(trans)
@@ -207,7 +208,7 @@ def morse(encrypted):
                      plain_text, "</div>"])
 
     assert len(table)
-    return "Morse", "<div class=\"pure-g\">{}</div>".format("".join(table))
+    return "Morse", "<div class=\"pure-g\">%s</div>" % "".join(table)
 
 
 def from_hex(encrypted):
@@ -246,10 +247,10 @@ def from_position(encrypted):
     return ("From position",
             """<div class="pure-g">
             <div class="pure-u-1-4 descr">RUS</div>
-            <div class="pure-u-3-4">{0}</div>
+            <div class="pure-u-3-4">%s</div>
             <div class="pure-u-1-4 descr">ENG</div>
-            <div class="pure-u-3-4">{1}</div>
-            </div>""".format(rus, eng))
+            <div class="pure-u-3-4">%s</div>
+            </div>""" % (rus, eng))
 
 
 def from_binary(encrypted):
@@ -260,7 +261,7 @@ def from_binary(encrypted):
     for enc in encrypted.split():
         try:
             result.append(
-                bytes.fromhex(hex(int("0b{}".format(enc), 2))[2:]))
+                bytes.fromhex(hex(int("0b%s" % enc, 2))[2:]))
         except ValueError:
             pass
     assert len(result)
@@ -330,7 +331,7 @@ def decapsulate(encrypted):
 
     assert len(table)
     return ("Decapsulated",
-            "<div class=\"pure-g\">{}</div>".format("".join(table)))
+            "<div class=\"pure-g\">%s</div>" % "".join(table))
 
 
 def anagram(encrypted):
@@ -360,7 +361,8 @@ def from_t9(encrypted):
     assert match(r'^[\d\s]*$', encrypted)
     encrypted = encrypted.replace("0", " ")
     encrypted_array = encrypted.split()
-    assert (sum(map(len, encrypted_array)) / len(encrypted_array) < 3 and len(encrypted_array) > 3)
+    assert (sum(map(len, encrypted_array))
+            / len(encrypted_array) < 3 < len(encrypted_array))
     words = [[], []]
     for code in encrypted.split():
         prefix = [[], []]
@@ -384,7 +386,7 @@ def from_t9(encrypted):
             table.append("<br>")
         table[-1] = "</div>"
     assert len(table)
-    return "T9", "<div class=\"pure-g\">{}</div>".format("".join(table))
+    return "T9", "<div class=\"pure-g\">%s</div>" % "".join(table)
 
 
 functions = [

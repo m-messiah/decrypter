@@ -4,7 +4,11 @@ __author__ = 'm_messiah'
 import unittest
 import codecs
 
-from cryptoanalyzis import *
+try:
+    from decrypter.cryptoanalyzis import *
+except ImportError:
+    from cryptoanalyzis import *
+
 
 
 class CryptoTestCase(unittest.TestCase):

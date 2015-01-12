@@ -10,16 +10,17 @@ except ImportError:
     import cryptoanalyzis
 
 pictures = []
-for (_, _, filenames) in walk(settings.STATIC_ROOT + "abc/"):
+for _, __, filenames in walk(settings.STATIC_ROOT + "abc/"):
     for filename in filenames:
         pictures.append((filename[:filename.rfind(".")],
                          "/static/abc/{0}".format(filename)))
+pictures.sort()
 
 @gzip_page
 def decrypter(request):
     if 'encrypted' in request.POST and request.POST['encrypted']:
         encrypted = request.POST['encrypted']
-        print("[INPUT]: {0}".format(encrypted).encode("utf8"))
+        print(("[INPUT]: %s" % encrypted).encode("utf8"))
         decrypted = []
         for func in cryptoanalyzis.functions:
             try:
@@ -35,4 +36,4 @@ def decrypter(request):
 
 @gzip_page
 def abc(request):
-    return render(request, "abc.html", {"pictures": sorted(pictures)})
+    return render(request, "abc.html", {"pictures": pictures})
