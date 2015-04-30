@@ -18,11 +18,7 @@ for letter_counter in range(26):
     tmp2 = bin(letter_counter)[2:].zfill(5)
     tmp2 = tmp.replace('0', 'a')
     tmp2 = tmp.replace('1', 'b')
-    if current_letter in (8, 9):
-        BACONDICT[0][tmp] = "I"
-    elif current_letter in (20, 21):
-        BACONDICT[0][tmp] = "U"
-    else:
+    if current_letter != 8 and current_letter != 20:
         BACONDICT[0][tmp] = chr(65 + letter_counter)
     BACONDICT[1][tmp2] = chr(65 + letter_counter)
 
