@@ -7,17 +7,25 @@ RUS = (1072, 1073, 1074, 1075, 1076, 1077, 1105, 1078, 1079, 1080, 1081, 1082,
 #ENG = "abcdefghijklmnopqrstuvwxyz"
 ENG = (97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
        112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122)
-BACONDICT = dict()
+BACONDICT = (dict(), dict())
 for letter_counter in range(26):
-    if letter_counter in (9, 21):
-        continue
     current_letter = (letter_counter - 2 if letter_counter > 20
                       else (letter_counter - 1 if letter_counter > 8
                             else letter_counter))
     tmp = bin(current_letter)[2:].zfill(5)
     tmp = tmp.replace('0', 'a')
     tmp = tmp.replace('1', 'b')
-    BACONDICT[tmp] = chr(65 + letter_counter)
+    tmp2 = bin(letter_counter)[2:].zfill(5)
+    tmp2 = tmp.replace('0', 'a')
+    tmp2 = tmp.replace('1', 'b')
+    if current_letter == 8:
+        BACONDICT[0][tmp] = "I"
+    elif current_letter == 20:
+        BACONDICT[0][tmp] = "U"
+    else:
+        BACONDICT[0][tmp] = chr(65 + letter_counter)
+    BACONDICT[1][tmp2] = chr(65 + letter_counter)
+
 
 dictionary = (frozenset(map(lambda x: x.rstrip(),
                         open("words/en.txt").readlines()
@@ -70,7 +78,7 @@ MORSE_RU = {
     "-.": 'Н', "....": 'Х', "...-": 'Ж', "-.--": "Ы", '-....-': '–',
     '-..-.': '/', '.--.-.': '@'}
 
-from re import search, sub, match, findall, compile
+from re import sub, match, findall, compile
 from itertools import product, permutations
 from base64 import b64decode
 
@@ -276,16 +284,26 @@ def bacon(encrypted):
     Bacon cipher (http://www.cs.ucf.edu/~gworley/files/baconian_cipher.txt)
     :param encrypted:
     """
-    plaintext = []
+    result = ['<div class="pure-g">\n'
+              '<div class="pure-u-1-4 descr">OLD</div> ',
+              '<div class="pure-u-3-4">']
 
     encrypted = encrypted.lower()
     encrypted = sub("[^ab]", "", encrypted.strip())
 
-    for i in range(len(encrypted) // 5):
-        plaintext.append(BACONDICT.get(encrypted[i * 5:i * 5 + 5], '_'))
-    plaintext = "".join(plaintext)
+    plaintext = [BACONDICT[0].get(encrypted[i * 5:i * 5 + 5], '_')
+                 for i in range(len(encrypted) // 5)]
     assert len(plaintext)
-    return "Bacon", plaintext
+    result.append("".join(plaintext))
+    result.append("</div>\n")
+    result.append('<div class="pure-u-1-4 descr">NEW</div> ')
+    result.append('<div class="pure-u-3-4">')
+    plaintext = [BACONDICT[1].get(encrypted[i * 5:i * 5 + 5], '_')
+                 for i in range(len(encrypted) // 5)]
+    assert len(plaintext)
+    result.append("".join(plaintext))
+    result.append("</div></div>")
+    return "Bacon", "".join(result)
 
 
 def decapsulate(encrypted):
@@ -334,26 +352,6 @@ def decapsulate(encrypted):
             "<div class=\"pure-g\">%s</div>" % "".join(table))
 
 
-def anagram(encrypted):
-    """
-    Do the anagram search.
-    :param encrypted:
-    """
-    if match(r"^[А-Яа-яёЁ]+$", encrypted):
-        lang = 1
-    elif match(r"^[A-Za-z]+$", encrypted):
-        lang = 0
-    else:
-        raise Exception("Not a words")
-    result = set()
-    for word in permutations(encrypted):
-        word = "".join(word)
-        if word in dictionary[lang]:
-            result.add(word)
-    assert len(result)
-    return "Anagram", "<br>".join(result)
-
-
 def from_t9(encrypted):
     """
     Get text from T9
@@ -400,7 +398,6 @@ functions = [
     keymap,
     reverse,
     decapsulate,
-    anagram,
     bacon,
     atbash,
     caesar,
