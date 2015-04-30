@@ -16,9 +16,14 @@ for letter_counter in range(26):
     tmp = tmp.replace('0', 'a')
     tmp = tmp.replace('1', 'b')
     tmp2 = bin(letter_counter)[2:].zfill(5)
-    tmp2 = tmp.replace('0', 'a')
-    tmp2 = tmp.replace('1', 'b')
-    if current_letter != 8 and current_letter != 20:
+    tmp2 = tmp2.replace('0', 'a')
+    tmp2 = tmp2.replace('1', 'b')
+
+    if current_letter in (8, 9):
+        BACONDICT[0][tmp] = "I"
+    elif current_letter in (19, 20):
+        BACONDICT[0][tmp] = "U"
+    else:
         BACONDICT[0][tmp] = chr(65 + letter_counter)
     BACONDICT[1][tmp2] = chr(65 + letter_counter)
 
@@ -298,7 +303,7 @@ def bacon(encrypted):
                  for i in range(len(encrypted) // 5)]
     assert len(plaintext)
     result.append("".join(plaintext))
-    result.append("</div></div>")
+    result.append("</div></div>%s" % BACONDICT[1])
     return "Bacon", "".join(result)
 
 
