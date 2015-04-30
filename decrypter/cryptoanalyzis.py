@@ -303,7 +303,7 @@ def bacon(encrypted):
                  for i in range(len(encrypted) // 5)]
     assert len(plaintext)
     result.append("".join(plaintext))
-    result.append("</div></div>%s" % BACONDICT[1])
+    result.append("</div></div>")
     return "Bacon", "".join(result)
 
 
