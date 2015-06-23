@@ -2,19 +2,15 @@ from django.shortcuts import render_to_response
 from django.shortcuts import render
 from django.conf import settings
 from django.views.decorators.gzip import gzip_page
-from os import walk
+from glob import glob
 
 try:
     from decrypter import cryptoanalyzis
 except ImportError:
     import cryptoanalyzis
 
-pictures = []
-for _, __, filenames in walk(settings.STATIC_ROOT + "abc/"):
-    for filename in filenames:
-        pictures.append((filename[:filename.rfind(".")],
-                         "/static/abc/{0}".format(filename)))
-pictures.sort()
+pictures = sorted([(f[f.rfind("/") + 1:f.rfind(".")], f)
+                   for f in glob(settings.STATIC_ROOT + "abc/*")])
 
 @gzip_page
 def decrypter(request):
