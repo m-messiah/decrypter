@@ -25,8 +25,8 @@ def decrypter(request):
         for func in cryptoanalyzis.functions:
             try:
                 decrypted.append(func(encrypted))
-            except:
-                continue
+            except Exception as e:
+                decrypted.append((func.__name__, e))
         return render_to_response('answer.html',
                                   {"encrypted": request.POST['encrypted'],
                                    "decrypted": decrypted

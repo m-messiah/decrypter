@@ -80,7 +80,7 @@ MORSE_RU = {
     '-..-.': '/', '.--.-.': '@'}
 
 from re import sub, match, findall, compile
-from itertools import product, permutations
+from itertools import product
 from base64 import b64decode
 
 eng_letters = compile(r"[a-z]")
