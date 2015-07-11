@@ -9,7 +9,7 @@ try:
 except ImportError:
     import cryptoanalyzis
 
-pictures = sorted([(f[f.rfind("/") + 1:f.rfind(".")], f)
+pictures = sorted([(f[f.rfind("/") + 1:f.rfind(".")], f[f.find("static"):])
                    for f in glob(settings.STATIC_ROOT + "abc/*")])
 
 @gzip_page
