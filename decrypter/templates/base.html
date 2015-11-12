@@ -11,9 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
     <link rel="icon" type="image/png" href="{% static "favicon.png" %}" />
     <link rel="apple-touch-icon" type="image/png" href="{% static "favicon.png" %}" />
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-min.css">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css">
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/forms-min.css">
+    <link rel="stylesheet" href="{% static "grids-min.css" %}">
+    <link rel="stylesheet" href="{% static "grids-responsive-min.css" %}">
+    <link rel="stylesheet" href="{% static "forms-min.css" %}">
     <style>
         html,button,input,select,textarea,body,.pure-g [class *= "pure-u"],.pure-g-r [class *= "pure-u"]{font-family:"Helvetica Neue","HelveticaNeue-Light","Helvetica Neue Light",Helvetica,sans-serif;}
         main{margin-left:2%;margin-right:2%;font-weight:100;}
@@ -38,7 +38,7 @@
     {% block content %}
     {% endblock %}
 </main>
-<footer><small><a href="http://m-messiah.github.io">©m_messiah</a></small></footer>
+<footer><small><a href="https://m-messiah.ru">©m_messiah</a></small></footer>
 </body>
 </html>
 
