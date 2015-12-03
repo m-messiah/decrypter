@@ -4,9 +4,9 @@ try:
     from decrypter import cryptoanalyzis
 except ImportError:
     import cryptoanalyzis
+import cProfile
 
-
-def decrypter(encrypted):
+def decrypt(encrypted):
     decrypted = []
     for func in cryptoanalyzis.functions:
         try:
@@ -16,5 +16,4 @@ def decrypter(encrypted):
     return decrypted
 
 
-import cProfile
-cProfile.run('decrypter("hello123")')
+cProfile.runctx('decrypt("hello123")', None, locals())

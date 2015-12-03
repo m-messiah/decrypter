@@ -2,7 +2,10 @@ __author__ = 'm_messiah'
 
 import unittest
 
-from coordinates import Coordinates
+try:
+    from decrypter.coordinates import Coordinates
+except ImportError:
+    from coordinates import Coordinates
 
 
 class CoordinatesTestCase(unittest.TestCase):

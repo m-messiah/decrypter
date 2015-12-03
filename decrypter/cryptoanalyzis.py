@@ -1,4 +1,6 @@
 # coding=utf-8
+from os.path import dirname, realpath, join as pjoin
+
 __author__ = 'm_messiah'
 #RUS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 RUS = (1072, 1073, 1074, 1075, 1076, 1077, 1105, 1078, 1079, 1080, 1081, 1082,
@@ -28,11 +30,21 @@ for letter_counter in range(26):
     BACONDICT[1][tmp2] = chr(65 + letter_counter)
 
 
-dictionary = (frozenset(map(lambda x: x.rstrip(),
-                        open("words/en.txt").readlines()
-                        + open("words/tr.txt").readlines())),
-              frozenset(map(lambda x: x.rstrip(),
-                        open("words/ru.txt").readlines())))
+dictionary = (
+    frozenset(
+        map(lambda x: x.rstrip(),
+            open(pjoin(dirname(realpath(__file__)),
+                       "words/en.txt")).readlines() +
+            open(pjoin(dirname(realpath(__file__)),
+                       "words/tr.txt")).readlines()
+            )
+    ),
+    frozenset(
+        map(lambda x: x.rstrip(),
+            open(pjoin(dirname(realpath(__file__)),
+                       "words/ru.txt")).readlines())
+    )
+)
 # T9
 phonepad = ((
             (" ",),
