@@ -1,8 +1,6 @@
 Decrypter
 ===================
 
-[ ![Codeship Status for m-messiah/decrypter](https://www.codeship.io/projects/e98f2880-ed45-0131-3df8-72e23ebe4803/status)](https://www.codeship.io/projects/26661)
-
 Specialized for Night Game DozoR, but useful for another Quests.
 
 
