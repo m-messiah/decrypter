@@ -7,7 +7,7 @@ def rel(*x):
 
 
 DEBUG = False
-#DEBUG = True
+# DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -46,18 +46,6 @@ STATICFILES_FINDERS = (
 import random
 SECRET_KEY = "".join([chr(random.randint(16, 128)) for i in range(40)])
 
-
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.core.context_processors.debug",
-    "django.core.context_processors.static",
-    "django.core.context_processors.media",
-    "django.core.context_processors.request",
-    "django.core.context_processors.tz",
-)
 MIDDLEWARE_CLASSES = (
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -69,8 +57,13 @@ ROOT_URLCONF = 'decrypter.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'wsgi.application'
 
-TEMPLATE_DIRS = (
-    rel("templates"),
+
+TEMPLATES = (
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': (rel('templates'),),
+        'APP_DIRS': True,
+    },
 )
 
 INSTALLED_APPS = (
